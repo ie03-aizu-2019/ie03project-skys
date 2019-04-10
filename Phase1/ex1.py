@@ -1,4 +1,10 @@
-# 小課題1
+"""
+小課題1 設計
+1. 座標(point)クラスと線分(segment)クラスの定義
+2. find_intersection(point, point) -> [True/False, point(存在するとき)]を定義
+3. 入力->整数値->point->segmentへと整形
+4. find_intersection(segment, segment)の戻り値を整えて出力
+"""
 
 
 class segment:  # 線分クラス
@@ -27,7 +33,7 @@ class point:  # 座標クラス
             return False
 
 
-def find_intesection(s1, s2):
+def find_intersection(s1, s2):
     """
     線分1(s1)と線分2(s2)を渡して交点を求める関数
     s1とs2はsegmentクラス
@@ -70,52 +76,32 @@ def find_intesection(s1, s2):
 
 
 if __name__ == "__main__":
-    # テスト用
-    # inputs = [
-    #     [[4, 2], [0, 0]],
-    #     [[0, 0], [5, 5]],
-    #     [[2, 5], [7, 1]],
-    #     [[1, 3], [2, 4]],
-    # ]
-    error_flag = False
+    # 関数のテスト用, 入力は省略する
+    N, M, P, Q = 4, 2, 0, 0
+    inputs = [
+        [0, 0],
+        [5, 5],
+        [2, 5],
+        [7, 1],
+        [1, 2],
+        [3, 4],
+    ]
 
-    inputs = []
-    tmp = input()  # スペース区切りで入力
-    tmp = tmp.split(" ")  # リストへ変換
-    for i in range(len(tmp)):
-        try:
-            tmp[i] = int(tmp[i])
-        except Exception:
-            # 入力が文字列だった場合の例外処理
-            error_flag = True
-            tmp[i] = 0
-        if not (0 <= tmp[i] and tmp[i] <= 1000):
-            error_flag = True
+    points = []  # 地点を格納するリスト
+    segments = []  # 線分を格納するリスト
+    intersected = []  # 交点を格納するリスト
 
-    for i in range(0, 13, 4):
-        inputs.append([[tmp[i], tmp[i+1]], [tmp[i+2], tmp[i+3]]])
+    for i in range(len(inputs)):
+        if i < N:  # 座標データ x, y
+            points.append(point(inputs[i]))
+        else:  # 線分データ
+            b = points[inputs[i][0] - 1]
+            e = points[inputs[i][1] - 1]
+            segments.append(segment([b, e]))
 
-    if not (3 <= len(inputs) and len(inputs) <= 4):
-        # 範囲外の値
-        error_flag = True
+    ans = find_intersection(segments[0], segments[1])
 
-    if not error_flag:
-        segments = []  # 線分を格納するリスト
-        intersected = []  # 交点を格納するリスト
-
-        for p in inputs:  # segmentsのセット
-            segments.append(segment([point(p[0]), point(p[1])]))
-
-        for i in range(len(segments)):
-            for j in range(i+1, len(segments)):
-                tmp = find_intesection(segments[i], segments[j])
-                if tmp[0]:
-                    intersected.append(tmp[1])
-
-        if len(intersected) == 0:
-            # 交点なし
-            print("NA")
-        else:
-            # 交点あり
-            for token in intersected:
-                print(f"{token.x:.5f} {token.y:.5f}")
+    if ans[0]:  # 交点あり
+        print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
+    else:
+        print("NA")
