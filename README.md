@@ -1,6 +1,6 @@
 # ie03project-skys
 
-## メンバー
+## メンバー一覧
 
 - s1250131, [Kaito Kimura](https://github.com/s1250131-Kimura)
 - s1250133, [Sora Koshikawa](https://github.com/s1250133-koshikawa)
