@@ -30,7 +30,6 @@ Phase1の小課題1に取り組み始めた.
 また, テキストの入力例で出力を一致させることができたが, (3)関数が適切に交点を求められているかをテストデータを作成して丁寧に調べる必要があるだろう.
 
 
-### s1250133 越川:
-
-
-url: https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/Reports/report01.md
+### s1250133越川：
+今週は主にgithubの使い方について学習した。
+url：https：gi // github.com/ie03-aizu-2019/ie03project-skys/blob/master/Reports/report01.md
