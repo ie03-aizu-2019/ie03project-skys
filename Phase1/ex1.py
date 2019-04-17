@@ -79,28 +79,41 @@ def find_intersection(s1, s2):
     return returnset
 
 
+def input_info():
+    points = []
+    segments = []
+
+    tmp = input("") # "4 2 0 0"
+    tmp = tmp.split(" ") # ["4", "2", "0", "0"]
+    for i in range(len(tmp)):
+        tmp[i] = int(tmp[i])
+    # [4, 2, 0, 0]
+    N, M, P, Q = tmp
+
+    for i in range(N):# for N回まわしてなかでinput
+        tmp = input("")
+        tmp = tmp.split(" ")# "0 0" -> ["0", "0"]
+        tmp[0] = int(tmp[0])
+        tmp[1] = int(tmp[1])
+        # point([0, 0])
+        points.append(point(tmp))# points.append(point(koshikawa))
+
+    for i in range(M):# for m
+        tmp = input()
+        tmp = tmp.split(" ")
+        # "0 0" ->  koshikawa = [0, 0]
+        tmp[0] = int(tmp[0])
+        tmp[1] = int(tmp[1])
+        segments.append(
+        segment([points[tmp[0]-1], points[tmp[1]-1]]))
+        # segments.append(segment(koshikawa))
+
+    return N, M, P, Q, points, segments
+
+
 if __name__ == "__main__":
-    # 関数のテスト用, 入力は省略する
-    N, M, P, Q = 4, 2, 0, 0
-    inputs = [
-        [5, 5],
-        [9, 5],
-        [4, 7],
-        [7, 1],
-        [1, 3],
-        [2, 4],
-    ]
+    N, M, P, Q, points, segments = input_info()
 
-    points = []  # 地点を格納するリスト
-    segments = []  # 線分を格納するリスト
-
-    for i in range(len(inputs)):
-        if i < N:  # 座標データ x, y
-            points.append(point(inputs[i]))
-        else:  # 線分データ
-            b = points[inputs[i][0] - 1]
-            e = points[inputs[i][1] - 1]
-            segments.append(segment([b, e]))
 
     ans = find_intersection(segments[0], segments[1])
 
