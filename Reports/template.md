@@ -4,6 +4,8 @@
 
 **Class Date: XX/XX**
 
+**URL** : https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/reportXX.md
+
 
 各課題の実装方針や、必要と思われるその他作業の見積もりなど。
 

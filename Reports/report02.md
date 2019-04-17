@@ -4,6 +4,8 @@
 
 **Class Date: 04/17**
 
+**URL** : https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report02.md
+
 
 ## 小課題2
 
