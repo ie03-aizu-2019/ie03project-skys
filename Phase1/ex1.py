@@ -4,6 +4,7 @@
 2. find_intersection(point, point) -> [True/False, point(存在するとき)]を定義
 3. 入力->整数値->point->segmentへと整形
 4. find_intersection(segment, segment)の戻り値を整えて出力
+テスト
 """
 
 
