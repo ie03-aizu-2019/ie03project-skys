@@ -4,7 +4,6 @@
 2. find_intersection(point, point) -> [True/False, point(存在するとき)]を定義
 3. 入力->整数値->point->segmentへと整形
 4. find_intersection(segment, segment)の戻り値を整えて出力
-テスト
 """
 
 
@@ -38,13 +37,14 @@ def find_intersection(s1, s2):
     """
     線分1(s1)と線分2(s2)を渡して交点を求める関数
     s1とs2はsegmentクラス
-    戻り値は [交点の有無の真偽値, x座標, y座標]
+    戻り値は [交点の有無の真偽値, 交点(Pointクラス)]
     """
+    EPS = 10 ** (-7)  # 誤差除去用
     returnset = [False]
     Deter = (s1.Q.x - s1.P.x)*(s2.P.y - s2.Q.y)
     Deter += (s2.Q.x - s2.P.x)*(s1.Q.y - s1.P.y)
 
-    if Deter == 0:
+    if -1 * EPS <= Deter and Deter <= EPS:
         # 交差なし
         return returnset
     else:
@@ -73,6 +73,9 @@ def find_intersection(s1, s2):
         if returnset[1].equal(s1.P) or returnset[1].equal(s1.Q) or returnset[1].equal(s2.P) or returnset[1].equal(s2.Q):
             # 交点が端点である
             returnset = [False]
+
+    # [True, 交点]
+    # [False]
     return returnset
 
 
@@ -80,9 +83,9 @@ if __name__ == "__main__":
     # 関数のテスト用, 入力は省略する
     N, M, P, Q = 4, 2, 0, 0
     inputs = [
-        [0, 0],
         [5, 5],
-        [2, 5],
+        [9, 5],
+        [4, 7],
         [7, 1],
         [1, 3],
         [2, 4],
@@ -90,7 +93,6 @@ if __name__ == "__main__":
 
     points = []  # 地点を格納するリスト
     segments = []  # 線分を格納するリスト
-    intersected = []  # 交点を格納するリスト
 
     for i in range(len(inputs)):
         if i < N:  # 座標データ x, y
