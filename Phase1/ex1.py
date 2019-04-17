@@ -39,11 +39,12 @@ def find_intersection(s1, s2):
     s1とs2はsegmentクラス
     戻り値は [交点の有無の真偽値, x座標, y座標]
     """
+    EPS = 10 ** (-7)  # 誤差除去用
     returnset = [False]
     Deter = (s1.Q.x - s1.P.x)*(s2.P.y - s2.Q.y)
     Deter += (s2.Q.x - s2.P.x)*(s1.Q.y - s1.P.y)
 
-    if Deter == 0:
+    if -1 * EPS <= Deter and Deter <= EPS:
         # 交差なし
         return returnset
     else:
