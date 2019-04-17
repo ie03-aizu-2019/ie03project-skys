@@ -12,4 +12,5 @@
 - [フェーズ3](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Phase3)
 
 ## 週刊レポート
-[週刊レポート1](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report01.md)
+- [週刊レポート1](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report01.md)
+- [週刊レポート1](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report02.md)
