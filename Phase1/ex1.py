@@ -83,29 +83,29 @@ def input_info():
     points = []
     segments = []
 
-    tmp = input("") # "4 2 0 0"
-    tmp = tmp.split(" ") # ["4", "2", "0", "0"]
+    tmp = input("")  # "4 2 0 0"
+    tmp = tmp.split(" ")  # ["4", "2", "0", "0"]
     for i in range(len(tmp)):
         tmp[i] = int(tmp[i])
     # [4, 2, 0, 0]
     N, M, P, Q = tmp
 
-    for i in range(N):# for N回まわしてなかでinput
+    for i in range(N):  # for N回まわしてなかでinput
         tmp = input("")
-        tmp = tmp.split(" ")# "0 0" -> ["0", "0"]
+        tmp = tmp.split(" ")  # "0 0" -> ["0", "0"]
         tmp[0] = int(tmp[0])
         tmp[1] = int(tmp[1])
         # point([0, 0])
-        points.append(point(tmp))# points.append(point(koshikawa))
+        points.append(point(tmp))  # points.append(point(koshikawa))
 
-    for i in range(M):# for m
+    for i in range(M):  # for m
         tmp = input()
         tmp = tmp.split(" ")
         # "0 0" ->  koshikawa = [0, 0]
         tmp[0] = int(tmp[0])
         tmp[1] = int(tmp[1])
         segments.append(
-        segment([points[tmp[0]-1], points[tmp[1]-1]]))
+            segment([points[tmp[0]-1], points[tmp[1]-1]]))
         # segments.append(segment(koshikawa))
 
     return N, M, P, Q, points, segments
@@ -113,7 +113,6 @@ def input_info():
 
 if __name__ == "__main__":
     N, M, P, Q, points, segments = input_info()
-
 
     ans = find_intersection(segments[0], segments[1])
 
