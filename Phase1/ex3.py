@@ -32,18 +32,19 @@ class Manager:
         self.points = list2dict(points)
         self.segments = list2dict(segments)
 
-        self.intersections = list2dict(ex2.find_all_intersection(M, segments))
+        self.find_all_intersection()
 
         # root についてはあとで追記する
 
     def find_all_intersections(self):
         intersections = []
+        segments = list(self.segments.values())
         for i in range(self.M):
             for j in range(i, self.M):
-                tmp = ex1.find_intersection(self.segments[i], self.segments[j])
+                tmp = ex1.find_intersection(segments[i], segments[j])
                 if tmp[0]:  # 交点あり
                     # print(f"check A, {tmp[1].to_str()}")
-                    self.segments[i].set_contacted(tmp[1])
+                    segments[i].set_contacted(tmp[1])
                     if len(intersections) == 0:
                         intersections.append(tmp[1])
                     else:
@@ -70,7 +71,26 @@ class Manager:
                             else:
                                 # 次のループへ
                                 continue
-        return intersections
+        self.intersections = intersections
+        list2dict(self.intersections)
+
+    def search_root(self, start, fin):
+        roots = []
+        now = [start]
+
+        for p in now:
+            for s in p.contacted:
+
+    def contacted(self, token, fin):
+        # 再帰的に呼び出す
+        next = token.contacted
+        flag = False
+        for t in next:
+            if t is fin:
+                flag = True
+                break
+
+
 
 
 

@@ -11,7 +11,9 @@ class segment:  # 線分クラス
     def __init__(self, s):  # 線分はpointオブジェクトのリストで渡す
         self.P = s[0]
         self.Q = s[1]
-        self.contacted = []
+        self.contacted = [self.P, self.Q]
+        self.P.set_contacted(self)
+        self.Q.set_contacted(self)
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
         info = f"P = ({self.P.x}, {self.Q.y})\n"
