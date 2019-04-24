@@ -18,9 +18,9 @@ class segment:  # 線分クラス
         info = info + f"Q = ({self.Q.x}, {self.Q.y})"
         return info
 
-    def set_contacted(self, point_index):
+    def set_contacted(self, point):
         # 接点のリストを追加(Managerクラスから実行を想定)
-        self.contacted.append(point_index)
+        self.contacted.append(point)
 
     def set_index(self, index):
         self.index = index
@@ -41,9 +41,9 @@ class point:  # 座標クラス
         else:
             return False
 
-    def set_contacted(self, segment_index):
+    def set_contacted(self, segment):
         # 接線リスト
-        self.contacted.append(segment_index)
+        self.contacted.append(segment)
 
     def set_index(self, index):
         # Managerクラスより実行
