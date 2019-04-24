@@ -11,17 +11,26 @@ class segment:  # 線分クラス
     def __init__(self, s):  # 線分はpointオブジェクトのリストで渡す
         self.P = s[0]
         self.Q = s[1]
+        self.contacted = []
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
         info = f"P = ({self.P.x}, {self.Q.y})\n"
         info = info + f"Q = ({self.Q.x}, {self.Q.y})"
         return info
 
+    def set_contacted(self, point_index):
+        # 接点のリストを追加(Managerクラスから実行を想定)
+        self.contacted.append(point_index)
+
+    def set_index(self, index):
+        self.index = index
+
 
 class point:  # 座標クラス
     def __init__(self, p):  # 座標はリストで渡す
         self.x = p[0]
         self.y = p[1]
+        self.contacted = []
 
     def to_str(self):
         return f"({self.x}, {self.y})"
@@ -31,6 +40,14 @@ class point:  # 座標クラス
             return True
         else:
             return False
+
+    def set_contacted(self, segment_index):
+        # 接線リスト
+        self.contacted.append(segment_index)
+
+    def set_index(self, index):
+        # Managerクラスより実行
+        self.index = index
 
 
 def find_intersection(s1, s2):

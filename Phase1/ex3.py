@@ -17,19 +17,68 @@ class Manager:
     """
 
     def __init__(self):
-        pass
+        self.input()
 
     def input(self, file=False):
-        M, M, P, Q, points, segments = False
+        M, M, P, Q, points, segments, roots = False
 
         if file:
             # ファイルから入力を得る
-            M, M, P, Q, points, segments = ex1.input_info()
+            M, M, P, Q, points, segments, roots = ex1.input_info()
         else:
             # キーボードから入力を得る
-            M, M, P, Q, points, segments = ex2.input_from_file()
+            M, M, P, Q, points, segments, roots = ex2.input_from_file()
 
-    def set_intersections(self):
-        intersections_list = ex2.find_all_intersections(self.M, self.segments)
-        for i in range(len(intersections_list)):
-            self.intersections[i+1] = intersections_list[i]
+        self.points = list2dict(points)
+        self.segments = list2dict(segments)
+
+        self.intersections = list2dict(ex2.find_all_intersection(M, segments))
+
+        # root についてはあとで追記する
+
+    def find_all_intersections(self):
+        intersections = []
+        for i in range(self.M):
+            for j in range(i, self.M):
+                tmp = ex1.find_intersection(self.segments[i], self.segments[j])
+                if tmp[0]:  # 交点あり
+                    # print(f"check A, {tmp[1].to_str()}")
+                    self.segments[i].set_contacted(tmp[1])
+                    if len(intersections) == 0:
+                        intersections.append(tmp[1])
+                    else:
+                        for k in range(len(intersections)):
+                            if intersections[k].x > tmp[1].x:
+                                # 追加
+                                intersections.insert(k, tmp[1])
+                                break
+                            elif intersections[k].x == tmp[1].x:
+                                # y座標を比較する
+                                if intersections[k].y > tmp[1].y:
+                                    intersections.insert(k, tmp[1])
+                                    break
+                                else:
+                                    if k == len(intersections)-1:
+                                        intersections.append(tmp[1])
+                                        break
+                                    else:
+                                        continue
+                            elif k == len(intersections)-1:
+                                # 末尾に追加
+                                intersections.append(tmp[1])
+                                break
+                            else:
+                                # 次のループへ
+                                continue
+        return intersections
+
+
+
+def list2dict(l):
+    length = len(l)
+    d = {}
+    for i in range(length):
+        d[i+1] = l[i]
+        # dの要素はPointまたはSegment
+        d[i+1].set_index(i+1)
+    return d

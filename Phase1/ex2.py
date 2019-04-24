@@ -24,14 +24,6 @@ for i in [0, ..., M-1]:
 2. 前述のアルゴリズムに従ってintersectionsリストに交点を格納
 3. 適切に出力する
 """
-# ここからが越川
-def input_info():
-    points = []
-
-def find_intersection(s1,s2):
-    
-        
-
 
 # テスト用のテキストファイルから入力を得る関数
 # 引数pathに入力ファイルパスを渡す
