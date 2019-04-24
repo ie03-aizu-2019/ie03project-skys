@@ -126,8 +126,22 @@ def input_info():
         segments.append(
             segment([points[tmp[0]-1], points[tmp[1]-1]]))
         # segments.append(segment(koshikawa))
+        
+        """
+        roots [
+            ["1", "4", 1],
+            ["C1", "3", 1]
+        ]
+        """
+    for i in range(Q):    
+        tmp = input("")    
+        tmp = tmp.split(" ")
+        roots[i] = tmp 
+        roots[i][2] = int(tmp[i][2])
+    
+    return N, M, P, Q, points, segment, roots
 
-    return N, M, P, Q, points, segments
+
 
 
 if __name__ == "__main__":
