@@ -27,6 +27,9 @@ class segment:  # 線分クラス
     def set_index(self, index):
         self.index = index
 
+    def isPoint(self):
+        return False
+
 
 class point:  # 座標クラス
     def __init__(self, p):  # 座標はリストで渡す
@@ -50,6 +53,9 @@ class point:  # 座標クラス
     def set_index(self, index):
         # Managerクラスより実行
         self.index = index
+
+    def isPoint(self):
+        return True
 
 
 def find_intersection(s1, s2):
@@ -82,16 +88,21 @@ def find_intersection(s1, s2):
             x = s1.P.x + s * (s1.Q.x - s1.P.x)
             y = s1.P.y + s * (s1.Q.y - s1.P.y)
             returnset = [True, point([x, y])]
+            returnset[1].set_contacted(s1)
+            returnset[1].set_contacted(s2)
+            s1.set_contacted(returnset[1])
+            s2.set_contacted(returnset[1])
 
         else:
             # 交差なし
             pass
 
-    # 端点の除去
-    if returnset[0]:
-        if returnset[1].equal(s1.P) or returnset[1].equal(s1.Q) or returnset[1].equal(s2.P) or returnset[1].equal(s2.Q):
-            # 交点が端点である
-            returnset = [False]
+    # 端点の除去( main に移行する!! )
+    # if returnset[0]:
+    #     if returnset[1].equal(s1.P) or returnset[1].equal(s1.Q) or returnset[1].equal(s2.P) or returnset[1].equal(s2.Q):
+    #         # 交点が端点である
+    #         returnset = [False]
+
 
     # [True, 交点]
     # [False]
@@ -126,19 +137,19 @@ def input_info():
         segments.append(
             segment([points[tmp[0]-1], points[tmp[1]-1]]))
         # segments.append(segment(koshikawa))
-        
+
         """
         roots [
             ["1", "4", 1],
             ["C1", "3", 1]
         ]
         """
-    for i in range(Q):    
-        tmp = input("")    
+    for i in range(Q):
+        tmp = input("")
         tmp = tmp.split(" ")
-        roots[i] = tmp 
+        roots[i] = tmp
         roots[i][2] = int(tmp[i][2])
-    
+
     return N, M, P, Q, points, segment, roots
 
 
