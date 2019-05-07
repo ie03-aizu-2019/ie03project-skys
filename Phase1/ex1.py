@@ -16,12 +16,16 @@ class segment:  # 線分クラス
         self.Q.set_contacted(self)
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
-        info = f"P = ({self.P.x}, {self.Q.y})\n"
+        info = f"P = ({self.P.x}, {self.P.y})\n"
         info = info + f"Q = ({self.Q.x}, {self.Q.y})"
         return info
 
     def set_contacted(self, point):
-        # 接点のリストを追加(Managerクラスから実行を想定)
+        # 接点のリストを追加
+        for i in range(len(self.contacted)):
+            if self.contacted[i] is point:
+                # 既に格納済み
+                return False
         self.contacted.append(point)
 
     def set_index(self, index):
@@ -48,6 +52,10 @@ class point:  # 座標クラス
 
     def set_contacted(self, segment):
         # 接線リスト
+        for i in range(len(self.contacted)):
+            if self.contacted[i] is segment:
+                # 既に格納済み
+                return False
         self.contacted.append(segment)
 
     def set_index(self, index):
@@ -88,21 +96,33 @@ def find_intersection(s1, s2):
             x = s1.P.x + s * (s1.Q.x - s1.P.x)
             y = s1.P.y + s * (s1.Q.y - s1.P.y)
             returnset = [True, point([x, y])]
-            returnset[1].set_contacted(s1)
-            returnset[1].set_contacted(s2)
-            s1.set_contacted(returnset[1])
-            s2.set_contacted(returnset[1])
 
         else:
             # 交差なし
             pass
 
-    # 端点の除去( main に移行する!! )
-    # if returnset[0]:
-    #     if returnset[1].equal(s1.P) or returnset[1].equal(s1.Q) or returnset[1].equal(s2.P) or returnset[1].equal(s2.Q):
-    #         # 交点が端点である
-    #         returnset = [False]
-
+    # 端点の除去
+    if returnset[0]:  # 交点あり(端点かは不明)
+        is_intersection = True
+        if returnset[1].equal(s1.P):
+            is_intersection = False
+            s1.P.set_contacted(s2)
+        if returnset[1].equal(s1.Q):
+            is_intersection = False
+            s1.Q.set_contacted(s2)
+        if returnset[1].equal(s2.P):
+            is_intersection = False
+            s2.P.set_contacted(s1)
+        if returnset[1].equal(s2.Q):
+            is_intersection = False
+            s2.Q.set_contacted(s1)
+        if is_intersection:  # 交点あり(端点ではない)
+            returnset[1].set_contacted(s1)
+            returnset[1].set_contacted(s2)
+            s1.set_contacted(returnset[1])
+            s2.set_contacted(returnset[1])
+        else:
+            returnset = [False]
 
     # [True, 交点]
     # [False]

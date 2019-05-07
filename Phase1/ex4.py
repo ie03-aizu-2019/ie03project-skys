@@ -16,7 +16,7 @@ class Manager4(ex3.Manager):
         # 交点 = 端点を除去しつつ出力する
         if not ans[0]:  # 交点なし
             print("NA")
-        elif ans[1].equal(self.segments[0].P) or ans[1].equal(self.segments[0].Q) or ans[1].equal(self.segments[1].P) or ans[1].equal(self.segments[1].Q):
+        elif ans[0].type == "endpoint":
             # 交点ありだが端点である
             print("NA")
         else:  # 交点あり
