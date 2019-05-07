@@ -6,6 +6,7 @@
 """
 
 import ex1
+import ex2
 import ex3
 
 
@@ -22,10 +23,10 @@ class Manager4(ex3.Manager):
             print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
 
     def ex2(self):
-        intersections = self.find_all_intersections()
+        intersections = ex2.find_all_intersections()
 
-        for index in list(intersections):
-            print(f"{intersections[index].x:.5f} {intersections[index].y:.5f}")
+        for p in intersections:
+            print(f"{p.x:.5f} {p.y:.5f}")
 
     def ex3(self):
         for root in self.roots_index:
