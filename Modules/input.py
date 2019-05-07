@@ -1,7 +1,7 @@
 """
 関数
 - input_from_stdin()
-- input_from_stdin()
+- input_from_file()
 """
 
 import segments as sg
