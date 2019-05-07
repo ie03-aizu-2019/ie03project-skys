@@ -36,46 +36,11 @@ class Manager:
         self.roots_index = roots
 
     def find_all_intersections(self):
-        intersections = []
         segments = list(self.segments.values())
-        for i in range(self.M):
-            for j in range(i, self.M):
-                tmp = ex1.find_intersection(segments[i], segments[j])
-                if tmp[0]:  # 交点あり
-                    # Segmentに接点情報を追加
-                    # segments[i].set_contacted(tmp[1])
-                    # segments[j].set_contacted(tmp[1])
-                    # tmp[1].set_contacted(segments)
-                    if len(intersections) == 0:
-                        intersections.append(tmp[1])
-                    else:
-                        for k in range(len(intersections)):
-                            if intersections[k].x > tmp[1].x:
-                                # 追加
-                                intersections.insert(k, tmp[1])
-                                break
-                            elif intersections[k].x == tmp[1].x:
-                                # y座標を比較する
-                                if intersections[k].y > tmp[1].y:
-                                    intersections.insert(k, tmp[1])
-                                    break
-                                else:
-                                    if k == len(intersections)-1:
-                                        intersections.append(tmp[1])
-                                        break
-                                    else:
-                                        continue
-                            elif k == len(intersections)-1:
-                                # 末尾に追加
-                                intersections.append(tmp[1])
-                                break
-                            else:
-                                # 次のループへ
-                                continue
+        intersections = ex2.find_all_intersections(self.M, segments)
         intersections = list2dict(intersections, intersections=True)
         for index in list(intersections):
             self.points[index] = intersections[index]
-        return intersections
 
     def search_root(self, start, fin):
         # start, finはポイントクラスオブジェクト
