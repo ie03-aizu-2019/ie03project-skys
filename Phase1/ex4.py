@@ -5,6 +5,8 @@
 また, 小課題1-4に対応する出力メソッドをManagerに用意する
 """
 
+import sys
+sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
 import ex2
 import ex3
@@ -29,26 +31,55 @@ class Manager4(ex3.Manager):
             print(f"{p.x:.5f} {p.y:.5f}")
 
     def ex3(self):
+        self.input(file=True)
         for root in self.roots_index:
             # root = ["開始", "終了", "順位"]
-            self.search_root(self.points[root[0]], self.points[root[1]])
-            # self.rootsに探索結果が格納される
-            res = self.roots[root[0]][root[1]]
-            # 順位(入力) - 1 = 順位に対応する経路の添字
-            res = res[int(root[2])-1]
-            # res = [経由点リスト, 距離]
-            print(res[1])
+            success_flag = True
+            try:
+                self.search_root(self.points[root[0]], self.points[root[1]])
+            except Exception:
+                # KeyError
+                success_flag = False
+            if success_flag:
+                res = self.roots[root[0]][root[1]]
+                # 順位(入力) - 1 = 順位に対応する経路の添字
+                res = res[int(root[2])-1]
+                # res = [経由点リスト, 距離]
+                if res is None:  # 道無し
+                    print("NA")
+                else:
+                    print(res.distance)
+            else:
+                print("NA")
 
     def ex4(self):
+        self.input(file=True)
         for root in self.roots_index:
             # root = ["開始", "終了", "順位"]
-            self.search_root(self.points[root[0]], self.points[root[1]])
-            # self.rootsに探索結果が格納される
-            res = self.roots[root[0]][root[1]]
-            # 順位(入力) - 1 = 順位に対応する経路の添字
-            res = res[int(root[2])-1]
-            # res = [経由点リスト, 距離]
-            print(res[1])
-            for point in res[0]:  # 経由点を出力
-                print(point.index, end=" ")
-            print()
+            success_flag = True
+            try:
+                self.search_root(self.points[root[0]], self.points[root[1]])
+            except Exception:
+                # KeyError
+                success_flag = False
+            if success_flag:
+                res = self.roots[root[0]][root[1]]
+                # 順位(入力) - 1 = 順位に対応する経路の添字
+                res = res[int(root[2])-1]
+                # res = [経由点リスト, 距離]
+                if res is None:  # 道無し
+                    print("NA")
+                else:
+                    print(res.distance)
+                    for point in res.points:
+                        print(point.index, end=" ")
+                    print()
+            else:
+                print("NA")
+
+
+if __name__ == "__main__":
+    M = Manager4()
+    # M.input()
+    M.input(file=True)
+    M.ex4()

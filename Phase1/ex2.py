@@ -1,6 +1,6 @@
-# # コメントアウトしといて
-# import sys
-# sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
+# コメントアウトしといて
+import sys
+sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
 
 """
@@ -34,6 +34,7 @@ def input_from_file(path="/Users/kaito/Desktop/今期/synthesis/assignment/Phase
         points = []
         segments = []
         roots = []
+
         for i in range(1, N+1):
             points.append(
                 ex1.point([int(x)
@@ -45,7 +46,7 @@ def input_from_file(path="/Users/kaito/Desktop/今期/synthesis/assignment/Phase
                 points[tmp2[0]-1],
                 points[tmp2[1]-1]
             ]))
-        for k in range(N+M+1, N+M+Q+1):
+        for k in range(N+M+1, N+M+P+1):
             # 詳しい使い方が不明なのでとりあえずpointsに追加だけする
             adds = [int(x) for x in tmp[k].replace("\n", "").split(" ")]
             points.append(ex1.point(adds))
@@ -61,7 +62,6 @@ def find_all_intersections(M, segments):
         for j in range(i, M):
             tmp = ex1.find_intersection(segments[i], segments[j])
             if tmp[0]:  # 交点あり
-                # print(f"check A, {tmp[1].to_str()}")
                 if len(intersections) == 0:
                     intersections.append(tmp[1])
                 else:
