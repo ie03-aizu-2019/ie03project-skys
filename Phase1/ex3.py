@@ -17,6 +17,7 @@ class Manager:
     """
 
     def __init__(self):
+        # インスタンス生成と同時に入力待ち状態になる
         self.input()
 
     def input(self, file=False):
@@ -33,10 +34,18 @@ class Manager:
         self.segments = list2dict(segments)
 
         self.find_all_intersection()
-
-        # root についてはあとで追記する
+        self.roots_index = roots
 
     def output(self):
+        for root in self.roots_index:
+            # root = ["開始", "終了", "順位"]
+            self.search_root(self.points[root[0]], self.points[root[1]])
+            # self.rootsに探索結果が格納される
+            res = self.roots[root[0]][root[1]]
+            # 順位(入力) - 1 = 順位に対応する経路の添字
+            res = res[int(root[2])-1]
+            # res = [経由点リスト, 距離]
+            print(res[1])
 
 
     def find_all_intersections(self):
@@ -76,32 +85,35 @@ class Manager:
                             else:
                                 # 次のループへ
                                 continue
-        self.intersections = intersections
-        list2dict(self.intersections, intersections=True)
+        intersections = list2dict(intersections, intersections=True)
+        for index in list(intersections):
+            self.points[index] = intersections[index]
 
     def search_root(self, start, fin):
         # start, finはポイントクラスオブジェクト
+        # 再帰的に全てのルートと距離を取得
         roots = self.searching(start, fin)
-        mins = []
-        mins.append(roots[0])
-        for i in range(1, len(roots)):
-            if mins[0][1] == roots[i][1]:
-                # 最短ルート追加
-                mins.append(roots[i][1])
-            elif mins[0][1] > roots[i][1]:
-                 # 最短ルート更新
-                 mins = []
-                 mins.append(roots[i])
-
-        if len(mins) == 0:
+        sorted = []
+        if len(roots) == 0:  # ルートなし
             self.roots[start.index][fin.index] = [
                 ["NA", "NA"]
             ]
-        else:
-            self.roots[start.index][fin.index] = [
-                [mins[0]]
-                # mins[0] = [経由点リスト, 距離]
-            ]
+        else:  # ルートあり → ルートを近い順にソート
+            sorted.append(roots[0])
+            for i in range(1, len(roots)):
+                for j in range(len(sorted)):
+                    if sorted[j][1] >= roots[i][1]:
+                        # ルートの追加
+                        sorted.insert(j, roots[i])
+                        break
+                    else:
+                        if j == len(sorted)-1:  # 最長ルート
+                            sorted.append(roots[i])
+            self.roots[start.index][fin.index] = sorted
+            # sorted = [
+            #     [[point1, point2, ..., pointn], distance],
+            #     [[point1, point2, ..., pointn], distance],
+            # ]
 
     def searching(self, start, fin, vias=[], roots=[]):
         # start, finはポイントクラスオブジェクト
@@ -135,7 +147,7 @@ class Manager:
             for t in start.contacted:
                 result = self.search_root(t, fin, vias=vias, roots=roots)
 
-                # rootsのmerge
+                # rootsの結合
                 for r_info in result:
                     flag = False
                     for r_info2 in tmp:
