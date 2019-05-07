@@ -1,3 +1,9 @@
+"""
+関数
+- input_from_stdin()
+- input_from_stdin()
+"""
+
 import segments as sg
 
 default_path = "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt"
