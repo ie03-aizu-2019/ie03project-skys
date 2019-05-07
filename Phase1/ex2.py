@@ -33,6 +33,7 @@ def input_from_file(path="/Users/kaito/Desktop/今期/synthesis/assignment/Phase
         N, M, P, Q = [int(x) for x in tmp[0].replace("\n", "").split(" ")]
         points = []
         segments = []
+        roots = []
         for i in range(1, N+1):
             points.append(
                 ex1.point([int(x)
@@ -44,8 +45,14 @@ def input_from_file(path="/Users/kaito/Desktop/今期/synthesis/assignment/Phase
                 points[tmp2[0]-1],
                 points[tmp2[1]-1]
             ]))
+        for k in range(N+M+1, N+M+Q+1):
+            # 詳しい使い方が不明なのでとりあえずpointsに追加だけする
+            adds = [int(x) for x in tmp[k].replace("\n", "").split(" ")]
+            points.append(ex1.point(adds))
+        for l in range(N+M+P+1, N+M+P+Q+1):
+            roots.append([x for x in tmp[l].replace("\n", "").split(" ")])
 
-    return N, M, P, Q, points, segments
+    return N, M, P, Q, points, segments, roots
 
 
 def find_all_intersections(M, segments):
