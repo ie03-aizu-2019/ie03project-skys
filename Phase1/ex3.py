@@ -17,8 +17,7 @@ class Manager:
     """
 
     def __init__(self):
-        # インスタンス生成と同時に入力待ち状態になる
-        self.input()
+        pass
 
     def input(self, file=False):
         M, M, P, Q, points, segments, roots = False
@@ -35,18 +34,6 @@ class Manager:
 
         self.find_all_intersection()
         self.roots_index = roots
-
-    def output(self):
-        for root in self.roots_index:
-            # root = ["開始", "終了", "順位"]
-            self.search_root(self.points[root[0]], self.points[root[1]])
-            # self.rootsに探索結果が格納される
-            res = self.roots[root[0]][root[1]]
-            # 順位(入力) - 1 = 順位に対応する経路の添字
-            res = res[int(root[2])-1]
-            # res = [経由点リスト, 距離]
-            print(res[1])
-
 
     def find_all_intersections(self):
         intersections = []
@@ -88,6 +75,7 @@ class Manager:
         intersections = list2dict(intersections, intersections=True)
         for index in list(intersections):
             self.points[index] = intersections[index]
+        return intersections
 
     def search_root(self, start, fin):
         # start, finはポイントクラスオブジェクト
@@ -172,3 +160,17 @@ def list2dict(l, intersections=False):
             # dの要素はPointまたはSegment
             d[f"{i+1}"].set_index(f"{i+1}")
     return d
+
+
+if __name__ == "__main__":
+    M = Manager()
+    M.input()
+    for root in M.roots_index:
+        # root = ["開始", "終了", "順位"]
+        M.search_root(M.points[root[0]], M.points[root[1]])
+        # M.rootsに探索結果が格納される
+        res = M.roots[root[0]][root[1]]
+        # 順位(入力) - 1 = 順位に対応する経路の添字
+        res = res[int(root[2])-1]
+        # res = [経由点リスト, 距離]
+        print(res[1])
