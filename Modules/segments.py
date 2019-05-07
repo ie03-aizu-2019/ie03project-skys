@@ -125,10 +125,6 @@ def find_all_intersections(M, segments):
                                 if k == len(intersections)-1:
                                     intersections.append(tmp[1])
                                     break
-                                else:
-                                    continue
-                        elif k == len(intersections)-1:
-                            # 末尾に追加
                             intersections.append(tmp[1])
                             break
                         else:
