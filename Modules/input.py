@@ -3,7 +3,7 @@ import segments as sg
 default_path = "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt"
 
 
-def input_info():
+def input_from_stdin():
     points = []
     segments = []
 
