@@ -1,8 +1,8 @@
 # コメントアウトしといて
-import ex1
-import ex2
 import sys
 sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
+import ex1
+import ex2
 
 
 class Root:
