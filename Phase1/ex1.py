@@ -14,6 +14,7 @@ class segment:  # 線分クラス
         self.contacted = [self.P, self.Q]
         self.P.set_contacted(self)
         self.Q.set_contacted(self)
+        self.set_ab()
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
         info = f"P = ({self.P.x}, {self.P.y})\n"
@@ -33,6 +34,13 @@ class segment:  # 線分クラス
 
     def isPoint(self):
         return False
+
+    def set_ab(self):
+        """
+        傾きaと切片bをsetする
+        """
+        self.a = (self.P.y - self.Q.y) / (self.P.x - self.Q.x)
+        self.b = self.P.y - self.a * self.P.x
 
 
 class point:  # 座標クラス
