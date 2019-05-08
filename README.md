@@ -6,7 +6,7 @@
 - [演習イントロダクション](http://web-int.u-aizu.ac.jp/course/ie-soft1/ISE2019_intro.pdf)
 - [リポジトリ](https://github.com/ie03-aizu-2019/ie03project-skys)
 - [フェーズ1](http://web-int.u-aizu.ac.jp/course/ie-soft1/ISE2019_phase1.pdf)
-- ~~[フェーズ2](http://web-int.u-aizu.ac.jp/course/ie-soft1/ISE2019_phase2.pdf)~~
+- [フェーズ2](http://web-int.u-aizu.ac.jp/course/ie-soft1/ISE2019_phase2.pdf)
 - ~~[フェーズ3](http://web-int.u-aizu.ac.jp/course/ie-soft1/ISE2019_phase3.pdf)~~
 
 ## メンバー一覧
@@ -30,7 +30,7 @@
 
 ### フェーズ2
 
-- ~~[週刊レポート4](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report04.md)~~
+- [週刊レポート4](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report04.md)
 - ~~[週刊レポート5](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report05.md)~~
 - ~~[週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)~~
 - ~~[週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)~~
