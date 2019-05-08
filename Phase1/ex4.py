@@ -8,27 +8,23 @@
 import sys
 sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
-import ex2
 import ex3
 
 
 class Manager4(ex3.Manager):
     def ex1(self):
-        ans = ex1.find_intersection(self.segments[0], self.segments[1])
-        # 交点 = 端点を除去しつつ出力する
+        ans = ex1.find_intersection(self.segments['1'], self.segments['2'])
         if not ans[0]:  # 交点なし
-            print("NA")
-        elif ans[0].type == "endpoint":
-            # 交点ありだが端点である
             print("NA")
         else:  # 交点あり
             print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
 
     def ex2(self):
-        intersections = ex2.find_all_intersections()
+        self.find_all_intersections()
 
-        for p in intersections:
-            print(f"{p.x:.5f} {p.y:.5f}")
+        for p in self.points:
+            if "C" in self.points[p].index:
+                print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
 
     def ex3(self):
         self.input(file=True)
@@ -83,3 +79,7 @@ if __name__ == "__main__":
     # M.input()
     M.input(file=True)
     M.ex4()
+
+M = Manager4()
+M.input(file=True)
+M.ex4()
