@@ -1,5 +1,5 @@
 # コメントアウトしといて
-import sys,math
+import sys, math
 sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
 import ex2
