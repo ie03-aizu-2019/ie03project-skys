@@ -11,19 +11,36 @@ class segment:  # 線分クラス
     def __init__(self, s):  # 線分はpointオブジェクトのリストで渡す
         self.P = s[0]
         self.Q = s[1]
-        self.contacted = []
+        self.contacted = [self.P, self.Q]
+        self.P.set_contacted(self)
+        self.Q.set_contacted(self)
+        self.set_ab()
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
-        info = f"P = ({self.P.x}, {self.Q.y})\n"
+        info = f"P = ({self.P.x}, {self.P.y})\n"
         info = info + f"Q = ({self.Q.x}, {self.Q.y})"
         return info
 
     def set_contacted(self, point):
-        # 接点のリストを追加(Managerクラスから実行を想定)
+        # 接点のリストを追加
+        for i in range(len(self.contacted)):
+            if self.contacted[i] is point:
+                # 既に格納済み
+                return False
         self.contacted.append(point)
 
     def set_index(self, index):
         self.index = index
+
+    def isPoint(self):
+        return False
+
+    def set_ab(self):
+        """
+        傾きaと切片bをsetする
+        """
+        self.a = (self.P.y - self.Q.y) / (self.P.x - self.Q.x)
+        self.b = self.P.y - self.a * self.P.x
 
 
 class point:  # 座標クラス
@@ -43,11 +60,18 @@ class point:  # 座標クラス
 
     def set_contacted(self, segment):
         # 接線リスト
+        for i in range(len(self.contacted)):
+            if self.contacted[i] is segment:
+                # 既に格納済み
+                return False
         self.contacted.append(segment)
 
     def set_index(self, index):
         # Managerクラスより実行
         self.index = index
+
+    def isPoint(self):
+        return True
 
 
 def find_intersection(s1, s2):
@@ -86,9 +110,26 @@ def find_intersection(s1, s2):
             pass
 
     # 端点の除去
-    if returnset[0]:
-        if returnset[1].equal(s1.P) or returnset[1].equal(s1.Q) or returnset[1].equal(s2.P) or returnset[1].equal(s2.Q):
-            # 交点が端点である
+    if returnset[0]:  # 交点あり(端点かは不明)
+        is_intersection = True
+        if returnset[1].equal(s1.P):
+            is_intersection = False
+            s1.P.set_contacted(s2)
+        if returnset[1].equal(s1.Q):
+            is_intersection = False
+            s1.Q.set_contacted(s2)
+        if returnset[1].equal(s2.P):
+            is_intersection = False
+            s2.P.set_contacted(s1)
+        if returnset[1].equal(s2.Q):
+            is_intersection = False
+            s2.Q.set_contacted(s1)
+        if is_intersection:  # 交点あり(端点ではない)
+            returnset[1].set_contacted(s1)
+            returnset[1].set_contacted(s2)
+            s1.set_contacted(returnset[1])
+            s2.set_contacted(returnset[1])
+        else:
             returnset = [False]
 
     # [True, 交点]
@@ -131,6 +172,7 @@ def input_info():
             ["C1", "3", 1]
         ]
         """
+<<<<<<< HEAD
     roots = []
     for i in range(Q):
         tmp = input("")
@@ -138,6 +180,13 @@ def input_info():
         tmp[2] = int(tmp[2])
         # tmp = ["1", "4", 1]
         roots.append(tmp)
+=======
+    for i in range(Q):
+        tmp = input("")
+        tmp = tmp.split(" ")
+        roots[i] = tmp
+        roots[i][2] = int(tmp[i][2])
+>>>>>>> origin/master
 
     return N, M, P, Q, points, segment, roots
 
