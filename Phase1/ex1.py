@@ -124,30 +124,34 @@ def input_info():
         segments.append(
             segment([points[tmp[0]-1], points[tmp[1]-1]]))
         # segments.append(segment(koshikawa))
-        
+
         """
         roots [
             ["1", "4", 1],
             ["C1", "3", 1]
         ]
         """
-    for i in range(Q):    
-        tmp = input("")    
+    roots = []
+    for i in range(Q):
+        tmp = input("")
         tmp = tmp.split(" ")
-        roots[i] = tmp 
-        roots[i][2] = int(tmp[i][2])
-    
+        tmp[2] = int(tmp[2])
+        # tmp = ["1", "4", 1]
+        roots.append(tmp)
+
     return N, M, P, Q, points, segment, roots
 
 
 
 
 if __name__ == "__main__":
-    N, M, P, Q, points, segments = input_info()
+    N, M, P, Q, points, segments, roots = input_info()
 
-    ans = find_intersection(segments[0], segments[1])
+    print(roots)
 
-    if ans[0]:  # 交点あり
-        print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
-    else:
-        print("NA")
+    # ans = find_intersection(segments[0], segments[1])
+    #
+    # if ans[0]:  # 交点あり
+    #     print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
+    # else:
+    #     print("NA")

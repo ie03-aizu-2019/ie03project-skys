@@ -82,3 +82,16 @@ def list2dict(l):
         # dの要素はPointまたはSegment
         d[i+1].set_index(i+1)
     return d
+#越川が追加
+def distance(p1,p2):
+
+    d = sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
+
+    return d
+#ここまで
+
+if __name__ == "__main__":
+    p1 = ex1.point([0, 0])
+    p2 = ex1.point([1, 1])
+    d = distance(p1, p2)
+    print(d)
