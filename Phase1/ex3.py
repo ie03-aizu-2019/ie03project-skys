@@ -1,5 +1,5 @@
 # コメントアウトしといて
-import sys
+import sys,math
 sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
 import ex2
@@ -189,8 +189,8 @@ def list2dict(l, intersections=False):
 
 
 def distance(in1, in2):
-    # 仮
-    return 10
+    # 越川編集
+    return math.sqrt((in2.x - in1.x)*(in2.x - in1.x) + (in2.y - in1.y)*(in2.y - in1.y))
 
 
 if __name__ == "__main__":
