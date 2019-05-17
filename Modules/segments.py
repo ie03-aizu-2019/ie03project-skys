@@ -7,6 +7,7 @@
 関数
 - find_intersection(): 2線分の交点を求める, [交点の有無, (有れば)交点]
 - find_all_intersections(): 与線分の全ての交点を返す
+- calc_shortest_connection(s, p): セグメントsと点pを接続するときの最短の接続経路を求める. return [交点, 距離]
 - distance()
 """
 
