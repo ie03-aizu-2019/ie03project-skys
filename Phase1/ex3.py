@@ -1,5 +1,6 @@
 # コメントアウトしといて
-import sys, math
+import sys
+import math
 sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex1
 import ex2
@@ -52,12 +53,6 @@ class Root:
 
 
 class Manager:
-    """
-    roots[始点インデックス] = {
-        終点インデックス: [経由点情報, 距離],
-    }
-    """
-
     def __init__(self):
         pass
         self.points = {}  # 資料に合わせてindex=1から振りたいのでディクショナリ
