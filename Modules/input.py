@@ -6,10 +6,12 @@
 
 import segments as sg
 
-default_path = "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt"
 
-
-# 完成次第, input_from_stdin() を 移行する
+paths = [
+    "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt",
+    "越川のパス"
+]
+default_path = paths[0]
 
 
 def input_from_file(path=default_path):
@@ -19,10 +21,11 @@ def input_from_file(path=default_path):
         points = []
         segments = []
         roots = []
+
         for i in range(1, N+1):
             points.append(
                 sg.point([int(x)
-                                for x in tmp[i].replace("\n", "").split(" ")])
+                           for x in tmp[i].replace("\n", "").split(" ")])
                 )
         for j in range(N+1, N+M+1):
             tmp2 = [int(x) for x in tmp[j].replace("\n", "").split(" ")]
