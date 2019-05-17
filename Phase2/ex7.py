@@ -26,23 +26,21 @@ def calc_shortest_connection(s, p):
     b = p.y - a * p.x
 
     x = (b - s.b) / (s.a - a)
-    y = s.a * x + s.b
+    y = s.f(x)
 
-    dis1 = ex3.distance(s.P, p)
-    dis2 = ex3.distance(s.Q, p)
-    dis3 = ex3.distance(s.P, s.Q)
+    if not y[1]:  # 垂直に交わる
+        intersection = [ex1.point([x, y])]
+        intersection.append(ex3.distance(intersection[0], p))
+    else:  # 垂直に交わらない
+        p = ex1.point([x, y[0]])
 
-    intersection = False
+        dis1 = ex3.distance(s.P, p)
+        dis2 = ex3.distance(s.Q, p)
 
-    if (dis1 + dis2) > dis3:
-        # 垂直には交われない → 近い側の点が交点となる
         if dis1 < dis2:  # Pと繋ぐのが最短
             intersection = [ex1.point([s.P.x, s.P.y]), dis1]
         else:
             intersection = [ex1.point([s.Q.x, s.Q.y]), dis2]
-    else:  # 垂直に交わるので, 求めたx, yが交点
-        intersection = [ex1.point([x, y])]
-        intersection.append(ex3.distance(intersection[0], p))
 
     return intersection  # [交点, 距離]
 
