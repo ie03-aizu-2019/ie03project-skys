@@ -1,7 +1,7 @@
 """
 関数
 - input_from_stdin()
-- input_from_file()
+- input_from_file(path)
 """
 
 import segments as sg
@@ -12,6 +12,11 @@ paths = [
     "越川のパス"
 ]
 default_path = paths[0]
+
+
+def input_from_stdin():
+    # 修正したinput_infoを移行する
+    pass
 
 
 def input_from_file(path=default_path):
