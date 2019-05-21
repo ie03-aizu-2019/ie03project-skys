@@ -61,7 +61,7 @@ class Root:
         info += "\nSegments: "
         for segment in self.segments:
             info += f"{segment.index} "
-        info += f"\ndistance: {self.distance}\n"
+        info += f"\ndistance: {self.distance}"
         return info
 
 
@@ -82,6 +82,7 @@ class segment:  # 線分クラス
 
     def set_contacted(self, point):
         # 接点のリストを追加
+        # Point.set_contacted()からのみ呼び出す
         for i in range(len(self.contacted)):
             if self.contacted[i] is point:
                 # 既に格納済み
@@ -158,7 +159,12 @@ class point:  # 座標クラス
 
     def set_contacted(self, segment):
         # 接線リスト
+        for i in range(len(self.contacted)):
+            if self.contacted[i] is point:
+                # 既に格納済み
+                return False
         self.contacted.append(segment)
+        segment.set_contacted(self)
 
     def set_index(self, index):
         # Managerクラスより実行
@@ -209,20 +215,19 @@ def find_intersection(s1, s2):
         if returnset[1].equal(s1.P):
             is_intersection = False
             s1.P.set_contacted(s2)
-        if returnset[1].equal(s1.Q):
+        elif returnset[1].equal(s1.Q):
             is_intersection = False
             s1.Q.set_contacted(s2)
-        if returnset[1].equal(s2.P):
+        elif returnset[1].equal(s2.P):
             is_intersection = False
             s2.P.set_contacted(s1)
-        if returnset[1].equal(s2.Q):
+        elif returnset[1].equal(s2.Q):
             is_intersection = False
             s2.Q.set_contacted(s1)
+
         if is_intersection:  # 交点あり(端点ではない)
             returnset[1].set_contacted(s1)
             returnset[1].set_contacted(s2)
-            s1.set_contacted(returnset[1])
-            s2.set_contacted(returnset[1])
         else:
             returnset = [False]
 
