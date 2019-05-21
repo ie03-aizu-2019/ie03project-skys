@@ -35,7 +35,7 @@ class Manager:
                 self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_file()
             else:  # パスの入力あり
                 self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_file(
-                path=path)
+                    path=path)
         else:
             # キーボードから入力を得る
             self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_stdin()
@@ -59,9 +59,12 @@ class Manager:
 
         print("-- Segments --")
         for key in list(self.segments):
-            print(f"{key}: {self.segments[key].P.index} -> {self.segments[key].Q.index}")
-            if detail:
-                print(self.segments[key].to_str())
+            P = self.segments[key].P
+            Q = self.segments[key].P
+            if "C" in P.index:
+                print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
+            else:
+                print(f"{key}: P{P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
 
         print("-- Roots --")
         for index in self.roots_index:
