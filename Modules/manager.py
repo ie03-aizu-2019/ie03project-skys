@@ -89,11 +89,8 @@ class Manager:
         print("-- Segments --")
         for key in list(self.segments):
             P = self.segments[key].P
-            Q = self.segments[key].P
-            if "C" in P.index:
-                print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
-            else:
-                print(f"{key}: P{P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
+            Q = self.segments[key].Q
+            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
 
         print("-- Roots --")
         for index in self.roots_index:
@@ -131,6 +128,7 @@ class Manager:
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
         roots = self.searching(start, fin, vias=[], roots=[])
+
         sorted = []
         if len(roots) == 0:  # ルートなし
             self.roots[start.index] = {
@@ -176,8 +174,6 @@ class Manager:
         return 経由点
         """
 
-        # print(f"searching() is called: {start.index} -> {fin.index}")
-
         success = False
         end = False
 
@@ -186,7 +182,6 @@ class Manager:
                 end = True
                 break
 
-        # if start.isPoint():
         vias.append(start)
 
         if start is fin:
@@ -198,6 +193,11 @@ class Manager:
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
+            # if start.index == "4" and not(start.isPoint()):
+            #     print("[DB] [", end="")
+            #     for t in start.contacted:
+            #         print(t.index, end=", ")
+            #     print("]")
             for t in start.contacted:
                 self.searching(t, fin, vias=[x for x in vias], roots=roots)
 
