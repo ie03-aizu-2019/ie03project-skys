@@ -1,8 +1,9 @@
 # コメントアウトしといて
-import sys, math
-sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
-import ex1
+import sys
+import math
+# sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
 import ex2
+import ex1
 
 
 class Root:
@@ -186,21 +187,6 @@ def list2dict(l, intersections=False):
             d[f"{i+1}"] = l[i]
             d[f"{i+1}"].set_index(f"{i+1}")
     return d
-<<<<<<< HEAD
-#越川が追加
-def distance(p1,p2):
-
-    d = sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
-
-    return d
-#ここまで
-
-if __name__ == "__main__":
-    p1 = ex1.point([0, 0])
-    p2 = ex1.point([1, 1])
-    d = distance(p1, p2)
-    print(d)
-=======
 
 
 def distance(in1, in2):
@@ -210,7 +196,7 @@ def distance(in1, in2):
 
 if __name__ == "__main__":
     M = Manager()
-    M.input(file=True)
+    M.input(file=True, path="/Users/koshikawasora/Desktop/synthesis/ie03project-skys/Phase1/input.txt")
     for root in M.roots_index:
         # root = ["開始", "終了", "順位"]
         success_flag = True
@@ -227,7 +213,6 @@ if __name__ == "__main__":
             if res is None:  # 道無し
                 print("NA")
             else:
-                print(res.distance)
+                print(f"{res.distance:.5f}")
         else:
             print("NA")
->>>>>>> origin/master

@@ -6,9 +6,11 @@
 """
 
 import sys
-sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
-import ex1
+# sys.path.append("/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/")
+sys.path.append(
+    "/Users/koshikawasora/Desktop/synthesis/ie03project-skys/Phase1")
 import ex3
+import ex1
 
 
 class Manager4(ex3.Manager):
@@ -27,7 +29,6 @@ class Manager4(ex3.Manager):
                 print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
 
     def ex3(self):
-        self.input(file=True)
         for root in self.roots_index:
             # root = ["開始", "終了", "順位"]
             success_flag = True
@@ -49,7 +50,6 @@ class Manager4(ex3.Manager):
                 print("NA")
 
     def ex4(self):
-        self.input(file=True)
         for root in self.roots_index:
             # root = ["開始", "終了", "順位"]
             success_flag = True
@@ -66,7 +66,7 @@ class Manager4(ex3.Manager):
                 if res is None:  # 道無し
                     print("NA")
                 else:
-                    print(res.distance)
+                    print(f"{res.distance:.5f}")
                     for point in res.points:
                         print(point.index, end=" ")
                     print()
@@ -74,12 +74,12 @@ class Manager4(ex3.Manager):
                 print("NA")
 
 
-if __name__ == "__main__":
-    M = Manager4()
-    # M.input()
-    M.input(file=True)
-    M.ex4()
+# if __name__ == "__main__":
+#     M = Manager4()
+#     # M.input()
+#     M.input(file=True)
+#     M.ex4()
 
 M = Manager4()
-M.input(file=True)
+M.input(file=True, path="/Users/koshikawasora/Desktop/synthesis/ie03project-skys/Phase1/input.txt")
 M.ex4()

@@ -172,7 +172,7 @@ def input_info():
             ["C1", "3", 1]
         ]
         """
-<<<<<<< HEAD
+
     roots = []
     for i in range(Q):
         tmp = input("")
@@ -180,13 +180,12 @@ def input_info():
         tmp[2] = int(tmp[2])
         # tmp = ["1", "4", 1]
         roots.append(tmp)
-=======
+
     for i in range(Q):
         tmp = input("")
         tmp = tmp.split(" ")
         roots[i] = tmp
         roots[i][2] = int(tmp[i][2])
->>>>>>> origin/master
 
     return N, M, P, Q, points, segment, roots
 
