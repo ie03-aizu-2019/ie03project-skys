@@ -5,13 +5,7 @@
 """
 
 import segments as sg
-
-
-paths = [
-    "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt",
-    "越川のパス"
-]
-default_path = paths[0]
+import path
 
 
 def input_from_stdin():
@@ -19,7 +13,7 @@ def input_from_stdin():
     pass
 
 
-def input_from_file(path=default_path):
+def input_from_file(path=path.input_path):
     with open(path, "r") as f:
         tmp = f.readlines()
         N, M, P, Q = [int(x) for x in tmp[0].replace("\n", "").split(" ")]

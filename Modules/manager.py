@@ -44,6 +44,35 @@ class Manager:
         self.find_all_intersections()
         self.roots_index = roots_index
 
+    def run(self, ex):
+        if type(ex) is not int:
+            try:
+                ex = int(ex)
+            except Exception as e:
+                print(e)
+                return False
+
+        if ex == 1:
+            self.ex1()
+        elif ex == 2:
+            self.ex2()
+        elif ex == 3:
+            self.ex3()
+        elif ex == 4:
+            self.ex4()
+        # elif ex == 5:
+        #     self.ex5()
+        # elif ex == 6:
+        #     self.ex6()
+        # elif ex == 7:
+        #     self.ex7()
+        # elif ex == 8:
+            self.ex8()
+        else:
+            return False
+
+        return True
+
     def print_info(self, detail=False):
         len = 1
         if detail:

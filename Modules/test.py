@@ -64,22 +64,10 @@ def test(ex, file=True):
             print("\n# 詳細データ")
             M.print_info(detail=True)
             print(f"\n# 小課題{ex}の実行")
-            if ex == 1:
-                M.ex1()
-            elif ex == 2:
-                M.ex2()
-            elif ex == 3:
-                M.ex3()
-            elif ex == 4:
-                M.ex4()
-            # elif ex == 5:
-            #     M.ex5()
-            # elif ex == 6:
-            #     M.ex6()
-            # elif ex == 7:
-            #     M.ex7()
-            # elif ex == 8:
-            #     M.ex8()
+            M.run(ex)
+            isPlot = input("プロット図を出力しますか?(y/n)")
+            if isPlot == "y":
+                M.plot()
             return True
         else:
             print(f"該当するテストデータが存在しません.")

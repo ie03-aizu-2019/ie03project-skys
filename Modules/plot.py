@@ -8,16 +8,10 @@
 # import os
 import numpy as np
 import matplotlib.pyplot as plt
-
-paths = [
-    "/Users/kaito/Desktop/今期/synthesis/assignment/static/",
-    "越川のパス"
-]
-
-path = paths[0]
+import path
 
 
-def plot_all(points={}, segments={}, delta=0.01, save=False, path=path):
+def plot_all(points={}, segments={}, delta=0.01, save=False, path=path.figure_path):
     # segments -> intersections -> point の順にプロットする
     s_flag = False
     for index in segments:
