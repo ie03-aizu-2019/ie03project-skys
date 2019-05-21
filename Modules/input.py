@@ -10,7 +10,56 @@ import path
 
 def input_from_stdin():
     # 修正したinput_infoを移行する
-    pass
+    points = []
+    segments = []
+
+    tmp = input("")  # "4 2 0 0"
+    tmp = tmp.split(" ")  # ["4", "2", "0", "0"]
+    for i in range(len(tmp)):
+        tmp[i] = int(tmp[i])
+    # [4, 2, 0, 0]
+    N, M, P, Q = tmp
+
+    for i in range(N):  # for N回まわしてなかでinput
+        tmp = input("")
+        tmp = tmp.split(" ")  # "0 0" -> ["0", "0"]
+        tmp[0] = int(tmp[0])
+        tmp[1] = int(tmp[1])
+        # point([0, 0])
+        points.append(sg.point(tmp))  # points.append(point(koshikawa))
+
+    for i in range(M):  # for m
+        tmp = input()
+        tmp = tmp.split(" ")
+        # "0 0" ->  koshikawa = [0, 0]
+        tmp[0] = int(tmp[0])
+        tmp[1] = int(tmp[1])
+        segments.append(
+            sg.segment([points[tmp[0]-1], points[tmp[1]-1]]))
+        # segments.append(segment(koshikawa))
+
+        """
+        roots [
+            ["1", "4", 1],
+            ["C1", "3", 1]
+        ]
+        """
+
+    roots = []
+    for i in range(Q):
+        tmp = input("")
+        tmp = tmp.split(" ")
+        tmp[2] = int(tmp[2])
+        # tmp = ["1", "4", 1]
+        roots.append(tmp)
+
+    for i in range(Q):
+        tmp = input("")
+        tmp = tmp.split(" ")
+        roots[i] = tmp
+        roots[i][2] = int(tmp[i][2])
+
+    return N, M, P, Q, points, segments, roots
 
 
 def input_from_file(path=path.input_path):

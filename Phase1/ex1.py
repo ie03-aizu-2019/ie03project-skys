@@ -227,7 +227,7 @@ def input_info():
         roots[i] = tmp
         roots[i][2] = int(tmp[i][2])
 
-    return N, M, P, Q, points, segment, roots
+    return N, M, P, Q, points, segments, roots
 
 
 
