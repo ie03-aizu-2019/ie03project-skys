@@ -13,12 +13,12 @@ import manager
 import os
 import sys
 import random
+import path
 
 M = manager.Manager()
 
 args = sys.argv
 length = len(args)
-root_path = "../static/testdata/"
 
 # ⇓進展次第変更
 ex_info = {
@@ -27,7 +27,7 @@ ex_info = {
     2: [True, []],
     3: [True, []],
     4: [True, []],
-    5: [False, []],
+    5: [True, ["5-1"]],
     6: [False, []],
     7: [False, []],
     8: [False, []],
@@ -52,13 +52,14 @@ def test(ex, file=True):
         return False
     else:
         index = random.randint(0, len(ex_info[ex][1])-1)
-        path = f"{root_path}testdata{ex_info[ex][1][index]}.txt"
-        if os.path.exists(path):
+        datapath = f"{path.testdata_path}/testdata{ex_info[ex][1][index]}.txt"
+        print(datapath)
+        if os.path.exists(datapath):
             # 正常実行
             print(f"# 小課題{ex}のテスト実行\n")
-            M.input(file=file, path=path)
+            M.input(file=file, path=datapath)
             print(f"# 今回使用したテストデータ: testdata{ex_info[ex][1][index]}.txt⇓")
-            with open(path, "r") as f:
+            with open(datapath, "r") as f:
                 for line in f.readlines():
                     print(line, end="")
             print("\n# 詳細データ")

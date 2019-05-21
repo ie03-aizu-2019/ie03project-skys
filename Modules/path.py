@@ -4,9 +4,9 @@ cwd = os.getcwd()
 project_path = ""
 
 for dir in cwd.split("/")[1:]:
-    project_path = f"{project_path}/{dir}"
     if dir == "Modules":
         break
+    project_path = f"{project_path}/{dir}"
 
 input_path = f"{project_path}/static/input.txt"
 figure_path = f"{project_path}/static/figure.png"

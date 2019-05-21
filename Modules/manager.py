@@ -19,7 +19,7 @@ import plot
 class Manager:
     points = {}  # index=1からN
     segments = {}  # index=1からM
-    intersections = {}  # index=C1からQ
+    intersections = {}  # index=C1からCQ
     roots_index = []  # 探索するルートの添字
     roots = {}  # 探索したルートの結果
 
@@ -60,14 +60,14 @@ class Manager:
             self.ex3()
         elif ex == 4:
             self.ex4()
-        # elif ex == 5:
-        #     self.ex5()
+        elif ex == 5:
+            self.ex5()
         # elif ex == 6:
         #     self.ex6()
         # elif ex == 7:
         #     self.ex7()
         # elif ex == 8:
-            self.ex8()
+            # self.ex8()
         else:
             return False
 
@@ -119,6 +119,14 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
+    def search_all_root(self):
+        for root in self.roots_index:
+            try:
+                self.search_root(self.points[root[0]], self.points[root[1]])
+            except Exception as e:
+                # KeyError
+                print(e)
+
     def search_root(self, start, fin):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
@@ -156,7 +164,7 @@ class Manager:
             if start.index not in self.roots.keys():
                 self.roots[start.index] = {}
             self.roots[start.index][fin.index] = [x for x in sorted]
-            # sorted = [
+            # self.roots[start.index][fin.index] = [
             #     root1,
             #     root2,
             # ]
@@ -254,6 +262,16 @@ class Manager:
                     print()
             else:
                 print("NA")
+
+    def ex5(self):
+        self.search_all_root()
+        for index in self.roots_index:
+            start = index[0]
+            fin = index[1]
+            roots = self.roots[start][fin]
+            K = int(index[2])
+            for i in range(K):
+                print(roots[i].distance)
 
 
 def list2dict(l, intersections=False):
