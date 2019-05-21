@@ -1,0 +1,32 @@
+"""
+実行用
+"""
+import sys
+import Modules.path as path
+sys.path.append(path.module_path)
+import manager
+
+M = manager.Manager()
+
+args = sys.argv
+length = len(args)
+
+sample = """# Sample(小課題2をテストデータから実行)
+$ python main.py -f 2"""
+
+if __name__ == "__main__":
+    if length == 3:  # test.py, -i/-f, n
+        if args[1] in ["-i", "-f"] and args[2].isdigit:
+            # 正常な引数 => 実行
+            file = True
+            if args[1] == "-i":
+                file = False
+            n = int(args[2])
+            M.input(file=file, path=path.input_path)
+            M.run(n)
+        else:
+            # 引数が未定義
+            print(f"[ERROR]未定義の引数です.\n{sample}")
+    else:
+        # 引数の長さが異なる
+        print(f"[ERROR]引数の数が異なります.\n{sample}")

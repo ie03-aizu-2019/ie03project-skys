@@ -1,28 +1,30 @@
 """
 関数
 - input_from_stdin()
-- input_from_file()
+- input_from_file(path)
 """
 
 import segments as sg
-
-default_path = "/Users/kaito/Desktop/今期/synthesis/assignment/Phase1/input.txt"
-
-
-# 完成次第, input_from_stdin() を 移行する
+import path
 
 
-def input_from_file(path=default_path):
+def input_from_stdin():
+    # 修正したinput_infoを移行する
+    pass
+
+
+def input_from_file(path=path.input_path):
     with open(path, "r") as f:
         tmp = f.readlines()
         N, M, P, Q = [int(x) for x in tmp[0].replace("\n", "").split(" ")]
         points = []
         segments = []
         roots = []
+
         for i in range(1, N+1):
             points.append(
                 sg.point([int(x)
-                                for x in tmp[i].replace("\n", "").split(" ")])
+                           for x in tmp[i].replace("\n", "").split(" ")])
                 )
         for j in range(N+1, N+M+1):
             tmp2 = [int(x) for x in tmp[j].replace("\n", "").split(" ")]

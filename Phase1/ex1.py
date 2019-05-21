@@ -15,6 +15,7 @@ class segment:  # 線分クラス
         self.P.set_contacted(self)
         self.Q.set_contacted(self)
         self.set_ab()
+        self.set_range()
 
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
         info = f"P = ({self.P.x}, {self.P.y})\n"
@@ -29,6 +30,33 @@ class segment:  # 線分クラス
                 return False
         self.contacted.append(point)
 
+    def set_range(self):
+        """
+        定義域と値域をsetする
+        範囲変数 = [最小, 最大]
+        """
+        if self.P.x < self.Q.x:
+            self.x_range = [self.P.x, self.Q.x]
+        else:
+            self.x_range = [self.Q.x, self.P.x]
+
+        if self.P.y < self.Q.y:
+            self.y_range = [self.P.y, self.Q.y]
+        else:
+            self.y_range = [self.Q.y, self.P.y]
+
+    def is_fill_range_x(self, x):
+        if self.x_range[0] <= x and x <= self.x_range[1]:
+            return True
+        else:
+            return False
+
+    def is_fill_range_y(self, y):
+        if self.y_range[0] <= y and y <= self.y_range[1]:
+            return True
+        else:
+            return False
+
     def set_index(self, index):
         self.index = index
 
@@ -41,6 +69,18 @@ class segment:  # 線分クラス
         """
         self.a = (self.P.y - self.Q.y) / (self.P.x - self.Q.x)
         self.b = self.P.y - self.a * self.P.x
+
+    def f(self, x):
+        """
+        y = f(x)を返す
+        [y, True/False]
+        """
+        y = x * self.a + self.b
+        if self.is_fill_range_y(y):
+            return [y, True]
+        else:
+            # f(x)は存在しない
+            return [y, False]
 
 
 class point:  # 座標クラス
