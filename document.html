@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>initial title</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+
+
+
+
+<!-- [始]github.css をこの中にコピペ！ -->
+
+<style>
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 15px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url("../../images/modules/styleguide/para.png") no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black;
+  padding-left: 8px;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 3px solid black;
+  color: black;
+  text-shadow: 1px 1px 1px rgb(193, 193, 193);
+  padding-left: 8px;
+}
+
+h3 {
+  font-size: 20px;
+  border-left: 10px solid black;
+  padding-left: 8px;
+  color: black;
+  background: rgb(242, 242, 242);
+}
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, table, pre {
+  margin: 12px 0;
+}
+
+ul, ol, dl, li {
+    margin: 5px 0;
+}
+
+hr {
+  background: transparent url("../../images/modules/pulls/dirty-shade.png") repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0; }
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+ul :last-child, ol :last-child {
+  margin-bottom: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      text-align: left;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      text-align: left;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+</style>
+
+<!--  [終]github.css をこの中にコピペ！ -->
+
+
+</head>
+<body>
+<h1 id="道路建設計画支援システムドキュメント">道路建設計画支援システムドキュメント</h1>
+<h2 id="目次">目次</h2>
+<ul>
+<li><a href="#chapter1">システムの概要</a></li>
+<li><a href="#chapter2">動作環境</a></li>
+<li><a href="#chapter3">基本的な利用方法</a>
+<ul>
+<li><a href="#chapter3-1">main.pyからの利用</a></li>
+<li><a href="#chapter3-2">test.pyからの利用</a></li>
+</ul></li>
+<li><a href="#about-option">optionについて</a></li>
+<li><a href="#chapter4">提供される機能</a></li>
+</ul>
+<p><a id="chapter1"></a></p>
+<h2 id="システムの概要">システムの概要</h2>
+<p>本システムでは、機能として断片的な道の情報からの道路網復元と、道路網上の経路検索システム、新たな地点につなぐための最適な道の提案機能、重要性の高い道の検出機能を提供します。</p>
+<p>システムのTree構造は以下の通りです(一部システムに無関係のファイル, ディレクトリは除いてあります).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&lt;</span><span class="ex">BASEDIR</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">├── <span class="ex">README.md</span>               <span class="co"># README</span></a>
+<a class="sourceLine" id="cb1-3" title="3">├── <span class="ex">document.html</span>           <span class="co"># このドキュメント</span></a>
+<a class="sourceLine" id="cb1-4" title="4">├── <span class="ex">main.py</span>                 <span class="co"># システムの利用に使う①</span></a>
+<a class="sourceLine" id="cb1-5" title="5">├── <span class="ex">Modules</span></a>
+<a class="sourceLine" id="cb1-6" title="6">│   ├── <span class="ex">input.py</span></a>
+<a class="sourceLine" id="cb1-7" title="7">│   ├── <span class="ex">manager.py</span></a>
+<a class="sourceLine" id="cb1-8" title="8">│   ├── <span class="ex">path.py</span></a>
+<a class="sourceLine" id="cb1-9" title="9">│   ├── <span class="ex">plot.py</span></a>
+<a class="sourceLine" id="cb1-10" title="10">│   ├── <span class="ex">segments.py</span></a>
+<a class="sourceLine" id="cb1-11" title="11">│   └── <span class="ex">test.py</span>            <span class="co"># システムの利用に使う②</span></a>
+<a class="sourceLine" id="cb1-12" title="12">├── <span class="ex">Reports</span>                 <span class="co"># 週刊レポート</span></a>
+<a class="sourceLine" id="cb1-13" title="13">│   ├── <span class="ex">report0X.md</span></a>
+<a class="sourceLine" id="cb1-14" title="14">│   └── <span class="ex">template.md</span></a>
+<a class="sourceLine" id="cb1-15" title="15">└── <span class="ex">static</span></a>
+<a class="sourceLine" id="cb1-16" title="16">    ├── <span class="ex">figure.png</span>          <span class="co"># 情報の2次元グラフ</span></a>
+<a class="sourceLine" id="cb1-17" title="17">    ├── <span class="ex">input.txt</span>           <span class="co"># ①のデータ入力に使うテキストファイル</span></a>
+<a class="sourceLine" id="cb1-18" title="18">    └── <span class="ex">testdata</span>            <span class="co"># ②のデータ入力に使うフ複数ファイルのディレクトリ</span></a>
+<a class="sourceLine" id="cb1-19" title="19">        └── <span class="ex">testdata</span><span class="op">&lt;</span>小課題番号<span class="op">&gt;</span>-<span class="op">&lt;</span>N<span class="op">&gt;</span>.txt</a></code></pre></div>
+<p>このドキュメントでは, 基本的に &lt;BASEDIR&gt; をルートディレクトリとしてファイルパスを書いていきます.</p>
+<p><a id="chapter2"></a></p>
+<h2 id="動作環境">動作環境</h2>
+<p>動作環境として,</p>
+<ul>
+<li>Python 3.7.2</li>
+<li>Mac OS</li>
+</ul>
+<p>を想定します.</p>
+<p>新しめのPython3系さえあれば動作すると思いますが, 一部グラフ化等の機能が制限されれる可能性があります.</p>
+<p><a id="chapter3"></a></p>
+<h2 id="基本的な利用方法">基本的な利用方法</h2>
+<p>システムの利用方法は2種類用意されています.</p>
+<ol type="1">
+<li><strong>./main.py</strong> から利用する</li>
+<li><strong>./Modules/test.py</strong> から利用する</li>
+</ol>
+<p><a id="chapter3-1"></a></p>
+<h3 id="main.py-から利用する">① ./main.py から利用する</h3>
+<p>main.py では, 入力から出力を得るだけのシンプルな機能を提供します.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">python</span> ./main.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
+<p>※ &lt;input_option&gt;と&lt;output_option&gt;については, <a href="#about-option">optionについて</a> を参照してください.</p>
+<p><a id="chapter3-2"></a></p>
+<h3 id="modulestest.py">② ./Modules/test.py</h3>
+<p>test.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">python</span> ./Modules/test.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
+<p>※ &lt;input_option&gt;と&lt;output_option&gt;については , <a href="#about-option">optionについて</a> を参照してください.</p>
+<p><a id="about-option"></a></p>
+<h2 id="option-について">option について</h2>
+<h3 id="input_option">①input_option</h3>
+<p>input_optionでは, データ入力の方法を指定します.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">input_option</th>
+<th style="text-align: left;">入力手段</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">-i</td>
+<td style="text-align: left;">ターミナルから</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-f</td>
+<td style="text-align: left;">./static/input.txt から</td>
+</tr>
+</tbody>
+</table>
+<p><strong>-f</strong> オプションでファイルから入力する場合は, 予め入力データを <strong>./static/input.txt</strong> に入力しておく必要があります.</p>
+<h3 id="output_option">②output_option</h3>
+<p>output_optionでは, 入力されたデータに対して如何なる処理をした結果を出力するかを指定します.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">output_option</th>
+<th style="text-align: left;">出力</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">2線分の交点座標</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">全ての交差点座標</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">最短経路の距離</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">最短経路と距離</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">第K番目までの経路の距離</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">第K番目までの経路と距離</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">最適な交差点座標</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">幹線道路</td>
+</tr>
+</tbody>
+</table>
+<p><a id="chapter4"></a></p>
+<h2 id="提供される機能">提供される機能</h2>
+</body>
+</html>
