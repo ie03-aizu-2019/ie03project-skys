@@ -16,9 +16,8 @@
 
 ## 成果物
 
-- [フェーズ1](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Phase1)
-- [フェーズ2](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Phase2)
-- [フェーズ3](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Phase3)
+- [ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)
+- [Modules(主要なソースコード)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Modules)
 
 ## 週刊レポート
 
