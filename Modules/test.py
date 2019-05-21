@@ -62,13 +62,11 @@ def test(ex, file=True):
             with open(datapath, "r") as f:
                 for line in f.readlines():
                     print(line, end="")
-            print("\n# 詳細データ")
-            M.print_info(detail=True)
             print(f"\n# 小課題{ex}の実行")
             M.run(ex)
-            isPlot = input("プロット図を出力しますか?(y/n)")
-            if isPlot == "y":
-                M.plot()
+            print("\n# 詳細データ")
+            M.print_info(detail=True)
+            M.plot()
             return True
         else:
             print(f"該当するテストデータが存在しません.")
