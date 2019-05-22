@@ -73,10 +73,7 @@ class Manager:
 
         return True
 
-    def print_info(self, detail=False):
-        len = 1
-        if detail:
-            len = 3
+    def print_info(self, length=3):
         print(f"N(Number of Points)\t\t: {self.N}")
         print(f"M(Number of Segments)\t\t: {self.M}")
         print(f"P(Number of adding Points)\t: {self.P}")
@@ -101,10 +98,9 @@ class Manager:
                 tmp = None
 
             if tmp is not None:
-                for i in range(len):
+                for i in range(length):
                     if tmp[i] is not None:
-                        print(tmp[i].to_str())
-                        pass
+                        print(tmp[i].to_str(), end="\n\n")
 
     def plot(self, save=False, path=None):
         plot.plot_all(self.points, self.segments, save=save, path=path)
