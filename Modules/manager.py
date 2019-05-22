@@ -267,7 +267,8 @@ class Manager:
             roots = self.roots[start][fin]
             K = int(index[2])
             for i in range(K):
-                print(roots[i].distance)
+                print(f"{roots[i].distance:.5f}")
+                
 
 
 def list2dict(l, intersections=False):
