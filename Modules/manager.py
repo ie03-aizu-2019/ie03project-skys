@@ -300,6 +300,8 @@ class Manager:
             fin = index[1]
             roots = self.roots[start][fin]
             K = int(index[2])
+            if len(roots) < K:
+                K = len(roots)
             for i in range(K):
                 print(f"{roots[i].distance:.5f}")
                 # root.points = [point(1), point(C1), point(4)]
