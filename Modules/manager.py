@@ -62,8 +62,8 @@ class Manager:
             self.ex4()
         elif ex == 5:
             self.ex5()
-        # elif ex == 6:
-        #     self.ex6()
+        elif ex == 6:
+            self.ex6()
         # elif ex == 7:
         #     self.ex7()
         # elif ex == 8:
@@ -292,6 +292,23 @@ class Manager:
                 K = len(roots)
             for i in range(K):
                 print(f"{roots[i].distance:.5f}")
+
+    def ex6(self):
+        self.search_all_root()
+        for index in self.roots_index:
+            start = index[0]
+            fin = index[1]
+            roots = self.roots[start][fin]
+            K = int(index[2])
+            if len(roots) < K:
+                K = len(roots)
+            for i in range(K):
+                print(f"{roots[i].distance:.5f}")
+                # root.points = [point(1), point(C1), point(4)]
+                for point in roots[i].points:
+                    print(point.index, end=", ")
+                print()
+
 
 
 def list2dict(l, intersections=False):
