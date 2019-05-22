@@ -75,6 +75,27 @@ class segment:  # 線分クラス
         self.set_ab()
         self.set_range()
 
+    def sort(self):
+        # self.P, ? ? self.Q となるように.
+        contacted = self.contacted
+        self.contacted = []
+        for i in range(len(contacted)):
+            if contacted[i] is self.P or contacted[i] is self.Q:
+                continue
+            else:
+                flag = False
+                for j in range(len(self.contacted)):
+                    dis1 = distance(contacted[i], self.P)
+                    dis2 = distance(self.contacted[j], self.P)
+                    if dis1 < dis2:
+                        self.contacted.insert(j, contacted[j])
+                        flag = True
+                        break
+                if not flag:
+                    self.contacted.append(contacted[i])
+        self.contacted.append(self.Q)
+        self.contacted.insert(0, self.P)
+
     def to_str(self):  # 線分を構成する点P, Qの座標を返す
         info = f"P = ({self.P.x}, {self.P.y})\n"
         info = info + f"Q = ({self.Q.x}, {self.Q.y})"
@@ -88,6 +109,7 @@ class segment:  # 線分クラス
                 # 既に格納済み
                 return False
         self.contacted.append(point)
+        self.sort()
 
     def set_range(self):
         """

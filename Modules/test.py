@@ -65,7 +65,7 @@ def test(ex, file=True):
             print(f"\n# 小課題{ex}の実行")
             M.run(ex)
             print("\n# 詳細データ")
-            M.print_info(detail=True)
+            M.print_info(length=10)
             M.plot()
             return True
         else:

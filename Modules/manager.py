@@ -73,10 +73,7 @@ class Manager:
 
         return True
 
-    def print_info(self, detail=False):
-        len = 1
-        if detail:
-            len = 3
+    def print_info(self, length=3):
         print(f"N(Number of Points)\t\t: {self.N}")
         print(f"M(Number of Segments)\t\t: {self.M}")
         print(f"P(Number of adding Points)\t: {self.P}")
@@ -101,9 +98,11 @@ class Manager:
                 tmp = None
 
             if tmp is not None:
-                for i in range(len):
-                    if tmp[i] is not None:
-                        print(tmp[i].to_str())
+                for i in range(length):
+                    try:
+                        if tmp[i] is not None:
+                            print(tmp[i].to_str(), end="\n\n")
+                    except Exception:  # length out of range
                         pass
 
     def plot(self, save=False, path=None):
@@ -193,13 +192,32 @@ class Manager:
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
-            # if start.index == "4" and not(start.isPoint()):
-            #     print("[DB] [", end="")
-            #     for t in start.contacted:
-            #         print(t.index, end=", ")
-            #     print("]")
-            for t in start.contacted:
-                self.searching(t, fin, vias=[x for x in vias], roots=roots)
+            # startが線分で, contactedが複数あるとき
+            # A -> B -> C(同一線分上) で, Cに飛べないようにする
+            if (not start.isPoint()) and len(start.contacted) >= 3:
+                bef = vias[len(vias)-2]
+                plus = None
+                minus = None
+                flag = False
+
+                for p in start.contacted:
+                    if flag:
+                        plus = p
+                        break
+                    elif p is not bef:
+                        minus = p
+                        continue
+                    else:
+                        flag = True
+
+                if plus is not None:
+                    self.searching(plus, fin, vias=[x for x in vias], roots=roots)
+                if minus is not None:
+                    if minus not in vias:
+                        self.searching(minus, fin, vias=[x for x in vias], roots=roots)
+            else:
+                for t in start.contacted:
+                    self.searching(t, fin, vias=[x for x in vias], roots=roots)
 
         return roots
 
@@ -270,6 +288,8 @@ class Manager:
             fin = index[1]
             roots = self.roots[start][fin]
             K = int(index[2])
+            if len(roots) < K:
+                K = len(roots)
             for i in range(K):
                 print(f"{roots[i].distance:.5f}")
 
