@@ -69,23 +69,24 @@ def input_from_file(path=path.input_path):
         points = []
         segments = []
         roots = []
+        add_points = []
 
-        for i in range(1, N+1):
+        for i in range(1, N+1):  # points
             points.append(
                 sg.point([int(x)
-                           for x in tmp[i].replace("\n", "").split(" ")])
+                          for x in tmp[i].replace("\n", "").split(" ")])
                 )
-        for j in range(N+1, N+M+1):
+        for j in range(N+1, N+M+1):  # segments
             tmp2 = [int(x) for x in tmp[j].replace("\n", "").split(" ")]
             segments.append(sg.segment([
                 points[tmp2[0]-1],
                 points[tmp2[1]-1]
             ]))
-        for k in range(N+M+1, N+M+P+1):
+        for k in range(N+M+1, N+M+P+1):  # add points
             # 詳しい使い方が不明なのでとりあえずpointsに追加だけする
             adds = [int(x) for x in tmp[k].replace("\n", "").split(" ")]
-            points.append(sg.point(adds))
-        for l in range(N+M+P+1, N+M+P+Q+1):
+            add_points.append(sg.point(adds))
+        for l in range(N+M+P+1, N+M+P+Q+1):  # root
             roots.append([x for x in tmp[l].replace("\n", "").split(" ")])
 
-    return N, M, P, Q, points, segments, roots
+    return N, M, P, Q, points, segments, add_points, roots
