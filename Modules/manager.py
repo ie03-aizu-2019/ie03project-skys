@@ -32,16 +32,17 @@ class Manager:
         if file:
             # ファイルから入力を得る
             if path is None:  # 標準パス
-                self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_file()
+                self.N, self.M, self.P, self.Q, points, segments, added_points, roots_index = input.input_from_file()
             else:  # パスの入力あり
-                self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_file(
+                self.N, self.M, self.P, self.Q, points, segments, added_points, roots_index = input.input_from_file(
                     path=path)
         else:
             # キーボードから入力を得る
-            self.N, self.M, self.P, self.Q, points, segments, roots_index = input.input_from_stdin()
+            self.N, self.M, self.P, self.Q, points, segments, added_points, roots_index = input.input_from_stdin()
         self.points = list2dict(points)
         self.segments = list2dict(segments)
         self.find_all_intersections()
+        self.added_points = added_points
         self.roots_index = roots_index
 
     def run(self, ex):
@@ -64,8 +65,8 @@ class Manager:
             self.ex5()
         elif ex == 6:
             self.ex6()
-        # elif ex == 7:
-        #     self.ex7()
+        elif ex == 7:
+            self.ex7()
         # elif ex == 8:
             # self.ex8()
         else:
@@ -81,13 +82,23 @@ class Manager:
 
         print("-- Points --")
         for key in list(self.points):
-            print(f"{key}: {self.points[key].to_str()}")
+            if not self.points[key].added:
+                print(f"{key}: {self.points[key].to_str()}")
 
         print("-- Segments --")
         for key in list(self.segments):
             P = self.segments[key].P
             Q = self.segments[key].Q
             print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
+
+        print("-- Added Points --")
+        for key in list(self.points):
+            if self.points[key].added and "C" not in key:
+                print(f"{key}: {self.points[key].to_str()}")
+
+        for key in list(self.points):
+            if self.points[key].added and "C" in key:
+                print(f"{key}: {self.points[key].to_str()}")
 
         print("-- Roots --")
         for index in self.roots_index:
@@ -211,15 +222,70 @@ class Manager:
                         flag = True
 
                 if plus is not None:
-                    self.searching(plus, fin, vias=[x for x in vias], roots=roots)
+                    self.searching(plus, fin, vias=[
+                                   x for x in vias], roots=roots)
                 if minus is not None:
                     if minus not in vias:
-                        self.searching(minus, fin, vias=[x for x in vias], roots=roots)
+                        self.searching(minus, fin, vias=[
+                                       x for x in vias], roots=roots)
             else:
                 for t in start.contacted:
                     self.searching(t, fin, vias=[x for x in vias], roots=roots)
 
         return roots
+
+    def next_index(self):
+        max = -1
+        indexs = {}
+        for i in list(self.segments):
+            if max < int(i):
+                max = int(i)
+        indexs['segment'] = str(max+1)
+        max = -1
+        max_2 = -1
+        for i in list(self.points):
+            if "C" in i:
+                if max < int(i.replace("C", "")):
+                    max = int(i.replace("C", ""))
+            else:
+                if max_2 < int(i):
+                    max_2 = int(i)
+        indexs['point'] = str(max_2+1)
+        indexs['intersection'] = "C" + str(max+1)
+        return indexs
+
+    def add_point(self, p):
+        # もっとも短い繋ぎ方で道路に繋ぐ
+        # [交点, 距離]
+        min_set = sg.calc_shortest_connection(self.segments['1'], p)
+        connected_seg = self.segments['1']
+
+        for key in list(self.segments)[1:]:
+            result = sg.calc_shortest_connection(self.segments[key], p)
+            if result[1] < min_set[1]:
+                connected_seg = self.segments[key]
+                min_set = result
+
+        # 追加
+        min_set[0].setAddedTrue()
+        p.setAddedTrue()
+        seg = sg.segment([min_set[0], p])  # 追加点と交点を結ぶ線分
+        # 線分, 点の追加
+        indexs = self.next_index()
+        p.set_index(indexs['point'])
+        min_set[0].set_index(indexs['intersection'])
+        self.segments[indexs['segment']] = seg
+        self.points[indexs['point']] = p
+        if min_set[0].equal(connected_seg.P) or min_set[0].equal(connected_seg.Q):
+            # 端点である(=intersectionsに含めない)
+            indexs = self.next_index()
+            self.points[indexs['point']] = min_set[0]
+        else:
+            self.points[indexs['intersection']] = min_set[0]
+
+    def add_all_points(self):
+        for p in self.added_points:
+            self.add_point(p)
 
     # ⇓各課題の出力メソッド⇓
     def ex1(self):
@@ -309,6 +375,11 @@ class Manager:
                     print(point.index, end=", ")
                 print()
 
+    def ex7(self):
+        self.add_all_points()
+        for p in self.points:
+            if self.points[p].added and (self.points[p] not in self.added_points):
+                print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
 
 
 def list2dict(l, intersections=False):
