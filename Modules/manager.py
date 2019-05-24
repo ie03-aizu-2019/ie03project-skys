@@ -379,7 +379,14 @@ class Manager:
         self.add_all_points()
         for p in self.points:
             if self.points[p].added and (self.points[p] not in self.added_points):
-                print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
+                if len(str(self.points[p].x)) >= 7:
+                    print(f"{self.points[p].x:.5f}", end=" ")
+                else:
+                    print(self.points[p].x, end=" ")
+                if len(str(self.points[p].y)) >= 7:
+                    print(f"{self.points[p].y:.5f}")
+                else:
+                    print(self.points[p].y)
 
 
 def list2dict(l, intersections=False):
