@@ -17,7 +17,10 @@ def plot_all(points={}, segments={}, delta=0.01, save=False, path=path.figure_pa
     for index in segments:
         x1 = segments[index].P.x
         x2 = segments[index].Q.x
-        x_list = np.arange(x1, x2, delta)
+        if x1 < x2:
+            x_list = np.arange(x1, x2, delta)
+        else:
+            x_list = np.arange(x2, x1, delta)
         label = ""
         if not s_flag:
             label = "Segment"
