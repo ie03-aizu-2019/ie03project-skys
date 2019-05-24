@@ -29,7 +29,7 @@ ex_info = {
     4: [True, []],
     5: [True, ["5-1"]],
     6: [False, []],
-    7: [False, []],
+    7: [True, ["7-1"]],
     8: [False, []],
 }
 sample = """# Sample(小課題2をテストデータから実行)
@@ -66,6 +66,7 @@ def test(ex, file=True):
             M.run(ex)
             print("\n# 詳細データ")
             M.print_info(length=10)
+            print("\n# プロット図の表示")
             M.plot()
             return True
         else:

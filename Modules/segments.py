@@ -74,6 +74,10 @@ class segment:  # 線分クラス
         self.Q.set_contacted(self)
         self.set_ab()
         self.set_range()
+        if self.P.added or self.Q.added:
+            self.added = True
+        else:
+            self.added = False
 
     def sort(self):
         # self.P, ? ? self.Q となるように.
@@ -133,6 +137,8 @@ class segment:  # 線分クラス
             return False
 
     def is_fill_range_y(self, y):
+        if y is None:
+            return False
         if self.y_range[0] <= y and y <= self.y_range[1]:
             return True
         else:
@@ -148,15 +154,25 @@ class segment:  # 線分クラス
         """
         傾きaと切片bをsetする
         """
-        self.a = (self.P.y - self.Q.y) / (self.P.x - self.Q.x)
-        self.b = self.P.y - self.a * self.P.x
+        try:
+            self.a = (self.P.y - self.Q.y) / (self.P.x - self.Q.x)
+            self.b = self.P.y - self.a * self.P.x
+        except Exception:  # Zero Devison
+            self.a = None
+            self.b = None
 
     def f(self, x):
         """
         y = f(x)を返す
         [y, True/False]
         """
-        y = x * self.a + self.b
+        if self.a == 0:
+            y = self.P.y
+        elif self.a is None:
+            y = None
+        else:
+            y = x * self.a + self.b
+
         if self.is_fill_range_y(y):
             return [y, True]
         else:
@@ -169,6 +185,7 @@ class point:  # 座標クラス
         self.x = p[0]
         self.y = p[1]
         self.contacted = []
+        self.added = False
 
     def to_str(self):
         return f"({self.x}, {self.y})"
@@ -194,6 +211,9 @@ class point:  # 座標クラス
 
     def isPoint(self):
         return True
+
+    def setAddedTrue(self):
+        self.added = True
 
 
 def find_intersection(s1, s2):
@@ -296,19 +316,35 @@ def find_all_intersections(M, segments):
 def calc_shortest_connection(s, p):
     """
     1線分と1点を引数に, 最も短い距離で接続する場合の交点と距離を返す関数
+    垂直に交わると仮定したときの交点x, yを求める
+    1. セグメントの傾き=0のとき
+        y = s.P.y
+        x = p.x
+    2. セグメントの傾き=∞(None)のとき, x=定数
+        y = p.y
+        x = s.P.x
+    3. y = ax + b で表されるとき
+        方程式を解く
     """
-    a = -1 / s.a
-    b = p.y - a * p.x
 
-    x = (b - s.b) / (s.a - a)
-    y = s.f(x)
+    if s.a == 0:
+        x = p.x
+        y = [s.P.y, (s.P.x <= p.x and s.Q.x >= p.x
+                     or s.Q.x <= p.x and s.P.x >= p.x)]
+    elif s.a is None:
+        x = s.P.x
+        y = [p.y, (s.P.y <= p.y and s.Q.y >= p.y
+                   or s.Q.y <= p.y and s.P.y >= p.y)]
+    else:
+        a = -1 / s.a
+        b = p.y - a * p.x
+        x = (b - s.b) / (s.a - a)
+        y = s.f(x)
 
-    if not y[1]:  # 垂直に交わる
-        intersection = [point([x, y])]
+    if y[1]:  # 垂直に交わる
+        intersection = [point([x, y[0]])]
         intersection.append(distance(intersection[0], p))
     else:  # 垂直に交わらない
-        p = point([x, y[0]])
-
         dis1 = distance(s.P, p)
         dis2 = distance(s.Q, p)
 
