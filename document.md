@@ -3,10 +3,10 @@
 ## 目次
 
 - [システムの概要](#chapter1)
-- [動作環境](#chapter2)
+- [実行環境とビルド方法](#chapter2)
 - [基本的な利用方法](#chapter3)
     - [main.pyからの利用](#chapter3-1)
-    - [test.pyからの利用](#chapter3-2)
+    - [main2.pyからの利用](#chapter3-2)
 - [optionについて](#about-option)
 - [提供される機能](#chapter4)
 
@@ -18,44 +18,45 @@
 本システムでは、機能として断片的な道の情報からの道路網復元と、道路網上の経路検索システム、新たな地点につなぐための最適な道の提案機能、重要性の高い道の検出機能を提供します。
 
 
-システムのTree構造は以下の通りです(一部システムに無関係のファイル, ディレクトリは除いてあります).
+プログラムのソースは, sourceディレクトリにあります.
 
 ``` sh
-<BASEDIR>
-├── README.md               # README
-├── document.html           # このドキュメント
-├── main.py                 # システムの利用に使う①
+source
 ├── Modules
 │   ├── input.py
 │   ├── manager.py
 │   ├── path.py
 │   ├── plot.py
 │   ├── segments.py
-│   └── test.py            # システムの利用に使う②
-├── Reports                 # 週刊レポート
-│   ├── report0X.md
-│   └── template.md
+│   └── test.py
+├── main.py
+├── setup.py
 └── static
-    ├── figure.png          # 情報の2次元グラフ
-    ├── input.txt           # ①のデータ入力に使うテキストファイル
-    └── testdata            # ②のデータ入力に使うフ複数ファイルのディレクトリ
-        └── testdata<小課題番号>-<N>.txt
+    ├── figure.png
+    ├── input.txt
+    ├── requirements.txt
+    └── testdata
+        └── testdataα-β.txt
 ```
-
-このドキュメントでは, 基本的に \<BASEDIR\> をルートディレクトリとしてファイルパスを書いていきます.
 
 <a id="chapter2"></a>
 
-## 動作環境
+## 実行環境とビルド方法
 
-動作環境として,
+実行環境として,
 
-- Python 3.7.2
+- [Python 3.7.2](https://www.python.org/downloads/release/python-372/)
 - Mac OS
 
-を想定します.
+を想定します(WindowsやUnixだとプロット図の表示でエラーが発生する可能性が高い).
 
-新しめのPython3系さえあれば動作すると思いますが, 一部グラフ化等の機能が制限されれる可能性があります.
+その他必要なモジュールのインストールは, **setup.py** で行います.
+
+``` sh
+$ python3 setup.py
+```
+
+｢正常にセットアップが完了しました｣と表示されれ, 環境構築は終了です.
 
 <a id="chapter3"></a>
 
@@ -63,30 +64,34 @@
 
 システムの利用方法は2種類用意されています.
 
-1. **./main.py** から利用する
-2. **./Modules/test.py** から利用する
+1. **source/main.py** から利用する
+2. **source/main2.py** から利用する
 
 <a id="chapter3-1"></a>
 
-### ① ./main.py から利用する
+### ① source/main.py から利用する
 
 main.py では, 入力から出力を得るだけのシンプルな機能を提供します.
 
 ``` sh
-python ./main.py <input_option> <output_option>
+python source/main.py <input_option> <output_option>
 ```
+
+入力ファイルは, **source/static/input.txt** に用意する必要があります.
 
 ※ \<input_option\>と\<output_option\>については, [optionについて](#about-option) を参照してください.
 
 <a id="chapter3-2"></a>
 
-### ② ./Modules/test.py
+### ② source/main2.py
 
-test.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.
+main2.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.
 
 ``` sh
-python ./Modules/test.py <input_option> <output_option>
+python source/main2.py <input_option> <output_option>
 ```
+
+テストデータは予め用意されています.
 
 ※ \<input_option\>と\<output_option\>については
 , [optionについて](#about-option) を参照してください.
@@ -101,10 +106,10 @@ input_optionでは, データ入力の方法を指定します.
 
 | input_option | 入力手段 |
 | :---: | :--- |
-| -i | ターミナルから |
-| -f | ./static/input.txt から |
+| -i | ターミナル入力 |
+| -f | ファイル入力 |
 
-**-f** オプションでファイルから入力する場合は, 予め入力データを **./static/input.txt** に入力しておく必要があります.
+**-f** オプションでmain.pyを実行する場合は, 予め入力データを **source/static/input.txt** に入力しておく必要があります.
 
 ### ②output_option
 
