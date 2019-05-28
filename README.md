@@ -14,7 +14,40 @@
 - s1250131, [Kaito Kimura](https://github.com/s1250131-Kimura)
 - s1250133, [Sora Koshikawa](https://github.com/s1250133-koshikawa)
 
-## ビルド方法
+## 実行環境とビルド方法
+
+### 1. Pythonの準備
+
+Python本体がなければ,
+[公式のPython](https://www.python.org/)
+からOSにあったものを準備してください.
+
+バージョンは3.7.2を想定しています.
+
+### 2. ソースコードの取得
+
+このGitリポジトリからクローンします.
+
+``` sh
+$ git clone git@github.com:ie03-aizu-2019/ie03project-skys.git
+```
+
+### 3. セットアップ
+
+``` sh
+$ cd <クローンしたフォルダ>/source/
+$ python3 setup.py
+```
+
+### 4. プログラムの実行
+
+``` sh
+$ python3 main.py -i 1
+```
+
+※ファイルから入力をする場合は, **source/static/input.py** にデータを予め入力した上で, -iオプション を -fオプションに変えて実行します.
+※1は小課題番号を表します.
+
 
 ## 成果物
 
