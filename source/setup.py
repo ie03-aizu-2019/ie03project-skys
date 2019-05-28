@@ -5,10 +5,17 @@ sys.path.append(path.module_path)
 
 
 def get_requires(path):
-    with open(path) as f:
-        return [pkg_name.strip() for pkg_name in f.readlines()]
+    try:
+        with open(path) as f:
+            return [pkg_name.strip() for pkg_name in f.readlines()]
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
     requires = get_requires(path.requirements_path)
-    setup(requires)
+    try:
+        setup(requires)
+        print("正常にセットアップが完了しました.")
+    except Exception as e:
+        print(e)
