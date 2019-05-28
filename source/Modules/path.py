@@ -10,5 +10,6 @@ for dir in cwd.split("/")[1:]:
 
 input_path = f"{project_path}/static/input.txt"
 figure_path = f"{project_path}/static/figure.png"
+requirements_path = f"{project_path}/static/requirements.txt"
 testdata_path = f"{project_path}/static/testdata"
 module_path = f"{project_path}/Modules"
