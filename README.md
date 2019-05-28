@@ -66,7 +66,7 @@ $ python3 main.py -i 1
 
 - [週刊レポート4](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report04.md)
 - [週刊レポート5](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report05.md)
-- ~~[週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)~~
+- [週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)
 - ~~[週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)~~
 
 ### フェーズ3
