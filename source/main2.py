@@ -1,5 +1,5 @@
 """
-python test.py <入力方法> <課題番号>
+python main2.py <入力方法> <課題番号>
 
 <入力方法>
 1. -i : 手入力
@@ -9,9 +9,11 @@ python test.py <入力方法> <課題番号>
 整数で小課題番号を渡せば良い
 """
 
-import manager
-import os
 import sys
+import os
+import Modules.path as path
+sys.path.append(path.module_path)
+import manager
 import random
 import path
 
