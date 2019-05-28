@@ -17,14 +17,12 @@ import plot
 
 
 class Manager:
-    points = {}  # index=1からN
-    segments = {}  # index=1からM
-    intersections = {}  # index=C1からCQ
-    roots_index = []  # 探索するルートの添字
-    roots = {}  # 探索したルートの結果
-
     def __init__(self):
-        pass
+        self.points = {}  # index=1からN
+        self.segments = {}  # index=1からM
+        self.roots_index = []  # 探索するルートの添字
+        self.added_points = []
+        self.roots = {}  # 探索したルートの結果
 
     def input(self, file=False, path=None):
         N, M, P, Q, points, segments, roots = range(7)
@@ -286,6 +284,7 @@ class Manager:
     def add_all_points(self):
         for p in self.added_points:
             self.add_point(p)
+        self.added_points = []
 
     # ⇓各課題の出力メソッド⇓
     def ex1(self):
