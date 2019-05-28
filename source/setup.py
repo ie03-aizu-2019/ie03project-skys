@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import sys
 import Modules.path as path
 sys.path.append(path.module_path)
@@ -7,7 +7,7 @@ sys.path.append(path.module_path)
 def get_requires(path):
     try:
         with open(path) as f:
-            return [pkg_name.strip() for pkg_name in f.readlines()]
+            return [pkg.strip() for pkg in f.readlines()]
     except Exception as e:
         print(e)
 
