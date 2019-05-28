@@ -2,11 +2,16 @@ import os
 cwd = os.getcwd()
 
 project_path = ""
+flag = False
 
 for dir in cwd.split("/")[1:]:
-    if dir == "Modules":
-        break
     project_path = f"{project_path}/{dir}"
+    if dir == "source":
+        flag = True
+        break
+
+if not flag:
+    project_path = f"{project_path}/source/"
 
 input_path = f"{project_path}/static/input.txt"
 figure_path = f"{project_path}/static/figure.png"
