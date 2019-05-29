@@ -46,6 +46,15 @@ def input_from_stdin():
         """
 
     roots = []
+
+    add_points = []
+    for i in range(P):
+        tmp = input("")
+        tmp = tmp.split(" ")
+        tmp[0] = int(tmp[0])
+        tmp[1] = int(tmp[1])
+        add_points.append(sg.point(tmp))
+
     for i in range(Q):
         tmp = input("")
         tmp = tmp.split(" ")
@@ -59,7 +68,7 @@ def input_from_stdin():
         roots[i] = tmp
         roots[i][2] = int(tmp[i][2])
 
-    return N, M, P, Q, points, segments, roots
+    return N, M, P, Q, points, segments, add_points, roots
 
 
 def input_from_file(path=path.input_path):
