@@ -107,13 +107,21 @@ class segment:  # 線分クラス
 
     def set_contacted(self, point):
         # 接点のリストを追加
-        # Point.set_contacted()からのみ呼び出す
-        for i in range(len(self.contacted)):
-            if self.contacted[i] is point:
-                # 既に格納済み
-                return False
-        self.contacted.append(point)
-        self.sort()
+        # 中途で交点がみつかったときのみ使用
+
+        for i in range(1, len(self.contacted)):
+            dis1 = distance(self.P, point)
+            dis2 = distance(self.P, self.contacted[i])
+
+            if dis1 < dis2:
+                self.contacted.insert(i, point)
+                break
+            elif dis1 == dis2:  # 格納済み
+                break
+            else:
+                continue
+
+        # ループを抜けても格納できていない -> self.Q = point
 
     def set_range(self):
         """
@@ -198,12 +206,10 @@ class point:  # 座標クラス
 
     def set_contacted(self, segment):
         # 接線リスト
-        for i in range(len(self.contacted)):
-            if self.contacted[i] is point:
-                # 既に格納済み
-                return False
+        if segment in self.contacted:
+            # 既に格納済み
+            return False
         self.contacted.append(segment)
-        segment.set_contacted(self)
 
     def set_index(self, index):
         # Managerクラスより実行
@@ -269,7 +275,9 @@ def find_intersection(s1, s2):
 
         if is_intersection:  # 交点あり(端点ではない)
             returnset[1].set_contacted(s1)
+            s1.set_contacted(returnset[1])
             returnset[1].set_contacted(s2)
+            s2.set_contacted(returnset[1])
         else:
             returnset = [False]
 
@@ -281,36 +289,63 @@ def find_intersection(s1, s2):
 def find_all_intersections(M, segments):
     intersections = []
     for i in range(M):
-        for j in range(i, M):
+        for j in range(i+1, M):
             tmp = find_intersection(segments[i], segments[j])
             if tmp[0]:  # 交点あり
                 if len(intersections) == 0:
                     intersections.append(tmp[1])
                 else:
-                    for k in range(len(intersections)):
-                        if intersections[k].x > tmp[1].x:
-                            # 追加
-                            intersections.insert(k, tmp[1])
+                    min = 0
+                    max = len(intersections)-1
+                    mid = max // 2
+                    while(True):
+                        if min == max:
+                            if intersections[mid].x < tmp[1].x:
+                                mid += 1
+                            elif intersections[mid].x == tmp[1].x:
+                                if intersections[mid].y < tmp[1].y:
+                                    mid += 1
+                            intersections.insert(mid, tmp[1])
                             break
-                        elif intersections[k].x == tmp[1].x:
-                            # y座標を比較する
-                            if intersections[k].y > tmp[1].y:
-                                intersections.insert(k, tmp[1])
-                                break
+                        # 次ループ用
+                        if tmp[1].x > intersections[mid].x:
+                            min = mid + 1
+                            mid = min + (max-min) // 2
+                        elif tmp[1].x == intersections[mid].x:
+                            if tmp[1].y > intersections[mid].y:
+                                min = mid + 1
+                                mid = min + (max-min) // 2
                             else:
-                                if k == len(intersections)-1:
-                                    intersections.append(tmp[1])
-                                    break
-                                else:
-                                    continue
-                        elif k == len(intersections)-1:
-                            # 末尾に追加
-                            intersections.append(tmp[1])
-                            break
-                        else:
-                            # 次のループへ
-                            continue
-    return intersections
+                                max = mid
+                                mid = min + (max-min) // 2
+                        else:  # tmp[1].x < intersections[mid].
+                            max = mid
+                            mid = min + (max-min) // 2
+
+#                 for k in range(len(intersections)):
+#                     if intersections[k].x > tmp[1].x:
+#                         # 追加
+#                         intersections.insert(k, tmp[1])
+#                         break
+#                     elif intersections[k].x == tmp[1].x:
+#                         # y座標を比較する
+#                         if intersections[k].y > tmp[1].y:
+#                             intersections.insert(k, tmp[1])
+#                             break
+#                         else:
+#                             if k == len(intersections)-1:
+#                                 intersections.append(tmp[1])
+#                                 break
+#                             else:
+#                                 continue
+#                     elif k == len(intersections)-1:
+#                         # 末尾に追加
+#                         intersections.append(tmp[1])
+#                         break
+#                     else:
+#                         # 次のループへ
+#                         continue
+# return intersections
 
 
 def calc_shortest_connection(s, p):

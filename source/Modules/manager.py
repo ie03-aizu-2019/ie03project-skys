@@ -24,7 +24,11 @@ class Manager:
         self.added_points = []
         self.roots = {}  # 探索したルートの結果
 
-    def input(self, file=False, path=None):
+    def input(self, file=True, path=None):
+        self.input2(file, path)
+        self.find_all_intersections()
+
+    def input2(self, file=False, path=None):
         N, M, P, Q, points, segments, roots = range(7)
 
         if file:
@@ -39,7 +43,6 @@ class Manager:
             self.N, self.M, self.P, self.Q, points, segments, added_points, roots_index = input.input_from_stdin()
         self.points = list2dict(points)
         self.segments = list2dict(segments)
-        self.find_all_intersections()
         self.added_points = added_points
         self.roots_index = roots_index
 
@@ -185,10 +188,13 @@ class Manager:
         success = False
         end = False
 
-        for via in vias:
-            if via.isPoint() and start is via:
-                end = True
-                break
+        # for via in vias:
+        #     if via.isPoint() and start is via:
+        #         end = True
+        #         break
+
+        if start in vias:
+            end = True
 
         vias.append(start)
 
@@ -201,8 +207,7 @@ class Manager:
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
-            # startが線分で, contactedが複数あるとき
-            # A -> B -> C(同一線分上) で, Cに飛べないようにする
+            # 線分用再帰⇓
             if (not start.isPoint()) and len(start.contacted) >= 3:
                 bef = vias[len(vias)-2]
                 plus = None
@@ -295,8 +300,6 @@ class Manager:
             print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
 
     def ex2(self):
-        self.find_all_intersections()
-
         for p in self.points:
             if "C" in self.points[p].index:
                 print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
