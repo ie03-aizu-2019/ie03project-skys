@@ -38,7 +38,7 @@ sample = """# Sample(小課題2をテストデータから実行)
 $ python test.py -f 2"""
 
 
-def test(ex, file=True):
+def main2(ex, file=True):
     """
     ex:   小課題番号
     file: テストデータファイルを使うか否か
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             if args[1] == "-i":
                 file = False
             n = int(args[2])
-            result = test(n, file=file)
+            result = main2(n, file=file)
             if result:
                 print("プログラムを正常終了します.")
             else:
