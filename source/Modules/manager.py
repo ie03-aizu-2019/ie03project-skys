@@ -263,8 +263,9 @@ class Manager:
                 min_set = result
 
         # 追加
-        min_set[0].setAddedTrue()
-        p.setAddedTrue()
+        min_set[0].setIntersectTrue()  # 接続するための交点
+        min_set[0].setAddedTrue()  # 接続するための交点
+        p.setAddedTrue()  # 道路網に接続した点
         seg = sg.segment([min_set[0], p])  # 追加点と交点を結ぶ線分
         # 線分, 点の追加
         indexs = self.next_index()
@@ -314,7 +315,7 @@ class Manager:
                 if res is None:  # 道無し
                     print("NA")
                 else:
-                    print(res.distance)
+                    print(f"{res.distance:.6g}")
             else:
                 print("NA")
 
@@ -335,7 +336,7 @@ class Manager:
                 if res is None:  # 道無し
                     print("NA")
                 else:
-                    print(res.distance)
+                    print(f"{res.distance:.6g}")
                     for point in res.points:
                         print(point.index, end=" ")
                     print()
@@ -373,15 +374,8 @@ class Manager:
     def ex7(self):
         self.add_all_points()
         for p in self.points:
-            if self.points[p].added and (self.points[p] not in self.added_points):
-                if len(str(self.points[p].x)) >= 7:
-                    print(f"{self.points[p].x:.5f}", end=" ")
-                else:
-                    print(self.points[p].x, end=" ")
-                if len(str(self.points[p].y)) >= 7:
-                    print(f"{self.points[p].y:.5f}")
-                else:
-                    print(self.points[p].y)
+            if self.points[p].added and self.points[p].intersect:
+                print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
 
 def list2dict(l, intersections=False):

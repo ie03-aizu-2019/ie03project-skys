@@ -194,6 +194,7 @@ class point:  # 座標クラス
         self.y = p[1]
         self.contacted = []
         self.added = False
+        self.intersect = False
 
     def to_str(self):
         return f"({self.x}, {self.y})"
@@ -220,6 +221,9 @@ class point:  # 座標クラス
 
     def setAddedTrue(self):
         self.added = True
+
+    def setIntersectTrue(self):
+        self.intersect = True
 
 
 def find_intersection(s1, s2):
@@ -252,6 +256,7 @@ def find_intersection(s1, s2):
             x = s1.P.x + s * (s1.Q.x - s1.P.x)
             y = s1.P.y + s * (s1.Q.y - s1.P.y)
             returnset = [True, point([x, y])]
+            returnset[1].setIntersectTrue()
 
         else:
             # 交差なし
@@ -268,9 +273,11 @@ def find_intersection(s1, s2):
                     is_intersection = False
                     if seg is segs[0]:
                         p.set_contacted(segs[1])
+                        p.setIntersectTrue()
                         segs[1].set_contacted(p)
                     else:
                         p.set_contacted(segs[0])
+                        p.setIntersectTrue()
                         segs[0].set_contacted(p)
 
         if is_intersection:  # 交点あり(端点ではない)
