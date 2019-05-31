@@ -109,7 +109,7 @@ class segment:  # 線分クラス
         # 接点のリストを追加
         # 中途で交点がみつかったときのみ使用
 
-        for i in range(1, len(self.contacted)):
+        for i in range(0, len(self.contacted)):
             dis1 = distance(self.P, point)
             dis2 = distance(self.P, self.contacted[i])
 
@@ -260,18 +260,18 @@ def find_intersection(s1, s2):
     # 端点の除去
     if returnset[0]:  # 交点あり(端点かは不明)
         is_intersection = True
-        if returnset[1].equal(s1.P):
-            is_intersection = False
-            s1.P.set_contacted(s2)
-        elif returnset[1].equal(s1.Q):
-            is_intersection = False
-            s1.Q.set_contacted(s2)
-        elif returnset[1].equal(s2.P):
-            is_intersection = False
-            s2.P.set_contacted(s1)
-        elif returnset[1].equal(s2.Q):
-            is_intersection = False
-            s2.Q.set_contacted(s1)
+
+        segs = [s1, s2]
+        for seg in segs:
+            for p in [seg.P, seg.Q]:
+                if returnset[1].equal(p):
+                    is_intersection = False
+                    if seg is segs[0]:
+                        p.set_contacted(segs[1])
+                        segs[1].set_contacted(p)
+                    else:
+                        p.set_contacted(segs[0])
+                        segs[0].set_contacted(p)
 
         if is_intersection:  # 交点あり(端点ではない)
             returnset[1].set_contacted(s1)
@@ -321,31 +321,7 @@ def find_all_intersections(M, segments):
                         else:  # tmp[1].x < intersections[mid].
                             max = mid
                             mid = min + (max-min) // 2
-
-#                 for k in range(len(intersections)):
-#                     if intersections[k].x > tmp[1].x:
-#                         # 追加
-#                         intersections.insert(k, tmp[1])
-#                         break
-#                     elif intersections[k].x == tmp[1].x:
-#                         # y座標を比較する
-#                         if intersections[k].y > tmp[1].y:
-#                             intersections.insert(k, tmp[1])
-#                             break
-#                         else:
-#                             if k == len(intersections)-1:
-#                                 intersections.append(tmp[1])
-#                                 break
-#                             else:
-#                                 continue
-#                     elif k == len(intersections)-1:
-#                         # 末尾に追加
-#                         intersections.append(tmp[1])
-#                         break
-#                     else:
-#                         # 次のループへ
-#                         continue
-# return intersections
+    return intersections
 
 
 def calc_shortest_connection(s, p):

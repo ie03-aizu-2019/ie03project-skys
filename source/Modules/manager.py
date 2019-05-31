@@ -29,8 +29,6 @@ class Manager:
         self.find_all_intersections()
 
     def input2(self, file=False, path=None):
-        N, M, P, Q, points, segments, roots = range(7)
-
         if file:
             # ファイルから入力を得る
             if path is None:  # 標準パス
@@ -188,12 +186,7 @@ class Manager:
         success = False
         end = False
 
-        # for via in vias:
-        #     if via.isPoint() and start is via:
-        #         end = True
-        #         break
-
-        if start in vias:
+        if start.isPoint() and start in vias:
             end = True
 
         vias.append(start)
@@ -392,6 +385,8 @@ class Manager:
 
 
 def list2dict(l, intersections=False):
+    if l is None:
+        return {}
     length = len(l)
     d = {}
     for i in range(length):
