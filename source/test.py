@@ -1,4 +1,5 @@
 import sys
+import time
 import random
 import Modules.path as path
 sys.path.append(path.module_path)
@@ -36,7 +37,7 @@ conditions["ex3"] = {
     "Q": [0, 100],
     "x": [0, 10**4],
     "y": [0, 10**4],
-    "K": [0, 1]
+    "K": [1, 1]
 }
 
 conditions["ex4"] = {
@@ -46,7 +47,7 @@ conditions["ex4"] = {
     "Q": [0, 100],
     "x": [0, 10**4],
     "y": [0, 10**4],
-    "K": [0, 1]
+    "K": [1, 1]
 }
 
 conditions["ex5"] = {
@@ -56,7 +57,7 @@ conditions["ex5"] = {
     "Q": [0, 100],
     "x": [0, 10**4],
     "y": [0, 10**4],
-    "K": [0, 10]
+    "K": [1, 10]
 }
 
 conditions["ex6"] = {
@@ -66,7 +67,7 @@ conditions["ex6"] = {
     "Q": [0, 100],
     "x": [0, 10**4],
     "y": [0, 10**4],
-    "K": [0, 10]
+    "K": [1, 10]
 }
 
 conditions["ex7"] = {
@@ -179,6 +180,21 @@ def write_data_to_file(data, path=path.input_path):
             f.write(line+"\n")
 
 
+def measure_run_time(ex):
+    M = manager.Manager()
+    time1 = time.time()
+    M.input2(file=True, path=path.input_path)
+    time2 = time.time()
+    print(f"入力情報を受け取りました(時間: {time2-time1:.8f}秒)")
+    M.find_all_intersections()
+    time3 = time.time()
+    print(f"全交差点を算出しました(時間: {time3-time2:.8f}秒)")
+    M.run(ex)
+    time4 = time.time()
+    print(f"プログラムの実行が終了しました(時間: {time4-time3:.8f}秒)")
+    print(f"合計時間: {time4-time1:.8f}秒")
+
+
 if __name__ == "__main__":
     """
     python test.py <課題番号> <データ数>
@@ -195,10 +211,11 @@ if __name__ == "__main__":
         for i in range(data_num):
             data = makeTestData(conditions[f"ex{ex}"])
             write_data_to_file(data)
-            M = manager.Manager()
-            M.input(file=True, path=path.input_path)
-            M.run(ex)
-            write_data_to_file(data)
+            print("テストデータの準備が完了.")
+            print("プログラムを実行します.")
+            measure_run_time(ex)
+            # M.plot()
+            # write_data_to_file(data)
 
     else:
         print("引数エラー(数)")
