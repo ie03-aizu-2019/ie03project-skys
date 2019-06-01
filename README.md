@@ -16,30 +16,25 @@
 
 ## 実行環境とビルド方法
 
-### 1. Pythonの準備
+- [Python 3.7.2](https://www.python.org/)
+- Mac OS
 
-Python本体がなければ,
-[公式のPython](https://www.python.org/)
-からOSにあったものを準備してください.
+### 1. ソースコードの取得
 
-バージョンは3.7.2を想定しています.
-
-### 2. ソースコードの取得
-
-このGitリポジトリからクローンします.
+このGitリポジトリからクローン.
 
 ``` sh
 $ git clone git@github.com:ie03-aizu-2019/ie03project-skys.git
 ```
 
-### 3. セットアップ
+### 2. セットアップ
 
 ``` sh
 $ cd <クローンしたフォルダ>/source/
 $ python3 setup.py
 ```
 
-### 4. プログラムの実行
+### 3. プログラムの実行
 
 ``` sh
 $ python3 main.py -i 1
@@ -51,8 +46,11 @@ $ python3 main.py -i 1
 
 ## 成果物
 
-- [ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)
+- ~~[ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)~~
 - [Modules(主要なソースコード)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/Modules)
+- [test.py(テストデータ生成&実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/test.py)
+- [main.py(単純実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main.py)
+- [main2.py(詳細な実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main2.py)
 
 ## 週刊レポート
 
@@ -67,7 +65,7 @@ $ python3 main.py -i 1
 - [週刊レポート4](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report04.md)
 - [週刊レポート5](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report05.md)
 - [週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)
-- ~~[週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)~~
+- [週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)
 
 ### フェーズ3
 
