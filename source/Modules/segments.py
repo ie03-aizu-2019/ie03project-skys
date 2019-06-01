@@ -12,6 +12,7 @@
 """
 
 import math
+import random
 
 
 class Root:
@@ -297,37 +298,12 @@ def find_all_intersections(M, segments):
     intersections = []
     for i in range(M):
         for j in range(i+1, M):
-            tmp = find_intersection(segments[i], segments[j])
-            if tmp[0]:  # 交点あり
-                if len(intersections) == 0:
-                    intersections.append(tmp[1])
-                else:
-                    min = 0
-                    max = len(intersections)-1
-                    mid = max // 2
-                    while(True):
-                        if min == max:
-                            if intersections[mid].x < tmp[1].x:
-                                mid += 1
-                            elif intersections[mid].x == tmp[1].x:
-                                if intersections[mid].y < tmp[1].y:
-                                    mid += 1
-                            intersections.insert(mid, tmp[1])
-                            break
-                        # 次ループ用
-                        if tmp[1].x > intersections[mid].x:
-                            min = mid + 1
-                            mid = min + (max-min) // 2
-                        elif tmp[1].x == intersections[mid].x:
-                            if tmp[1].y > intersections[mid].y:
-                                min = mid + 1
-                                mid = min + (max-min) // 2
-                            else:
-                                max = mid
-                                mid = min + (max-min) // 2
-                        else:  # tmp[1].x < intersections[mid].
-                            max = mid
-                            mid = min + (max-min) // 2
+            result = find_intersection(segments[i], segments[j])
+            if result[0]:
+                intersections.append(result[1])
+
+    # ソート
+    intersections = sort_points(intersections)
     return intersections
 
 
@@ -372,6 +348,83 @@ def calc_shortest_connection(s, p):
             intersection = [point([s.Q.x, s.Q.y]), dis2]
 
     return intersection  # [交点, 距離]
+
+
+def isBigger(p1, p2):  # p1 >= p2ならTrue
+    if p1.x > p2.x:
+        return True
+    elif p1.x == p2.x:
+        if p1.y >= p2.y:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def sort_points(data):
+    if len(data) == 0:
+        return data
+    elif len(data) == 1:
+        return data
+    elif len(data) == 2:
+        if isBigger(data[0], data[1]):
+            return [data[1], data[0]]
+        else:
+            return [data[0], data[1]]
+    flag = False
+    i = 0
+    j = len(data)-1
+    rands = []
+    for k in range(3):
+        try:
+            rand = random.randint(i, j)
+        except Exception:
+            print(f"i: {i}")
+            print(f"j: {j}")
+        index = k
+        for l in range(k):
+            if data[rand].x < data[rands[l]].x:
+                index = l
+                break
+            else:
+                continue
+        rands.insert(index, rand)
+    axis = rands[1]
+    axis_value = data[axis]
+    while(True):
+        if flag:  # 終了
+            break
+        while(True):
+            if i == j:
+                flag = True
+                break
+            elif isBigger(data[i], axis_value):
+                break
+            i += 1
+        while(True):
+            if flag:
+                j += 1
+                break
+            elif i == j:
+                flag = True
+                break
+            elif not isBigger(data[j], axis_value):
+                break
+            j -= 1
+        if not flag:
+            tmp = data[i]
+            data[i] = data[j]
+            data[j] = tmp
+
+    first = data[0:j]
+    second = data[j:len(data)]
+    if first == []:
+        return data
+    first = sort_points(first)
+    second = sort_points(second)
+    first.extend(second)
+    return first
 
 
 def distance(in1, in2):

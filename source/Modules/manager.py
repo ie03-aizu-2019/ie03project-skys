@@ -16,7 +16,7 @@ import segments as sg
 import plot
 
 
-dis_const = 10**7
+dis_const = 11
 
 
 class Manager:
@@ -142,7 +142,7 @@ class Manager:
         self.searching_index = [
             start.index,
             fin.index,
-            K
+            int(K)
         ]
         roots = self.searching(start, fin, vias=[[], 0], roots=[])
 
@@ -167,6 +167,14 @@ class Manager:
         再帰的に呼び出す
         return 経由点
         """
+
+        debug = []
+        for via in vias[0]:
+            if via.isPoint():
+                debug.append(via.index)
+
+        if len(debug) >= 100 and start.isPoint():
+            print(debug)
 
         success = False
         end = False
@@ -221,11 +229,9 @@ class Manager:
                     else:
                         flag = True
 
-                st_index = self.searching_index[0]
-                fin_index = self.searching_index[1]
                 K = self.searching_index[2]
                 try:
-                    dis_K = self.roots[st_index][fin_index][K-1][1]
+                    dis_K = roots[K-1][1]
                 except Exception:
                     dis_K = dis_const
                 if plus is not None:
