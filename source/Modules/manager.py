@@ -1,10 +1,12 @@
 """
 クラス
 - Manager
+
 メソッド
 - Manager.print_info()
 - Manager.input(file=False, path=None)
 - Manager.exX()
+
 関数
 - list2dict()
 """
@@ -12,9 +14,6 @@
 import input
 import segments as sg
 import plot
-
-
-dis_const = 1000  # 無駄なルート探索を除去する
 
 
 class Manager:
@@ -25,11 +24,7 @@ class Manager:
         self.added_points = []
         self.roots = {}  # 探索したルートの結果
 
-    def input(self, file=True, path=None):
-        self.input2(file, path)
-        self.find_all_intersections()
 
-    def input2(self, file=False, path=None):
         if file:
             # ファイルから入力を得る
             if path is None:  # 標準パス
@@ -129,37 +124,21 @@ class Manager:
     def search_all_root(self):
         for root in self.roots_index:
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
             except Exception as e:
                 # KeyError
                 print(e)
 
-    def search_root(self, start, fin, K):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
-        self.searching_index = [
-            start.index,
-            fin.index,
-            int(K)
-        ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[])
-
-        if start.index not in self.roots.keys():
-            self.roots[start.index] = {}
         if len(roots) == 0:  # ルートなし
             self.roots[start.index] = {
                 fin.index: [None]
                 }
-        else:
-            self.roots[start.index] = {
-                fin.index: [sg.Root(x[0]) for x in roots],
-            }
             # self.roots[start.index][fin.index] = [
             #     root1,
             #     root2,
             # ]
 
-    def searching(self, start, fin, vias=[[], 0], roots=[]):
         """
         start, finはポイントクラスオブジェクト
         再帰的に呼び出す
@@ -169,42 +148,16 @@ class Manager:
         success = False
         end = False
 
-        if start.isPoint() and start in vias[0]:
-            end = True
 
-        vias[0].append(start)
 
         if start is fin:
             success = True
 
         if success:
             # 再帰の末尾
-            pass
-            if len(roots) == 0:
-                roots.append(vias)
-            else:
-                min = 0
-                max = len(roots)-1
-                mid = max // 2
-                while(True):
-                    if min == max:
-                        if roots[mid][1] < vias[1]:
-                            mid += 1
-                        roots.insert(mid, vias)
-                        break
-                    # 次ループ用
-                    if vias[1] > roots[mid][1]:
-                        min = mid + 1
-                        mid = min + (max-min) // 2
-                    else:  # tmp[1].x <= intersections[mid].
-                        max = mid
-                        mid = min + (max-min) // 2
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
-            # 線分用再帰⇓
-            if not start.isPoint():
-                bef = vias[0][len(vias[0])-2]
                 plus = None
                 minus = None
                 flag = False
@@ -219,27 +172,9 @@ class Manager:
                     else:
                         flag = True
 
-                K = self.searching_index[2]
-                try:
-                    dis_K = roots[K-1][1]
-                except Exception:
-                    dis_K = dis_const
                 if plus is not None:
-                    dis = sg.distance(bef, plus)
-                    dis += vias[1]
-                    if dis_K > dis:
-                        self.searching(plus, fin, vias=[[
-                                   x for x in vias[0]], dis], roots=roots)
                 if minus is not None:
-                    dis = sg.distance(bef, minus)
-                    dis += vias[1]
-                    # if minus not in vias:
-                    if dis_K > dis:
-                        self.searching(minus, fin, vias=[[
-                                       x for x in vias[0]], dis], roots=roots)
-            else:  # 点用再帰
                 for t in start.contacted:
-                    self.searching(t, fin, vias=[[x for x in vias[0]], vias[1]+0], roots=roots)
 
         return roots
 
@@ -276,9 +211,6 @@ class Manager:
                 min_set = result
 
         # 追加
-        min_set[0].setIntersectTrue()  # 接続するための交点
-        min_set[0].setAddedTrue()  # 接続するための交点
-        p.setAddedTrue()  # 道路網に接続した点
         seg = sg.segment([min_set[0], p])  # 追加点と交点を結ぶ線分
         # 線分, 点の追加
         indexs = self.next_index()
@@ -316,7 +248,6 @@ class Manager:
             # root = ["開始", "終了", "順位"]
             success_flag = True
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
             except Exception:
                 # KeyError
                 success_flag = False
@@ -328,7 +259,6 @@ class Manager:
                 if res is None:  # 道無し
                     print("NA")
                 else:
-                    print(f"{res.distance:.6g}")
             else:
                 print("NA")
 
@@ -337,7 +267,6 @@ class Manager:
             # root = ["開始", "終了", "順位"]
             success_flag = True
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
             except Exception:
                 # KeyError
                 success_flag = False
@@ -349,7 +278,6 @@ class Manager:
                 if res is None:  # 道無し
                     print("NA")
                 else:
-                    print(f"{res.distance:.6g}")
                     for point in res.points:
                         print(point.index, end=" ")
                     print()
@@ -387,13 +315,34 @@ class Manager:
     def ex7(self):
         self.add_all_points()
         for p in self.points:
-            if self.points[p].added and self.points[p].intersect:
-                print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
+    def ex8(self):
+        for root in self.roots_index:
+            # root = ["開始", "終了"]
+            success_flag = True
+            try:
+                self.search_root(self.points[root[0]], self.points[root[1]])
+            except Exception:
+                # KeyError
+                success_flag = False
+            if success_flag:
+                res = self.roots[root[0]][root[1]]
+                # 順位(入力) - 1 = 順位に対応する経路の添字
+                res = res[int(root[2])-1]
+                # res = [経由点リスト, 距離]
+        #ここまでのプログラムはex4のプログラムを元に作成した
+        #ここから経由点リストに同じものがあればその経由点リストの両端の座標を出力させるプログラムを作れば良い
+                if res is None:  # 道無し
+                    print("NA")
+                if
+                    for point in res.points:
+                        print(point.index, end=" ")
+                    print()
+            else:
+                print("NA")
+
 
 
 def list2dict(l, intersections=False):
-    if l is None:
-        return {}
     length = len(l)
     d = {}
     for i in range(length):
