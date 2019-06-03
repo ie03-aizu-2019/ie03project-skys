@@ -10,9 +10,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import path
 
+figsize = (8, 5.25)
+
 
 def plot_all(points={}, segments={}, delta=0.01, save=False, path=path.figure_path):
     # segments -> intersections -> point の順にプロットする
+    plt.figure(figsize=figsize)
     s_flag = False
     for index in segments:
         x1 = segments[index].P.x
