@@ -388,8 +388,29 @@ class Manager:
                     print(self.points[p].y)
 
     def ex8(self):
-        self.add_all_points()
-        
+        for root in self.roots_index:
+            # root = ["開始", "終了", "順位"]
+            success_flag = True
+            try:
+                self.search_root(self.points[root[0]], self.points[root[1]])
+            except Exception:
+                # KeyError
+                success_flag = False
+            if success_flag:
+                res = self.roots[root[0]][root[1]]
+                # 順位(入力) - 1 = 順位に対応する経路の添字
+                res = res[int(root[2])-1]
+                # res = [経由点リスト, 距離]
+        #ここまでのプログラムはex4のプログラムを元に作成した
+        #ここから経由点リストに同じものがあればその経由点リストの両端の座標を出力させるプログラムを作れば良い
+                if res is None:  # 道無し
+                    print("NA")
+                if
+                    for point in res.points:
+                        print(point.index, end=" ")
+                    print()
+            else:
+                print("NA")
 
 
 
