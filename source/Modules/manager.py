@@ -126,15 +126,16 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
-    def search_all_root(self):
+    def search_all_root(self, limit=True):
+        # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
+                self.search_root(self.points[root[0]], self.points[root[1]], root[2], limit=limit)
             except Exception as e:
                 # KeyError
                 print(e)
 
-    def search_root(self, start, fin, K):
+    def search_root(self, start, fin, K, limit=True):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
         self.searching_index = [
@@ -142,7 +143,7 @@ class Manager:
             fin.index,
             int(K)
         ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[])
+        roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
 
         if start.index not in self.roots.keys():
             self.roots[start.index] = {}
@@ -159,7 +160,7 @@ class Manager:
             #     root2,
             # ]
 
-    def searching(self, start, fin, vias=[[], 0], roots=[]):
+    def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
         """
         start, finはポイントクラスオブジェクト
         再帰的に呼び出す
@@ -227,14 +228,14 @@ class Manager:
                 if plus is not None:
                     dis = sg.distance(bef, plus)
                     dis += vias[1]
-                    if dis_K > dis:
+                    if dis_K > dis and limit:
                         self.searching(plus, fin, vias=[[
                                    x for x in vias[0]], dis], roots=roots)
                 if minus is not None:
                     dis = sg.distance(bef, minus)
                     dis += vias[1]
                     # if minus not in vias:
-                    if dis_K > dis:
+                    if dis_K > dis and limit:
                         self.searching(minus, fin, vias=[[
                                        x for x in vias[0]], dis], roots=roots)
             else:  # 点用再帰
