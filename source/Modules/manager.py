@@ -14,7 +14,7 @@ import segments as sg
 import plot
 
 
-dis_const = 1000  # 無駄なルート探索を除去する
+dis_const = 10000  # 無駄なルート探索を除去する
 
 
 class Manager:
