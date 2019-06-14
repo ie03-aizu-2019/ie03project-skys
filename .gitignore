@@ -1,7 +1,7 @@
-Phase1/__pycache__
-Phase3/__pycache__
-Phase3/__pycache__
-Phase1/.ipynb_checkpoints
-road-construction-proj
-source/Modules/__pycache__
 .DS_Store
+*/.DS_Store
+__pycache__/
+*/__pycache__/
+.ipynb_checkpoints
+*/.ipynb_checkpoints
+road-construction-proj
