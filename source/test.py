@@ -91,7 +91,7 @@ conditions["ex8"] = {
 }
 
 
-def makeTestData(condition):
+def makeTestData(condition, options={}):
     datas = {}
     datas["points"] = []
     datas["segments"] = []
@@ -126,7 +126,13 @@ def makeTestData(condition):
     """
     for index in ["N", "M", "P", "Q"]:
         tmp = condition[index]
-        datas[index] = random.randint(tmp[0], tmp[1])
+        diff = tmp[1] - tmp[0]
+        diff *= 0.2
+        diff = int(diff)
+        datas[index] = random.randint(tmp[0], tmp[0]+diff)
+        if index in list(options):
+            datas[index] = options[index]
+
 
     for i in range(0, datas["N"]):
         tmp = condition["x"]
@@ -137,8 +143,12 @@ def makeTestData(condition):
 
     for i in range(0, datas["M"]):
         # 線分のPQに交点は選ばない
-        p = random.randint(1, datas["N"])
-        q = random.randint(1, datas["N"])
+        while(True):
+            # 始点と終点が同じ点になった場合はやり直す
+            p = random.randint(1, datas["N"])
+            q = random.randint(1, datas["N"])
+            if p == q:
+                continue
         datas["segments"].append([p, q])
 
     for i in range(0, datas["P"]):
@@ -193,6 +203,44 @@ def measure_run_time(ex):
     time4 = time.time()
     print(f"プログラムの実行が終了しました(時間: {time4-time3:.8f}秒)")
     print(f"合計時間: {time4-time1:.8f}秒")
+
+
+class generetor:
+    def __init__(self, args=[]):
+        self.current_data = None
+        length = len(args)
+        if length == 2:
+            self.status = True
+        else:
+            self.status = False
+            return False
+        if args[1].isdigit():
+            self.ex = int(args[1])
+        else:
+            self.status = False
+
+    def setStatus(self, ex):
+        if args[1].isdigit():
+            self.ex = ex
+            self.status = True
+
+    def makedata(self, type, ex):
+        """
+        None 通常ケース(資料のものをコピー)
+        min minケース(Nが制約での最小値)
+        max maxケース(Nが制約での最大値)
+        None 例外ケース(個別に手動で作る)
+        """
+        condition = conditions[ex]
+        options = {}
+        if type == "min":
+            options["N"] = condition["N"][0]
+        else type == "max":
+            options["N"] = condition["N"][1]
+        self.current_data = makeTestData(conditions, options)
+
+    def write_to_testdata(self, path):
+        path.testdata_path
 
 
 if __name__ == "__main__":
