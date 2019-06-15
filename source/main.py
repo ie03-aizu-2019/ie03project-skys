@@ -1,5 +1,6 @@
 """
-実行用
+input.txtからの実行用
+python main.py -f 1
 """
 import sys
 import Modules.path as path
