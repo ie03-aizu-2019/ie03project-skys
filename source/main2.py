@@ -14,9 +14,7 @@ import os
 import Modules.path as path
 sys.path.append(path.module_path)
 import manager
-# import path
-
-M = manager.Manager()
+import test
 
 args = sys.argv
 length = len(args)
@@ -54,20 +52,18 @@ def main2(ex, case, file=True):
         return False
     else:
         index = case
-        datapath = f"{path.testdata_path}/testdata{ex_info[ex][1][index]}.txt"
-        print(datapath)
+        datapath = f"{path.testdata_path}/testdata{ex_info[ex][1][index-1]}.txt"
         if os.path.exists(datapath):
             # 正常実行
-            print(f"# 小課題{ex}のテスト実行\n")
-            M.input(file=file, path=datapath)
-            print(f"# 今回使用したテストデータ: testdata{ex_info[ex][1][index]}.txt⇓")
+            print(f"# 今回使用するテストデータ: testdata{ex_info[ex][1][index-1]}.txt⇓")
             with open(datapath, "r") as f:
                 for line in f.readlines():
                     print(line, end="")
             print(f"\n# 小課題{ex}の実行")
-            M.run(ex)
+            M = test.measure_run_time(ex, path=datapath)
             print("\n# 詳細データ")
-            M.print_info(length=10)
+            M.print_info(length=1)
+
             print("\n# プロット図の表示")
             M.plot()
             return True
@@ -87,7 +83,6 @@ if __name__ == "__main__":
             n = int(args[2])
             case = int(args[3])
 
-            print(case)
             result = main2(n, case, file=file)
             if result:
                 print("プログラムを正常終了します.")

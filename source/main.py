@@ -16,7 +16,7 @@ sample = """# Sample(小課題2をテストデータから実行)
 $ python main.py -f 2"""
 
 if __name__ == "__main__":
-    if length == 3:  # test.py, -i/-f, n
+    if length == 3:  # main.py, -i/-f, n
         if args[1] in ["-i", "-f"] and args[2].isdigit:
             # 正常な引数 => 実行
             file = True
