@@ -252,8 +252,5 @@ class generetor:
 
 
 if __name__ == "__main__":
-    """
-    python test.py <課題番号>
-    """
     gen = generetor()
     gen.write_min_max_testdata()
