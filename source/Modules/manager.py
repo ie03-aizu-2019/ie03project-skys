@@ -83,13 +83,15 @@ class Manager:
         print("-- Points --")
         for key in list(self.points):
             if not self.points[key].added:
-                print(f"{key}: {self.points[key].to_str()}")
+                print(f"{key}: {self.points[key].to_str()}", end=" ")
+                print([x.index for x in self.points[key].contacted])
 
         print("-- Segments --")
         for key in list(self.segments):
             P = self.segments[key].P
             Q = self.segments[key].Q
-            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
+            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})", end=" ")
+            print([x.index for x in self.segments[key].contacted])
 
         print("-- Added Points --")
         for key in list(self.points):
@@ -138,6 +140,10 @@ class Manager:
     def search_root(self, start, fin, K, limit=True):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
+        if start == self.points["C1"]:
+            print("hoge")
+            print("hoge")
+            print("hoge")
         self.searching_index = [
             start.index,
             fin.index,
@@ -148,13 +154,19 @@ class Manager:
         if start.index not in self.roots.keys():
             self.roots[start.index] = {}
         if len(roots) == 0:  # ルートなし
-            self.roots[start.index] = {
-                fin.index: [None]
-                }
+            try:
+                self.roots[start.index][fin.index] = [None]
+            except Exception:
+                self.roots[start.index] = {
+                    fin.index: [None]
+                    }
         else:
-            self.roots[start.index] = {
-                fin.index: [sg.Root(x[0]) for x in roots],
-            }
+            try:
+                self.roots[start.index][fin.index] = [sg.Root(x[0]) for x in roots]
+            except Exception:
+                self.roots[start.index] = {
+                    fin.index: [sg.Root(x[0]) for x in roots],
+                    }
             # self.roots[start.index][fin.index] = [
             #     root1,
             #     root2,
