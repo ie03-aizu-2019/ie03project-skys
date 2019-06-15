@@ -130,9 +130,8 @@ def makeTestData(condition, options={}):
         if index in list(options):
             datas[index] = options[index]
 
-    if datas["M"] > datas["N"]//2:
-        datas["M"] = random.randint(tmp[0], datas["N"]//2)
-
+    if datas["M"] > datas["N"] - 1:
+        datas["M"] = random.randint(tmp[0], datas["N"]-1)
 
     for i in range(0, datas["N"]):
         tmp = condition["x"]
@@ -199,10 +198,10 @@ def write_data_to_file(data, path=path.input_path):
             f.write(line+"\n")
 
 
-def measure_run_time(ex):
+def measure_run_time(ex, path=path.input_path):
     M = manager.Manager()
     time1 = time.time()
-    M.input2(file=True, path=path.input_path)
+    M.input2(file=True, path=path)
     time2 = time.time()
     print(f"入力情報を受け取りました(時間: {time2-time1:.8f}秒)")
     M.find_all_intersections()
@@ -212,6 +211,7 @@ def measure_run_time(ex):
     time4 = time.time()
     print(f"プログラムの実行が終了しました(時間: {time4-time3:.8f}秒)")
     print(f"合計時間: {time4-time1:.8f}秒")
+    return M
 
 
 class generetor:
@@ -224,16 +224,18 @@ class generetor:
     def makedata(self, type):
         """
         None 通常ケース(資料のものをコピー)
-        min minケース(Nが制約での最小値)
-        max maxケース(Nが制約での最大値)
+        min minケース(N, Mが制約での最小値)
+        max maxケース(N, Mが制約での最大値)
         None 例外ケース(個別に手動で作る)
         """
         condition = conditions[f"ex{self.ex}"]
         options = {}
         if type == "min":
             options["N"] = condition["N"][0]
+            options["M"] = condition["M"][0]
         elif type == "max":
             options["N"] = condition["N"][1]
+            options["M"] = condition["M"][1]
         self.current_data = makeTestData(condition, options)
 
     def write_to_testdata(self, op):
@@ -248,7 +250,6 @@ class generetor:
             self.write_to_testdata("2")
             self.makedata("max")
             self.write_to_testdata("3")
-
 
 
 if __name__ == "__main__":
