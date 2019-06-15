@@ -140,10 +140,6 @@ class Manager:
     def search_root(self, start, fin, K, limit=True):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
-        if start == self.points["C1"]:
-            print("hoge")
-            print("hoge")
-            print("hoge")
         self.searching_index = [
             start.index,
             fin.index,
