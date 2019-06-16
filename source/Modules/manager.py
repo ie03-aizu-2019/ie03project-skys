@@ -14,7 +14,7 @@ import segments as sg
 import plot
 
 
-dis_const = 100  # 無駄なルート探索を除去する
+dis_const = 10000  # 無駄なルート探索を除去する
 
 
 class Manager:
@@ -145,28 +145,49 @@ class Manager:
             fin.index,
             int(K)
         ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
-
-        if start.index not in self.roots.keys():
-            self.roots[start.index] = {}
-        if len(roots) == 0:  # ルートなし
-            try:
-                self.roots[start.index][fin.index] = [None]
-            except Exception:
-                self.roots[start.index] = {
-                    fin.index: [None]
-                    }
+        if start.index in self.roots.keys():
+            if fin.index in self.roots[start.index].keys():
+                pass
+            else:
+                self.roots[start.index][fin.index] = []
         else:
-            try:
-                self.roots[start.index][fin.index] = [sg.Root(x[0]) for x in roots]
-            except Exception:
-                self.roots[start.index] = {
-                    fin.index: [sg.Root(x[0]) for x in roots],
-                    }
-            # self.roots[start.index][fin.index] = [
-            #     root1,
-            #     root2,
-            # ]
+            self.roots[start.index] = {
+                fin.index: []
+            }
+        self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
+
+    def insert_root(self, start, fin, root):
+        roots = []
+        if start in self.roots.keys():
+            if fin in self.roots[start].keys():
+                roots = self.roots[start][fin]
+            else:
+                self.roots[start][fin] = []
+                roots = self.roots[start][fin]
+        else:
+            self.roots[start] = {
+                fin: []
+            }
+            roots = self.roots[start][fin]
+        if len(roots) == 0:
+            roots.append(root)
+        else:
+            min = 0
+            max = len(roots)-1
+            mid = max // 2
+            while(True):
+                if min == max:
+                    if roots[mid].distance < root.distance:
+                        mid += 1
+                    roots.insert(mid, root)
+                    break
+                # 次ループ用
+                if root.distance > roots[mid].distance:
+                    min = mid + 1
+                    mid = min + (max-min) // 2
+                else:  # tmp[1].x <= intersections[mid].
+                    max = mid
+                    mid = min + (max-min) // 2
 
     def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
         """
@@ -188,26 +209,13 @@ class Manager:
 
         if success:
             # 再帰の末尾
-            pass
-            if len(roots) == 0:
-                roots.append(vias)
-            else:
-                min = 0
-                max = len(roots)-1
-                mid = max // 2
-                while(True):
-                    if min == max:
-                        if roots[mid][1] < vias[1]:
-                            mid += 1
-                        roots.insert(mid, vias)
-                        break
-                    # 次ループ用
-                    if vias[1] > roots[mid][1]:
-                        min = mid + 1
-                        mid = min + (max-min) // 2
-                    else:  # tmp[1].x <= intersections[mid].
-                        max = mid
-                        mid = min + (max-min) // 2
+            length = len(vias[0])
+            for i in range(0, length-1, 2):
+                found_root = sg.Root(vias[0][i:length])
+                self.insert_root(found_root.start.index,
+                                 found_root.fin.index,
+                                 found_root)
+
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
@@ -248,9 +256,10 @@ class Manager:
                                        x for x in vias[0]], dis], roots=roots)
             else:  # 点用再帰
                 for t in start.contacted:
-                    self.searching(t, fin, vias=[[x for x in vias[0]], vias[1]+0], roots=roots)
-
-        return roots
+                    self.searching(t, fin,
+                                   vias=[
+                                    [x for x in vias[0]],
+                                    vias[1] + 0], roots=roots)
 
     def next_index(self):
         max = -1
@@ -313,30 +322,37 @@ class Manager:
         if not ans[0]:  # 交点なし
             print("NA")
         else:  # 交点あり
-            print(f"{ans[1].x:.5f} {ans[1].y:.5f}")
+            print(f"{ans[1].x:.6g} {ans[1].y:.6g}")
 
     def ex2(self):
         for p in self.points:
             if "C" in self.points[p].index:
-                print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
+                print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
     def ex3(self):
         for root in self.roots_index:
             # root = ["開始", "終了", "順位"]
             success_flag = True
-            try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
-            except Exception:
-                # KeyError
+            if root[0] not in self.points.keys() or root[1] not in self.points.keys():
+                # 存在しない地点, 交点
                 success_flag = False
+            else:
+                try:
+                    self.search_root(
+                        self.points[root[0]],
+                        self.points[root[1]],
+                        root[2])
+                except Exception as e:
+                    # KeyError
+                    print(e)
+                    success_flag = False
             if success_flag:
                 res = self.roots[root[0]][root[1]]
                 # 順位(入力) - 1 = 順位に対応する経路の添字
-                res = res[0]
-                if res is None:  # 道無し
+                if len(res) == 0:  # 道無し
                     print("NA")
                 else:
-                    print(f"{res.distance:.6g}")
+                    print(f"{res[0].distance:.6g}")
             else:
                 print("NA")
 
@@ -374,7 +390,7 @@ class Manager:
             if len(roots) < K:
                 K = len(roots)
             for i in range(K):
-                print(f"{roots[i].distance:.5f}")
+                print(f"{roots[i].distance:.6g}")
 
     def ex6(self):
         self.search_all_root()
@@ -386,7 +402,7 @@ class Manager:
             if len(roots) < K:
                 K = len(roots)
             for i in range(K):
-                print(f"{roots[i].distance:.5f}")
+                print(f"{roots[i].distance:.6g}")
                 # root.points = [point(1), point(C1), point(4)]
                 for point in roots[i].points:
                     print(point.index, end=", ")
