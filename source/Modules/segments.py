@@ -64,6 +64,17 @@ class Root:
         info += f"\ndistance: {self.distance}"
         return info
 
+    def merge(self, vias):
+        # vias = [p1, s1, p2]
+        # self.points = [p2, p3, p4]
+        # self.segments = [s2, s3]
+        vias_copy = [x for x in vias]
+        length = len(self.points)
+        for i in range(length-1):
+            vias_copy.append(self.segments[i])
+            vias_copy.append(self.points[i+1])
+        return Root(vias_copy)
+
 
 class segment:  # 線分クラス
     def __init__(self, s):  # 線分はpointオブジェクトのリストで渡す

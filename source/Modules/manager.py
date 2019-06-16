@@ -154,7 +154,7 @@ class Manager:
             self.roots[start.index] = {
                 fin.index: []
             }
-        self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
+        self.searching(start, fin, vias=[[], 0], limit=limit)
 
     def insert_root(self, start, fin, root):
         roots = []
@@ -189,7 +189,7 @@ class Manager:
                     max = mid
                     mid = min + (max-min) // 2
 
-    def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
+    def searching(self, start, fin, vias=[[], 0], limit=True):
         """
         start, finはポイントクラスオブジェクト
         再帰的に呼び出す
@@ -215,7 +215,6 @@ class Manager:
                 self.insert_root(found_root.start.index,
                                  found_root.fin.index,
                                  found_root)
-
         elif end:
             pass
         else:  # 条件を満たさなければ, 以下再帰へ
@@ -236,9 +235,11 @@ class Manager:
                     else:
                         flag = True
 
+                st = self.searching_index[0]
+                fi = self.searching_index[1]
                 K = self.searching_index[2]
                 try:
-                    dis_K = roots[K-1][1]
+                    dis_K = self.roots[st][fi][K].distance()
                 except Exception:
                     dis_K = dis_const
                 if plus is not None:
@@ -246,20 +247,24 @@ class Manager:
                     dis += vias[1]
                     if dis_K > dis and limit:
                         self.searching(plus, fin, vias=[[
-                                   x for x in vias[0]], dis], roots=roots)
+                                   x for x in vias[0]], dis])
                 if minus is not None:
                     dis = sg.distance(bef, minus)
                     dis += vias[1]
                     # if minus not in vias:
                     if dis_K > dis and limit:
                         self.searching(minus, fin, vias=[[
-                                       x for x in vias[0]], dis], roots=roots)
+                                       x for x in vias[0]], dis])
             else:  # 点用再帰
+                if vias[0][0].index in self.roots.keys() and start.index in self.roots[vias[0][0].index].keys():
+                    for root in self.roots[vias[0][0].index][start.index]:
+                        merged_root = root.merge(vias[0])
+                        self.insert_root(start.index, fin.index, merged_root)
                 for t in start.contacted:
                     self.searching(t, fin,
                                    vias=[
                                     [x for x in vias[0]],
-                                    vias[1] + 0], roots=roots)
+                                    vias[1] + 0])
 
     def next_index(self):
         max = -1
@@ -337,15 +342,16 @@ class Manager:
                 # 存在しない地点, 交点
                 success_flag = False
             else:
-                try:
-                    self.search_root(
-                        self.points[root[0]],
-                        self.points[root[1]],
-                        root[2])
-                except Exception as e:
-                    # KeyError
-                    print(e)
-                    success_flag = False
+                # try:
+                self.search_root(
+                    self.points[root[0]],
+                    self.points[root[1]],
+                    root[2])
+                # except Exception as e:
+                #     # KeyError
+                #     print("Exception Occured")
+                #     print(e)
+                #     success_flag = False
             if success_flag:
                 res = self.roots[root[0]][root[1]]
                 # 順位(入力) - 1 = 順位に対応する経路の添字
