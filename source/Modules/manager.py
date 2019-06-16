@@ -332,7 +332,7 @@ class Manager:
             if success_flag:
                 res = self.roots[root[0]][root[1]]
                 # 順位(入力) - 1 = 順位に対応する経路の添字
-                res = res[int(root[2])-1]
+                res = res[0]
                 if res is None:  # 道無し
                     print("NA")
                 else:
