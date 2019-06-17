@@ -384,65 +384,64 @@ pre {
 <h2 id="目次">目次</h2>
 <ul>
 <li><a href="#chapter1">システムの概要</a></li>
-<li><a href="#chapter2">動作環境</a></li>
+<li><a href="#chapter2">実行環境とビルド方法</a></li>
 <li><a href="#chapter3">基本的な利用方法</a>
 <ul>
 <li><a href="#chapter3-1">main.pyからの利用</a></li>
-<li><a href="#chapter3-2">test.pyからの利用</a></li>
+<li><a href="#chapter3-2">main2.pyからの利用</a></li>
 </ul></li>
 <li><a href="#about-option">optionについて</a></li>
-<li><a href="#chapter4">提供される機能</a></li>
 </ul>
 <p><a id="chapter1"></a></p>
 <h2 id="システムの概要">システムの概要</h2>
 <p>本システムでは、機能として断片的な道の情報からの道路網復元と、道路網上の経路検索システム、新たな地点につなぐための最適な道の提案機能、重要性の高い道の検出機能を提供します。</p>
-<p>システムのTree構造は以下の通りです(一部システムに無関係のファイル, ディレクトリは除いてあります).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&lt;</span><span class="ex">BASEDIR</span><span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-2" title="2">├── <span class="ex">README.md</span>               <span class="co"># README</span></a>
-<a class="sourceLine" id="cb1-3" title="3">├── <span class="ex">document.html</span>           <span class="co"># このドキュメント</span></a>
-<a class="sourceLine" id="cb1-4" title="4">├── <span class="ex">main.py</span>                 <span class="co"># システムの利用に使う①</span></a>
-<a class="sourceLine" id="cb1-5" title="5">├── <span class="ex">Modules</span></a>
-<a class="sourceLine" id="cb1-6" title="6">│   ├── <span class="ex">input.py</span></a>
-<a class="sourceLine" id="cb1-7" title="7">│   ├── <span class="ex">manager.py</span></a>
-<a class="sourceLine" id="cb1-8" title="8">│   ├── <span class="ex">path.py</span></a>
-<a class="sourceLine" id="cb1-9" title="9">│   ├── <span class="ex">plot.py</span></a>
-<a class="sourceLine" id="cb1-10" title="10">│   ├── <span class="ex">segments.py</span></a>
-<a class="sourceLine" id="cb1-11" title="11">│   └── <span class="ex">test.py</span>            <span class="co"># システムの利用に使う②</span></a>
-<a class="sourceLine" id="cb1-12" title="12">├── <span class="ex">Reports</span>                 <span class="co"># 週刊レポート</span></a>
-<a class="sourceLine" id="cb1-13" title="13">│   ├── <span class="ex">report0X.md</span></a>
-<a class="sourceLine" id="cb1-14" title="14">│   └── <span class="ex">template.md</span></a>
-<a class="sourceLine" id="cb1-15" title="15">└── <span class="ex">static</span></a>
-<a class="sourceLine" id="cb1-16" title="16">    ├── <span class="ex">figure.png</span>          <span class="co"># 情報の2次元グラフ</span></a>
-<a class="sourceLine" id="cb1-17" title="17">    ├── <span class="ex">input.txt</span>           <span class="co"># ①のデータ入力に使うテキストファイル</span></a>
-<a class="sourceLine" id="cb1-18" title="18">    └── <span class="ex">testdata</span>            <span class="co"># ②のデータ入力に使うフ複数ファイルのディレクトリ</span></a>
-<a class="sourceLine" id="cb1-19" title="19">        └── <span class="ex">testdata</span><span class="op">&lt;</span>小課題番号<span class="op">&gt;</span>-<span class="op">&lt;</span>N<span class="op">&gt;</span>.txt</a></code></pre></div>
-<p>このドキュメントでは, 基本的に &lt;BASEDIR&gt; をルートディレクトリとしてファイルパスを書いていきます.</p>
+<p>プログラムのソースは, sourceディレクトリにあります.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">source</span></a>
+<a class="sourceLine" id="cb1-2" title="2">├── <span class="ex">Modules</span></a>
+<a class="sourceLine" id="cb1-3" title="3">│   ├── <span class="ex">input.py</span></a>
+<a class="sourceLine" id="cb1-4" title="4">│   ├── <span class="ex">manager.py</span></a>
+<a class="sourceLine" id="cb1-5" title="5">│   ├── <span class="ex">path.py</span></a>
+<a class="sourceLine" id="cb1-6" title="6">│   ├── <span class="ex">plot.py</span></a>
+<a class="sourceLine" id="cb1-7" title="7">│   ├── <span class="ex">segments.py</span></a>
+<a class="sourceLine" id="cb1-8" title="8">│   └── <span class="ex">test.py</span></a>
+<a class="sourceLine" id="cb1-9" title="9">├── <span class="ex">main.py</span></a>
+<a class="sourceLine" id="cb1-10" title="10">├── <span class="ex">setup.py</span></a>
+<a class="sourceLine" id="cb1-11" title="11">└── <span class="ex">static</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    ├── <span class="ex">figure.png</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    ├── <span class="ex">input.txt</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    ├── <span class="ex">requirements.txt</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    └── <span class="ex">testdata</span></a>
+<a class="sourceLine" id="cb1-16" title="16">        └── <span class="ex">testdata</span>α-β.txt</a></code></pre></div>
 <p><a id="chapter2"></a></p>
-<h2 id="動作環境">動作環境</h2>
-<p>動作環境として,</p>
+<h2 id="実行環境とビルド方法">実行環境とビルド方法</h2>
+<p>実行環境として,</p>
 <ul>
-<li>Python 3.7.2</li>
+<li><a href="https://www.python.org/downloads/release/python-372/">Python 3.7.2</a></li>
 <li>Mac OS</li>
 </ul>
-<p>を想定します.</p>
-<p>新しめのPython3系さえあれば動作すると思いますが, 一部グラフ化等の機能が制限されれる可能性があります.</p>
+<p>を想定します(WindowsやUnixだとプロット図の表示でエラーが発生する可能性が高い).</p>
+<p>その他必要なモジュールのインストールは, <strong>setup.py</strong> で行います.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="ex">python3</span> setup.py</a></code></pre></div>
+<p>｢正常にセットアップが完了しました｣と表示されれ, 環境構築は終了です.</p>
 <p><a id="chapter3"></a></p>
 <h2 id="基本的な利用方法">基本的な利用方法</h2>
 <p>システムの利用方法は2種類用意されています.</p>
 <ol type="1">
-<li><strong>./main.py</strong> から利用する</li>
-<li><strong>./Modules/test.py</strong> から利用する</li>
+<li><strong>source/main.py</strong> から利用する</li>
+<li><strong>source/main2.py</strong> から利用する</li>
 </ol>
 <p><a id="chapter3-1"></a></p>
-<h3 id="main.py-から利用する">① ./main.py から利用する</h3>
+<h3 id="sourcemain.py-から利用する">① source/main.py から利用する</h3>
 <p>main.py では, 入力から出力を得るだけのシンプルな機能を提供します.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">python</span> ./main.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
-<p>※ &lt;input_option&gt;と&lt;output_option&gt;については, <a href="#about-option">optionについて</a> を参照してください.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">python</span> source/main.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>ex_num<span class="op">&gt;</span></a></code></pre></div>
+<p>入力ファイルは, <strong>source/static/input.txt</strong> に用意する必要があります.</p>
+<p>※ &lt;input_option&gt;と&lt;ex_num&gt;については, <a href="#about-option">optionについて</a> を参照してください.</p>
 <p><a id="chapter3-2"></a></p>
-<h3 id="modulestest.py">② ./Modules/test.py</h3>
-<p>test.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">python</span> ./Modules/test.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
-<p>※ &lt;input_option&gt;と&lt;output_option&gt;については , <a href="#about-option">optionについて</a> を参照してください.</p>
+<h3 id="sourcemain2.py">② source/main2.py</h3>
+<p>main2.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">python</span> source/main2.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>ex_num<span class="op">&gt;</span> <span class="op">&lt;</span>case_num<span class="op">&gt;</span></a></code></pre></div>
+<p>テストデータは予め用意されています.</p>
+<p>※ &lt;input_option&gt;と&lt;ex_num&gt; &lt;case_num&gt;については , <a href="#about-option">optionについて</a> を参照してください.</p>
 <p><a id="about-option"></a></p>
 <h2 id="option-について">option について</h2>
 <h3 id="input_option">①input_option</h3>
@@ -457,60 +456,44 @@ pre {
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">-i</td>
-<td style="text-align: left;">ターミナルから</td>
+<td style="text-align: left;">ターミナル入力</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">-f</td>
-<td style="text-align: left;">./static/input.txt から</td>
+<td style="text-align: left;">ファイル入力</td>
 </tr>
 </tbody>
 </table>
-<p><strong>-f</strong> オプションでファイルから入力する場合は, 予め入力データを <strong>./static/input.txt</strong> に入力しておく必要があります.</p>
-<h3 id="output_option">②output_option</h3>
-<p>output_optionでは, 入力されたデータに対して如何なる処理をした結果を出力するかを指定します.</p>
+<p><strong>-f</strong> オプションでmain.pyを実行する場合は, 予め入力データを <strong>source/static/input.txt</strong> に入力しておく必要があります.</p>
+<h3 id="ex_num">② ex_num</h3>
+<p>output_optionでは, 入力されたデータに対して実行する処理を小課題番号で指定します.</p>
+<h3 id="case_num">③ case_num</h3>
+<p>case_num では, テストケースの番号を入力します.</p>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: center;">output_option</th>
-<th style="text-align: left;">出力</th>
+<th style="text-align: center;">オプション</th>
+<th style="text-align: center;">テストケース</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
-<td style="text-align: left;">2線分の交点座標</td>
+<td style="text-align: center;">通常ケース</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">2</td>
-<td style="text-align: left;">全ての交差点座標</td>
+<td style="text-align: center;">最小入力ケース</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">3</td>
-<td style="text-align: left;">最短経路の距離</td>
+<td style="text-align: center;">最大入力ケース</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">4</td>
-<td style="text-align: left;">最短経路と距離</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">第K番目までの経路の距離</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">6</td>
-<td style="text-align: left;">第K番目までの経路と距離</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: left;">最適な交差点座標</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">8</td>
-<td style="text-align: left;">幹線道路</td>
+<td style="text-align: center;">4以降</td>
+<td style="text-align: center;">特殊ケース</td>
 </tr>
 </tbody>
 </table>
-<p><a id="chapter4"></a></p>
-<h2 id="提供される機能">提供される機能</h2>
 </body>
 </html>
