@@ -8,7 +8,6 @@
     - [main.pyからの利用](#chapter3-1)
     - [main2.pyからの利用](#chapter3-2)
 - [optionについて](#about-option)
-- [提供される機能](#chapter4)
 
 
 <a id="chapter1"></a>
@@ -74,12 +73,12 @@ $ python3 setup.py
 main.py では, 入力から出力を得るだけのシンプルな機能を提供します.
 
 ``` sh
-python source/main.py <input_option> <output_option>
+python source/main.py <input_option> <ex_num>
 ```
 
 入力ファイルは, **source/static/input.txt** に用意する必要があります.
 
-※ \<input_option\>と\<output_option\>については, [optionについて](#about-option) を参照してください.
+※ \<input_option\>と\<ex_num\>については, [optionについて](#about-option) を参照してください.
 
 <a id="chapter3-2"></a>
 
@@ -88,12 +87,12 @@ python source/main.py <input_option> <output_option>
 main2.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.
 
 ``` sh
-python source/main2.py <input_option> <output_option>
+python source/main2.py <input_option> <ex_num> <case_num>
 ```
 
 テストデータは予め用意されています.
 
-※ \<input_option\>と\<output_option\>については
+※ \<input_option\>と\<ex_num\> \<case_num\>については
 , [optionについて](#about-option) を参照してください.
 
 <a id="about-option"></a>
@@ -111,21 +110,17 @@ input_optionでは, データ入力の方法を指定します.
 
 **-f** オプションでmain.pyを実行する場合は, 予め入力データを **source/static/input.txt** に入力しておく必要があります.
 
-### ②output_option
+### ② ex_num
 
-output_optionでは, 入力されたデータに対して如何なる処理をした結果を出力するかを指定します.
+output_optionでは, 入力されたデータに対して実行する処理を小課題番号で指定します.
 
-| output_option | 出力 |
-|:---:|:---|
-| 1 | 2線分の交点座標 |
-| 2 | 全ての交差点座標 |
-| 3 | 最短経路の距離 |
-| 4 | 最短経路と距離 |
-| 5 | 第K番目までの経路の距離 |
-| 6 | 第K番目までの経路と距離 |
-| 7 | 最適な交差点座標 |
-| 8 | 幹線道路 |
+### ③ case_num
 
-<a id="chapter4"></a>
+case_num では, テストケースの番号を入力します.
 
-## 提供される機能
+| オプション | テストケース |
+|:---:|:---:|
+| 1 | 通常ケース |
+| 2 | 最小入力ケース |
+| 3 | 最大入力ケース |
+| 4以降 | 特殊ケース |
