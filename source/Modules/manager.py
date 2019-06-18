@@ -373,8 +373,11 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
-            for i in range(K):
-                print(f"{roots[i].distance:.5f}")
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
 
     def ex6(self):
         self.search_all_root()
@@ -385,12 +388,15 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
-            for i in range(K):
-                print(f"{roots[i].distance:.5f}")
-                # root.points = [point(1), point(C1), point(4)]
-                for point in roots[i].points:
-                    print(point.index, end=", ")
-                print()
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
+                    # root.points = [point(1), point(C1), point(4)]
+                    for point in roots[i].points:
+                        print(point.index, end=", ")
+                    print()
 
     def ex7(self):
         self.add_all_points()
