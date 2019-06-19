@@ -407,13 +407,17 @@ class Manager:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
-    def ex8(self):
-        self.search_all_root()
-        for index in self.roots_index:
-            start = index[0]
-            fin = index[1]
-            roots = self.roots[start][fin]
-
+    # def ex8(self):
+    #     self.search_all_root()
+    #     for index in self.roots_index:
+    #         start = index[0]
+    #         fin = index[1]
+    #         roots = self.roots[start][fin]
+    #         keep = [x.index for x in roots[0].segments]
+    #         for root in roots:
+    #             for segment in root.segments:
+    #                 keep.append()
+    #                 segment
             # for i in range(K):
             #     print(f"{roots[i].distance:.5f}")
             #     # root.points = [point(1), point(C1), point(4)]
