@@ -37,7 +37,8 @@ $ python3 setup.py
 ### 3. プログラムの実行
 
 ``` sh
-$ python3 main.py -i 1
+$ python3 main.py -i 1  # 手入力, 小課題1
+$ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 ```
 
 ※ファイルから入力をする場合は, **source/static/input.py** にデータを予め入力した上で, -iオプション を -fオプションに変えて実行します.
@@ -48,7 +49,7 @@ $ python3 main.py -i 1
 
 - ~~[ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)~~
 - [Modules(主要なソースコード)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/Modules)
-- [test.py(テストデータ生成&実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/test.py)
+- [test.py(テストデータ生成)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/test.py)
 - [main.py(単純実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main.py)
 - [main2.py(詳細な実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main2.py)
 

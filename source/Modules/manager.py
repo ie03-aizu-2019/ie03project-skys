@@ -14,7 +14,7 @@ import segments as sg
 import plot
 
 
-dis_const = 10000  # 無駄なルート探索を除去する
+dis_const = 1000000  # 無駄なルート探索を除去する
 
 
 class Manager:
@@ -128,7 +128,7 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
-    def search_all_root(self, limit=True):
+    def search_all_root(self, limit=False):
         # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
@@ -395,8 +395,11 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
-            for i in range(K):
-                print(f"{roots[i].distance:.6g}")
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
 
     def ex6(self):
         self.search_all_root()
@@ -407,12 +410,15 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
-            for i in range(K):
-                print(f"{roots[i].distance:.6g}")
-                # root.points = [point(1), point(C1), point(4)]
-                for point in roots[i].points:
-                    print(point.index, end=", ")
-                print()
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
+                    # root.points = [point(1), point(C1), point(4)]
+                    for point in roots[i].points:
+                        print(point.index, end=", ")
+                    print()
 
     def ex7(self):
         self.add_all_points()
@@ -421,29 +427,21 @@ class Manager:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
     def ex8(self):
-        for root in self.roots_index:
-            # root = ["開始", "終了"]
-            success_flag = True
-            try:
-                self.search_root(self.points[root[0]], self.points[root[1]])
-            except Exception:
-                # KeyError
-                success_flag = False
-            if success_flag:
-                res = self.roots[root[0]][root[1]]
-                # 順位(入力) - 1 = 順位に対応する経路の添字
-                res = res[int(root[2])-1]
-                # res = [経由点リスト, 距離]
-        #ここまでのプログラムはex4のプログラムを元に作成した
-        #ここから経由点リストに同じものがあればその経由点リストの両端の座標を出力させるプログラムを作れば良い
-                if res is None:  # 道無し
-                    print("NA")
-                if True:
-                    for point in res.points:
-                        print(point.index, end=" ")
-                    print()
-            else:
-                print("NA")
+        self.search_all_root()
+        for index in self.roots_index:
+            start = index[0]
+            fin = index[1]
+            roots = self.roots[start][fin]
+
+            for i in range(K):
+                print(f"{roots[i].distance:.5f}")
+                # root.points = [point(1), point(C1), point(4)]
+                for point in roots[i].points:
+                    print(point.index, end=", ")
+                print()
+
+
+
 
 
 def list2dict(l, intersections=False):
