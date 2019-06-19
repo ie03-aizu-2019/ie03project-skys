@@ -110,17 +110,28 @@ class segment:  # 線分クラス
         # 接点のリストを追加
         # 中途で交点がみつかったときのみ使用
 
-        for i in range(0, len(self.contacted)):
-            dis1 = distance(self.P, point)
-            dis2 = distance(self.P, self.contacted[i])
-
-            if dis1 < dis2:
-                self.contacted.insert(i, point)
+        min = 0
+        max = len(self.contacted)-1
+        mid = max // 2
+        dis1 = distance(self.P, point)  # 新しい点との距離
+        while(True):
+            dis2 = distance(self.P, self.contacted[mid])
+            if min == max:
+                if dis2 < dis1:
+                    mid += 1
+                elif dis1 == dis2:
+                    break  # 格納済みprint([x.index for x in self.points[key].contacted])
+                self.contacted.insert(mid, point)
                 break
-            elif dis1 == dis2:  # 格納済み
+            # 次ループ用
+            if dis1 > dis2:
+                min = mid + 1
+                mid = min + (max-min) // 2
+            elif dis1 == dis2:
                 break
-            else:
-                continue
+            else:  # tmp[1].x < intersections[mid].
+                max = mid
+                mid = min + (max-min) // 2
 
         # ループを抜けても格納できていない -> self.Q = point
 

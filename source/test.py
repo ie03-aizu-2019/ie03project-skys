@@ -5,9 +5,6 @@ import Modules.path as path
 sys.path.append(path.module_path)
 import manager
 
-args = sys.argv
-length = len(args)
-
 conditions = {}
 
 conditions["ex1"] = {
@@ -91,7 +88,7 @@ conditions["ex8"] = {
 }
 
 
-def makeTestData(condition):
+def makeTestData(condition, options={}):
     datas = {}
     datas["points"] = []
     datas["segments"] = []
@@ -126,7 +123,15 @@ def makeTestData(condition):
     """
     for index in ["N", "M", "P", "Q"]:
         tmp = condition[index]
-        datas[index] = random.randint(tmp[0], tmp[1])
+        diff = tmp[1] - tmp[0]
+        diff *= 0.1
+        diff = int(diff)
+        datas[index] = random.randint(tmp[0], tmp[0]+diff)
+        if index in list(options):
+            datas[index] = options[index]
+
+    if datas["M"] > datas["N"] - 1:
+        datas["M"] = random.randint(tmp[0], datas["N"]-1)
 
     for i in range(0, datas["N"]):
         tmp = condition["x"]
@@ -137,8 +142,21 @@ def makeTestData(condition):
 
     for i in range(0, datas["M"]):
         # 線分のPQに交点は選ばない
-        p = random.randint(1, datas["N"])
-        q = random.randint(1, datas["N"])
+        count = 0
+        while(True):
+            # 始点と終点が同じ点になった場合はやり直す
+            p = random.randint(1, datas["N"])
+            q = random.randint(1, datas["N"])
+            if [p, q] in datas["segments"]:
+                count += 1
+                continue
+            elif count > 5:
+                break
+            elif p == q:
+                count += 1
+                continue
+            else:
+                break
         datas["segments"].append([p, q])
 
     for i in range(0, datas["P"]):
@@ -180,10 +198,10 @@ def write_data_to_file(data, path=path.input_path):
             f.write(line+"\n")
 
 
-def measure_run_time(ex):
+def measure_run_time(ex, path=path.input_path):
     M = manager.Manager()
     time1 = time.time()
-    M.input2(file=True, path=path.input_path)
+    M.input2(file=True, path=path)
     time2 = time.time()
     print(f"入力情報を受け取りました(時間: {time2-time1:.8f}秒)")
     M.find_all_intersections()
@@ -193,29 +211,47 @@ def measure_run_time(ex):
     time4 = time.time()
     print(f"プログラムの実行が終了しました(時間: {time4-time3:.8f}秒)")
     print(f"合計時間: {time4-time1:.8f}秒")
+    return M
+
+
+class generetor:
+    def __init__(self):
+        self.current_data = None
+
+    def setex(self, ex):
+        self.ex = ex
+
+    def makedata(self, type):
+        """
+        None 通常ケース(資料のものをコピー)
+        min minケース(N, Mが制約での最小値)
+        max maxケース(N, Mが制約での最大値)
+        None 例外ケース(個別に手動で作る)
+        """
+        condition = conditions[f"ex{self.ex}"]
+        options = {}
+        if type == "min":
+            options["N"] = condition["N"][0]
+            options["M"] = condition["M"][0]
+        elif type == "max":
+            options["N"] = condition["N"][1]
+            options["M"] = condition["M"][1]
+        self.current_data = makeTestData(condition, options)
+
+    def write_to_testdata(self, op):
+        tpath = path.testdata_path
+        tpath = f"{tpath}/testdata{self.ex}-{op}.txt"
+        write_data_to_file(self.current_data, path=tpath)
+
+    def write_min_max_testdata(self):
+        for i in range(1, 9):
+            self.setex(str(i))
+            self.makedata("min")
+            self.write_to_testdata("2")
+            self.makedata("max")
+            self.write_to_testdata("3")
 
 
 if __name__ == "__main__":
-    """
-    python test.py <課題番号> <データ数>
-    """
-
-    if length == 3:  # 正常実行
-        if args[1].isdigit() and args[2].isdigit():
-            ex = int(args[1])
-            data_num = int(args[2])
-        else:
-            print("引数エラー(型)")
-            exit
-
-        for i in range(data_num):
-            data = makeTestData(conditions[f"ex{ex}"])
-            write_data_to_file(data)
-            print("テストデータの準備が完了.")
-            print("プログラムを実行します.")
-            measure_run_time(ex)
-            # M.plot()
-            # write_data_to_file(data)
-
-    else:
-        print("引数エラー(数)")
+    gen = generetor()
+    gen.write_min_max_testdata()

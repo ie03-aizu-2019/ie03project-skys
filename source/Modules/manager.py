@@ -1,12 +1,10 @@
 """
 クラス
 - Manager
-
 メソッド
 - Manager.print_info()
 - Manager.input(file=False, path=None)
 - Manager.exX()
-
 関数
 - list2dict()
 """
@@ -16,7 +14,7 @@ import segments as sg
 import plot
 
 
-dis_const = 11
+dis_const = 1000000  # 無駄なルート探索を除去する
 
 
 class Manager:
@@ -69,8 +67,8 @@ class Manager:
             self.ex6()
         elif ex == 7:
             self.ex7()
-        # elif ex == 8:
-            # self.ex8()
+        elif ex == 8:
+            self.ex8()
         else:
             return False
 
@@ -85,13 +83,15 @@ class Manager:
         print("-- Points --")
         for key in list(self.points):
             if not self.points[key].added:
-                print(f"{key}: {self.points[key].to_str()}")
+                print(f"{key}: {self.points[key].to_str()}", end=" ")
+                print([x.index for x in self.points[key].contacted])
 
         print("-- Segments --")
         for key in list(self.segments):
             P = self.segments[key].P
             Q = self.segments[key].Q
-            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})")
+            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})", end=" ")
+            print([x.index for x in self.segments[key].contacted])
 
         print("-- Added Points --")
         for key in list(self.points):
@@ -128,15 +128,16 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
-    def search_all_root(self):
+    def search_all_root(self, limit=False):
+        # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
+                self.search_root(self.points[root[0]], self.points[root[1]], root[2], limit=limit)
             except Exception as e:
                 # KeyError
                 print(e)
 
-    def search_root(self, start, fin, K):
+    def search_root(self, start, fin, K, limit=True):
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
         self.searching_index = [
@@ -144,24 +145,30 @@ class Manager:
             fin.index,
             int(K)
         ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[])
+        roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
 
         if start.index not in self.roots.keys():
             self.roots[start.index] = {}
         if len(roots) == 0:  # ルートなし
-            self.roots[start.index] = {
-                fin.index: [None]
-                }
+            try:
+                self.roots[start.index][fin.index] = [None]
+            except Exception:
+                self.roots[start.index] = {
+                    fin.index: [None]
+                    }
         else:
-            self.roots[start.index] = {
-                fin.index: [sg.Root(x[0]) for x in roots],
-            }
+            try:
+                self.roots[start.index][fin.index] = [sg.Root(x[0]) for x in roots]
+            except Exception:
+                self.roots[start.index] = {
+                    fin.index: [sg.Root(x[0]) for x in roots],
+                    }
             # self.roots[start.index][fin.index] = [
             #     root1,
             #     root2,
             # ]
 
-    def searching(self, start, fin, vias=[[], 0], roots=[]):
+    def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
         """
         start, finはポイントクラスオブジェクト
         再帰的に呼び出す
@@ -237,14 +244,14 @@ class Manager:
                 if plus is not None:
                     dis = sg.distance(bef, plus)
                     dis += vias[1]
-                    if dis_K > dis:
+                    if dis_K > dis and limit:
                         self.searching(plus, fin, vias=[[
                                    x for x in vias[0]], dis], roots=roots)
                 if minus is not None:
                     dis = sg.distance(bef, minus)
                     dis += vias[1]
                     # if minus not in vias:
-                    if dis_K > dis:
+                    if dis_K > dis and limit:
                         self.searching(minus, fin, vias=[[
                                        x for x in vias[0]], dis], roots=roots)
             else:  # 点用再帰
@@ -333,8 +340,7 @@ class Manager:
             if success_flag:
                 res = self.roots[root[0]][root[1]]
                 # 順位(入力) - 1 = 順位に対応する経路の添字
-                res = res[int(root[2])-1]
-                # res = [経由点リスト, 距離]
+                res = res[0]
                 if res is None:  # 道無し
                     print("NA")
                 else:
@@ -375,8 +381,11 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
-            for i in range(K):
-                print(f"{roots[i].distance:.5f}")
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
 
     def ex6(self):
         self.search_all_root()
@@ -387,6 +396,29 @@ class Manager:
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
+            if roots[0] is None:
+                print("NA")
+            else:
+                for i in range(K):
+                    print(f"{roots[i].distance:.5f}")
+                    # root.points = [point(1), point(C1), point(4)]
+                    for point in roots[i].points:
+                        print(point.index, end=", ")
+                    print()
+
+    def ex7(self):
+        self.add_all_points()
+        for p in self.points:
+            if self.points[p].added and self.points[p].intersect:
+                print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
+
+    def ex8(self):
+        self.search_all_root()
+        for index in self.roots_index:
+            start = index[0]
+            fin = index[1]
+            roots = self.roots[start][fin]
+
             for i in range(K):
                 print(f"{roots[i].distance:.5f}")
                 # root.points = [point(1), point(C1), point(4)]
@@ -394,11 +426,8 @@ class Manager:
                     print(point.index, end=", ")
                 print()
 
-    def ex7(self):
-        self.add_all_points()
-        for p in self.points:
-            if self.points[p].added and self.points[p].intersect:
-                print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
+
+
 
 
 def list2dict(l, intersections=False):
