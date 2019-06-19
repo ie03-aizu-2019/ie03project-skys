@@ -14,10 +14,16 @@
 - s1250131, [Kaito Kimura](https://github.com/s1250131-Kimura)
 - s1250133, [Sora Koshikawa](https://github.com/s1250133-koshikawa)
 
-## 実行環境とビルド方法
+## 開発環境
 
-- [Python 3.7.2](https://www.python.org/)
-- Mac OS
+- 言語: [Python 3.7.2](https://www.python.org/)
+- 管理: [Github](https://github.com/)
+- [リポジトリ](https://github.com/ie03-aizu-2019/ie03project-skys)
+- エディタ, デバッガ等: [Atom](https://atom.io/)
+
+
+
+## ビルド方法
 
 ### 1. ソースコードの取得
 
@@ -47,13 +53,15 @@ $ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 
 ## 成果物
 
-- ~~[ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)~~
-- [Modules(主要なソースコード)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/Modules)
+- [ドキュメント](https://htmlpreview.github.io/?https://github.com/ie03-aizu-2019/ie03project-skys/blob/master/document.html)
+- [Managerクラス図](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/images/manager.png)
+- [主要クラス図](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/images/Segments.png)
+- [Modules/(主要なソースコード)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/Modules)
 - [test.py(テストデータ生成)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/test.py)
 - [main.py(単純実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main.py)
 - [main2.py(詳細な実行)](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/source/main2.py)
 
-## 週刊レポート
+## 週刊レポート, 中間レビュー, 期末レビュー
 
 ### フェーズ1
 
@@ -67,6 +75,7 @@ $ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 - [週刊レポート5](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report05.md)
 - [週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)
 - [週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)
+- [中間レビュースライド](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/Midterm.pptx)
 
 ### フェーズ3
 
