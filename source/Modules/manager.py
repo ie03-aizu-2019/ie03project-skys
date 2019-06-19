@@ -384,7 +384,10 @@ class Manager:
         for index in self.roots_index:
             start = index[0]
             fin = index[1]
-            roots = self.roots[start][fin]
+            try:
+                roots = self.roots[start][fin]
+            except Exception:
+                continue
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
@@ -395,7 +398,7 @@ class Manager:
                     print(f"{roots[i].distance:.5f}")
                     # root.points = [point(1), point(C1), point(4)]
                     for point in roots[i].points:
-                        print(point.index, end=", ")
+                        print(point.index, end=" ")
                     print()
 
     def ex7(self):
@@ -411,12 +414,12 @@ class Manager:
             fin = index[1]
             roots = self.roots[start][fin]
 
-            for i in range(K):
-                print(f"{roots[i].distance:.5f}")
-                # root.points = [point(1), point(C1), point(4)]
-                for point in roots[i].points:
-                    print(point.index, end=", ")
-                print()
+            # for i in range(K):
+            #     print(f"{roots[i].distance:.5f}")
+            #     # root.points = [point(1), point(C1), point(4)]
+            #     for point in roots[i].points:
+            #         print(point.index, end=", ")
+            #     print()
 
 
 
