@@ -69,6 +69,8 @@ class Manager:
             self.ex7()
         elif ex == 8:
             self.ex8()
+        elif ex == 9:
+            self.ex9()
         else:
             return False
 
@@ -425,8 +427,34 @@ class Manager:
             #         print(point.index, end=", ")
             #     print()
 
+    def ex9(self):
+        """
+        統合された実行
+        if P, Q == 0 -> 全交差点と幹線道路
+        else
+            if P != 0 -> 追加地点の座標
+            if Q != 0 -> 最短経路とその距離
+            ※ P != 0 and ! != 0 -> 両方
 
-
+        追加点と, 経路情報を出力する時
+        - 道路網に接続したあとでのルート
+        - 接続前のルート
+        のどちらを表示するか, 今は前者の方式を取っている
+        """
+        if self.P == 0 and self.Q == 0:
+            print("-- intersections --")
+            self.ex2()
+            print("-- Main Road --")
+            print("Not Implemented Yet")  # 8が完成したら入れ替える
+            # self.ex8()
+            pass
+        else:
+            if self.P != 0:
+                print("-- Added Points --")
+                self.ex7()
+            if self.Q != 0:
+                print("-- Roots --")
+                self.ex6()
 
 
 def list2dict(l, intersections=False):
