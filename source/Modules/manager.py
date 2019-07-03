@@ -72,7 +72,7 @@ class Manager:
         elif ex == 9:
             self.ex9()
         else:
-            return False
+            self.ex9()
 
         return True
 
@@ -190,6 +190,7 @@ class Manager:
         再帰的に呼び出す
         return 経由点
         """
+        print(".", end="")
 
         success = False
         end = False
@@ -200,6 +201,7 @@ class Manager:
         vias[0].append(start)
 
         if start is fin:
+            print()
             success = True
 
         if success:
@@ -263,13 +265,41 @@ class Manager:
                         self.searching(minus, fin, vias=[[
                                        x for x in vias[0]], dis], roots=roots)
             else:  # 点用再帰
+                goal_vec = sg.to_vector(start, fin)
+                sorted = []
+                values = []
                 for t in start.contacted:
+                    cos = -1
+                    if t.P.equal(start):
+                        vec = sg.to_vector(t.P, t.Q)
+                        cos = sg.calc_cos(goal_vec, vec)
+                    elif t.Q.equal(start):
+                        vec = sg.to_vector(t.Q, t.P)
+                        cos = sg.calc_cos(goal_vec, vec)
+                    else:
+                        vec1 = sg.to_vector(start, t.P)
+                        vec2 = sg.to_vector(start, t.Q)
+                        if not(vec1[0] == 0 and vec1[1] == 0):
+                            cos = sg.calc_cos(goal_vec, vec1)
+                        if cos < 0:
+                            cos = sg.calc_cos(goal_vec, vec2)
+                    flag = False
+                    # とりあえず総当たりで挿入ソート
+                    for i in range(len(values)):
+                        if cos < values[i]:
+                            flag = True
+                            sorted.insert(i, t)
+                            values.insert(i, cos)
+                            continue
+                    if not flag:
+                        sorted.append(t)
+                        values.append(cos)
+                for t in sorted:
                     self.searching(t,
                                    fin,
                                    vias=[
                                        [x for x in vias[0]],
-                                       vias[1]+0
-                                       ],
+                                       vias[1]+0],
                                    roots=roots)
 
         return roots

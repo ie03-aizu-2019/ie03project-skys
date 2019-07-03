@@ -388,3 +388,19 @@ def calc_shortest_connection(s, p):
 def distance(in1, in2):
     # 越川編集
     return math.sqrt((in2.x - in1.x)*(in2.x - in1.x) + (in2.y - in1.y)*(in2.y - in1.y))
+
+
+def calc_cos(vec1, vec2):
+    x1 = vec1[0]
+    y1 = vec1[1]
+    x2 = vec2[0]
+    y2 = vec2[1]
+    length_a = math.sqrt(x1**2 + y1**2)
+    length_b = math.sqrt(x2**2 + y2**2)
+    return (x1*x2 + y1*y2) / (length_a * length_b)
+
+
+def to_vector(p1, p2):
+    x_vec = p2.x - p1.x
+    y_vec = p2.y - p1.y
+    return (x_vec, y_vec)
