@@ -147,7 +147,21 @@ class Manager:
             fin.index,
             int(K)
         ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
+        # ルートが存在しない場合は, 探索をしない
+
+        skip_flag = False
+        if len(fin.contacted) == 0:
+            skip_flag = True
+            print("check len=0")
+        elif len(fin.contacted) == 1:
+            len1 = len(fin.contacted[0].contacted[0])
+            len2 = len(fin.contacted[0].contacted[1])
+            if (len1 + len2) > 3:
+                print("check len=1 and isolate")
+                skip_flag = True
+
+        if not skip_flag:
+            roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
 
         if start.index not in self.roots.keys():
             self.roots[start.index] = {}
@@ -250,7 +264,13 @@ class Manager:
                                        x for x in vias[0]], dis], roots=roots)
             else:  # 点用再帰
                 for t in start.contacted:
-                    self.searching(t, fin, vias=[[x for x in vias[0]], vias[1]+0], roots=roots)
+                    self.searching(t,
+                                   fin,
+                                   vias=[
+                                       [x for x in vias[0]],
+                                       vias[1]+0
+                                       ],
+                                   roots=roots)
 
         return roots
 
