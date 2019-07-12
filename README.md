@@ -80,7 +80,7 @@ $ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 ### フェーズ3
 
 - [週刊レポート8](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report08.md)
-- ~~[週刊レポート9](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report09.md)~~
-- ~~[週刊レポート10](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)~~
+- [週刊レポート9](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report09.md)
+- [週刊レポート10](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)
 - ~~[週刊レポート11](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)~~
 - ~~[週刊レポート12](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)~~
