@@ -12,8 +12,7 @@ python main2.py <入力方法> <課題番号> <case番号>
 import sys
 import os
 import Modules.path as path
-sys.path.append(path.module_path)
-import manager
+# sys.path.append(path.module_path)
 import test
 
 args = sys.argv
@@ -30,6 +29,7 @@ ex_info = {
     6: [True, ["6-1", "6-2", "6-3", "6-4"]],
     7: [True, ["7-1", "7-2", "7-3"]],
     8: [False, ["8-2", "8-3"]],
+    9: [True, ["9-1"]],
 }
 sample = """# Sample(小課題2をテストデータから実行)
 $ python test.py -f 2"""
