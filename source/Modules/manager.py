@@ -418,12 +418,12 @@ class Manager:
     #             for segment in root.segments:
     #                 keep.append()
     #                 segment
-            # for i in range(K):
-            #     print(f"{roots[i].distance:.5f}")
-            #     # root.points = [point(1), point(C1), point(4)]
-            #     for point in roots[i].points:
-            #         print(point.index, end=", ")
-            #     print()
+    #         for i in range(K):
+    #             print(f"{roots[i].distance:.5f}")
+    #             # root.points = [point(1), point(C1), point(4)]
+    #             for point in roots[i].points:
+    #                 print(point.index, end=", ")
+    #             print()
 
 
 
