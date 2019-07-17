@@ -72,7 +72,7 @@ class Manager:
         elif ex == 9:
             self.ex9()
         else:
-            return False
+            self.ex9()
 
         return True
 
@@ -83,29 +83,51 @@ class Manager:
         print(f"Q(Number of Roots)\t\t: {self.Q}")
 
         print("-- Points --")
+        count = 0
         for key in list(self.points):
+            count += 1
+            if count > length:
+                break
             if not self.points[key].added:
                 print(f"{key}: {self.points[key].to_str()}", end=" ")
                 print([x.index for x in self.points[key].contacted])
 
         print("-- Segments --")
+        count = 0
         for key in list(self.segments):
+            count += 1
+            if count > length:
+                break
             P = self.segments[key].P
             Q = self.segments[key].Q
-            print(f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})", end=" ")
+            print(
+                f"{key}: {P.index}({P.x}, {P.y}) -> {Q.index}({Q.x}, {Q.y})",
+                end=" "
+                )
             print([x.index for x in self.segments[key].contacted])
 
         print("-- Added Points --")
+        count = 0
         for key in list(self.points):
+            count += 1
+            if count > length:
+                break
             if self.points[key].added and "C" not in key:
                 print(f"{key}: {self.points[key].to_str()}")
-
+        count = 0
         for key in list(self.points):
+            count += 1
+            if count > length:
+                break
             if self.points[key].added and "C" in key:
                 print(f"{key}: {self.points[key].to_str()}")
 
         print("-- Roots --")
+        count = 0
         for index in self.roots_index:
+            count += 1
+            if count > length:
+                break
             print(f"  # From {index[0]} To {index[1]}")
             try:
                 tmp = self.roots[index[0]][index[1]]
@@ -134,7 +156,10 @@ class Manager:
         # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2], limit=limit)
+                self.search_root(self.points[root[0]],
+                                 self.points[root[1]],
+                                 root[2],
+                                 limit=limit)
             except Exception as e:
                 # KeyError
                 print(e)
@@ -147,7 +172,24 @@ class Manager:
             fin.index,
             int(K)
         ]
-        roots = self.searching(start, fin, vias=[[], 0], roots=[], limit=limit)
+        # ルートが存在しない場合は, 探索をしない
+
+        skip_flag = False
+        if len(fin.contacted) == 0:
+            skip_flag = True
+        elif len(fin.contacted) == 1:
+            len1 = len(fin.contacted[0].contacted[0])
+            len2 = len(fin.contacted[0].contacted[1])
+            if (len1 + len2) > 3:
+                print("check len=1 and isolate")
+                skip_flag = True
+
+        if not skip_flag:
+            roots = self.searching(start,
+                                   fin,
+                                   vias=[[], 0],
+                                   roots=[],
+                                   limit=limit)
 
         if start.index not in self.roots.keys():
             self.roots[start.index] = {}
@@ -160,7 +202,9 @@ class Manager:
                     }
         else:
             try:
-                self.roots[start.index][fin.index] = [sg.Root(x[0]) for x in roots]
+                self.roots[start.index][fin.index] = [
+                    sg.Root(x[0]) for x in roots
+                    ]
             except Exception:
                 self.roots[start.index] = {
                     fin.index: [sg.Root(x[0]) for x in roots],
@@ -235,23 +279,67 @@ class Manager:
                     dis_K = roots[K-1][1]
                 except Exception:
                     dis_K = dis_const
-                if plus is not None:
-                    dis = sg.distance(bef, plus)
-                    dis += vias[1]
-                    if dis_K > dis and limit:
-                        self.searching(plus, fin, vias=[[
-                                   x for x in vias[0]], dis], roots=roots)
-                if minus is not None:
-                    dis = sg.distance(bef, minus)
-                    dis += vias[1]
-                    # if minus not in vias:
-                    if dis_K > dis and limit:
-                        self.searching(minus, fin, vias=[[
-                                       x for x in vias[0]], dis], roots=roots)
-            else:  # 点用再帰
-                for t in start.contacted:
-                    self.searching(t, fin, vias=[[x for x in vias[0]], vias[1]+0], roots=roots)
 
+                orders = []
+                if sg.distance(plus, fin) < sg.distance(minus, fin):
+                    orders = [plus, minus]
+                else:
+                    orders = [minus, plus]
+                for point in orders:
+                    if point is None:
+                        continue
+                    dis = sg.distance(bef, point) + vias[1]
+                    if dis_K > dis and limit:
+                        self.searching(point,
+                                       fin,
+                                       vias=[[x for x in vias[0]], dis],
+                                       roots=roots)
+            else:  # 点用再帰
+                goal_vec = sg.to_vector(start, fin)
+                sorted = []
+                values = []
+                for t in start.contacted:
+                    cos = -1
+                    if t.P.equal(start):
+                        vec = sg.to_vector(t.P, t.Q)
+                        cos = sg.calc_cos(goal_vec, vec)
+                    elif t.Q.equal(start):
+                        vec = sg.to_vector(t.Q, t.P)
+                        cos = sg.calc_cos(goal_vec, vec)
+                    else:
+                        vec1 = sg.to_vector(start, t.P)
+                        vec2 = sg.to_vector(start, t.Q)
+                        if not(vec1[0] == 0 and vec1[1] == 0):
+                            cos = sg.calc_cos(goal_vec, vec1)
+                        if cos < 0:
+                            cos = sg.calc_cos(goal_vec, vec2)
+
+                    if sorted == []:
+                        sorted.append(t)
+                        values.append(cos)
+                        continue
+                    min = 0
+                    max = len(values)-1
+                    mid = max // 2
+                    while(True):
+                        if min == max:
+                            if values[mid] > cos:
+                                mid += 1
+                            sorted.insert(mid, t)
+                            values.insert(mid, cos)
+                            break
+                        # 次ループ用
+                        if cos < values[mid]:
+                            min = mid + 1
+                            mid = min + (max-min) // 2
+                        else:
+                            max = mid
+                            mid = min + (max-min) // 2
+                for t in sorted:
+                    self.searching(t,
+                                   fin,
+                                   vias=[[x for x in vias[0]], vias[1]+0],
+                                   roots=roots)
         return roots
 
     def next_index(self):
@@ -297,7 +385,11 @@ class Manager:
         min_set[0].set_index(indexs['intersection'])
         self.segments[indexs['segment']] = seg
         self.points[indexs['point']] = p
-        if min_set[0].equal(connected_seg.P) or min_set[0].equal(connected_seg.Q):
+        if min_set[0].equal(
+            connected_seg.P
+            ) or min_set[0].equal(
+                connected_seg.Q
+                ):
             # 端点である(=intersectionsに含めない)
             indexs = self.next_index()
             self.points[indexs['point']] = min_set[0]
@@ -327,7 +419,10 @@ class Manager:
             # root = ["開始", "終了", "順位"]
             success_flag = True
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
+                self.search_root(
+                    self.points[root[0]],
+                    self.points[root[1]],
+                    root[2])
             except Exception:
                 # KeyError
                 success_flag = False
@@ -347,7 +442,9 @@ class Manager:
             # root = ["開始", "終了", "順位"]
             success_flag = True
             try:
-                self.search_root(self.points[root[0]], self.points[root[1]], root[2])
+                self.search_root(self.points[root[0]],
+                                 self.points[root[1]],
+                                 root[2])
             except Exception:
                 # KeyError
                 success_flag = False
@@ -398,7 +495,6 @@ class Manager:
             else:
                 for i in range(K):
                     print(f"{roots[i].distance:.5f}")
-                    # root.points = [point(1), point(C1), point(4)]
                     for point in roots[i].points:
                         print(point.index, end=" ")
                     print()
