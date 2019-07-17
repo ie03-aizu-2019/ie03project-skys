@@ -14,7 +14,7 @@ import segments as sg
 import plot
 
 
-dis_const = 1000000  # 無駄なルート探索を除去する
+dis_const = 10000000000  # 無駄なルート探索を除去する
 
 
 class Manager:
@@ -147,8 +147,11 @@ class Manager:
 
     def find_all_intersections(self):
         segments = list(self.segments.values())
+        print("check A")
         intersections = sg.find_all_intersections(self.M, segments)
+        print("check B")
         intersections = list2dict(intersections, intersections=True)
+        print("check C")
         for index in list(intersections):
             self.points[index] = intersections[index]
 
@@ -220,6 +223,8 @@ class Manager:
         再帰的に呼び出す
         return 経由点
         """
+
+        print(".", end="")
 
         success = False
         end = False
