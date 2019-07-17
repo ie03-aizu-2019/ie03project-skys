@@ -37,7 +37,7 @@ sample = """# Sample(小課題2をテストデータから実行)
 $ python test.py -f 2"""
 
 
-def main2(ex, case, file=True):
+def main2(ex, case, file=True, length=30):
     """
     ex:   小課題番号
     case: ケース番号
@@ -64,7 +64,7 @@ def main2(ex, case, file=True):
             print(f"\n# 小課題{ex}の実行")
             M = test.measure_run_time(ex, path=datapath)
             print("\n# 詳細データ")
-            M.print_info(length=1)
+            M.print_info(length=length)
 
             print("\n# プロット図の表示")
             M.plot()
