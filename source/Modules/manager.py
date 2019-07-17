@@ -230,7 +230,6 @@ class Manager:
         vias[0].append(start)
 
         if start is fin:
-            print()
             success = True
 
         if success:
@@ -324,13 +323,13 @@ class Manager:
                     mid = max // 2
                     while(True):
                         if min == max:
-                            if values[mid] < cos:
+                            if values[mid] > cos:
                                 mid += 1
                             sorted.insert(mid, t)
                             values.insert(mid, cos)
                             break
                         # 次ループ用
-                        if cos > values[mid]:
+                        if cos < values[mid]:
                             min = mid + 1
                             mid = min + (max-min) // 2
                         else:
@@ -496,7 +495,6 @@ class Manager:
             else:
                 for i in range(K):
                     print(f"{roots[i].distance:.5f}")
-                    # root.points = [point(1), point(C1), point(4)]
                     for point in roots[i].points:
                         print(point.index, end=" ")
                     print()

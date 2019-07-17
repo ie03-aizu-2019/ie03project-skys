@@ -54,7 +54,8 @@ def main2(ex, case, file=True, length=30):
         return False
     else:
         index = case
-        datapath = f"{path.testdata_path}/testdata{ex_info[ex][1][index-1]}.txt"
+        datapath = f"{path.testdata_path}"
+        datapath = f"{datapath}/testdata{ex_info[ex][1][index-1]}.txt"
         if os.path.exists(datapath):
             # 正常実行
             print(f"# 今回使用するテストデータ: testdata{ex_info[ex][1][index-1]}.txt⇓")

@@ -13,6 +13,8 @@
 
 import math
 
+INFTY = 10**20
+
 
 class Root:
     """
@@ -387,6 +389,8 @@ def calc_shortest_connection(s, p):
 
 def distance(in1, in2):
     # 越川編集
+    if in1 is None or in2 is None:  # 到達不可 -> 距離∞
+        return INFTY
     return math.sqrt(
         (in2.x - in1.x)*(in2.x - in1.x) + (in2.y - in1.y)*(in2.y - in1.y)
         )
