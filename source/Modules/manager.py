@@ -147,11 +147,8 @@ class Manager:
 
     def find_all_intersections(self):
         segments = list(self.segments.values())
-        print("check A")
         intersections = sg.find_all_intersections(self.M, segments)
-        print("check B")
         intersections = list2dict(intersections, intersections=True)
-        print("check C")
         for index in list(intersections):
             self.points[index] = intersections[index]
 
