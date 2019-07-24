@@ -415,17 +415,16 @@ class Manager:
     #         start = index[0]
     #         fin = index[1]
     #         roots = self.roots[start][fin]
-    #         keep = [x.index for x in roots[0].segments]
-    #         for root in roots:
-    #             for segment in root.segments:
+    #     n = len(roots)
+    #     for i in
+    #     keep = [x.index for x in roots[0].segments]
+    #     for root in roots:
+    #         for i in range(n):
+    #             if root.segments[0] == root.segment[i]:
     #                 keep.append()
-    #                 segment
-    #         for i in range(K):
-    #             print(f"{roots[i].distance:.5f}")
-    #             # root.points = [point(1), point(C1), point(4)]
-    #             for point in roots[i].points:
-    #                 print(point.index, end=", ")
-    #             print()
+
+
+
 
     def ex9(self):
         """
