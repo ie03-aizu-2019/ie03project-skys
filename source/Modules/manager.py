@@ -520,6 +520,20 @@ class Manager:
     #         for i in range(n):
     #             if root.segments[0] == root.segment[i]:
     #                 keep.append()
+    def ex8(self):
+        self.search_all_root()
+        for index in self.roots_index:
+            start = index[0]
+            fin = index[1]
+            roots = self.roots[start][fin]
+        n = len(roots)
+        for i in
+        keep = [x.index for x in roots[0].segments]
+        for root in roots:
+            for i in range(n):
+                if root.segments[i] == root.segment[i+1]:
+                    keep.append()
+                    
 
 
 
