@@ -87,6 +87,37 @@ conditions["ex8"] = {
     "K": [0, 0]
 }
 
+conditions["ex9"] = {
+    "N": [2, 2000],
+    "M": [1, 1000],
+    "P": [0, 100],
+    "Q": [0, 100],
+    "x": [0, 10**5],
+    "y": [0, 10**5],
+    "K": [0, 10]
+}
+
+
+conditions["ex10"] = {
+    "N": [2, 2*(10**4)],
+    "M": [1, 10**4],
+    "P": [0, 1000],
+    "Q": [0, 1000],
+    "x": [0, 10**6],
+    "y": [0, 10**6],
+    "K": [0, 1]
+}
+
+conditions["ex11"] = {
+    "N": [2, 2*(10**5)],
+    "M": [1, 10**5],
+    "P": [0, 1000],
+    "Q": [0, 1000],
+    "x": [0, 10**6],
+    "y": [0, 10**6],
+    "K": [0, 1]
+}
+
 
 def makeTestData(condition, options={}):
     datas = {}
@@ -243,15 +274,19 @@ class generetor:
         tpath = f"{tpath}/testdata{self.ex}-{op}.txt"
         write_data_to_file(self.current_data, path=tpath)
 
+    def min_max_ex(self, i):
+        self.setex(str(i))
+        self.makedata("min")
+        self.write_to_testdata("2")
+        self.makedata("max")
+        self.write_to_testdata("3")
+
     def write_min_max_testdata(self):
-        for i in range(1, 9):
-            self.setex(str(i))
-            self.makedata("min")
-            self.write_to_testdata("2")
-            self.makedata("max")
-            self.write_to_testdata("3")
+        for i in range(1, 12):
+            self.min_max_ex(i)
 
 
 if __name__ == "__main__":
     gen = generetor()
-    gen.write_min_max_testdata()
+    # gen.write_min_max_testdata()
+    gen.min_max_ex(10)

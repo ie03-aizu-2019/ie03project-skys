@@ -29,13 +29,15 @@ ex_info = {
     6: [True, ["6-1", "6-2", "6-3", "6-4"]],
     7: [True, ["7-1", "7-2", "7-3"]],
     8: [False, ["8-2", "8-3"]],
-    9: [True, ["9-1"]],
+    9: [True, ["9-1", "9-2", "9-3"]],
+    10: [True, ["10-1", "10-2", "10-3"]],
+    11: [True, ["11-1", "11-2", "11-3"]],
 }
 sample = """# Sample(小課題2をテストデータから実行)
 $ python test.py -f 2"""
 
 
-def main2(ex, case, file=True):
+def main2(ex, case, file=True, length=30):
     """
     ex:   小課題番号
     case: ケース番号
@@ -52,7 +54,8 @@ def main2(ex, case, file=True):
         return False
     else:
         index = case
-        datapath = f"{path.testdata_path}/testdata{ex_info[ex][1][index-1]}.txt"
+        datapath = f"{path.testdata_path}"
+        datapath = f"{datapath}/testdata{ex_info[ex][1][index-1]}.txt"
         if os.path.exists(datapath):
             # 正常実行
             print(f"# 今回使用するテストデータ: testdata{ex_info[ex][1][index-1]}.txt⇓")
@@ -62,7 +65,7 @@ def main2(ex, case, file=True):
             print(f"\n# 小課題{ex}の実行")
             M = test.measure_run_time(ex, path=datapath)
             print("\n# 詳細データ")
-            M.print_info(length=1)
+            M.print_info(length=length)
 
             print("\n# プロット図の表示")
             M.plot()
