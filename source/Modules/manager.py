@@ -11,6 +11,7 @@
 
 import input
 import segments as sg
+# segmentsモジュールをsegとして使える
 import plot
 
 
@@ -149,6 +150,7 @@ class Manager:
         segments = list(self.segments.values())
         intersections = sg.find_all_intersections(self.M, segments)
         intersections = list2dict(intersections, intersections=True)
+        # リスト型を辞書に変換。
         for index in list(intersections):
             self.points[index] = intersections[index]
 
@@ -165,6 +167,7 @@ class Manager:
                 print(e)
 
     def search_root(self, start, fin, K, limit=True):
+        # startは始点情報、finは終点情報
         # start, finはポイントクラスオブジェクト
         # 再帰的に全てのルートと距離を取得
         self.searching_index = [
@@ -414,6 +417,7 @@ class Manager:
     def ex2(self):
         for p in self.points:
             if "C" in self.points[p].index:
+                # 文字列"C"が含まれていたら交点。
                 print(f"{self.points[p].x:.5f} {self.points[p].y:.5f}")
 
     def ex3(self):
@@ -527,6 +531,10 @@ class Manager:
         m = len(keep)
         for i in range(m):
             print(f"{keep[i]:.6g}")
+
+
+        while(True):
+
 
 
 

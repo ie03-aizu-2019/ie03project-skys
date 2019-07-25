@@ -5,7 +5,9 @@
 """
 
 import segments as sg
+# segmentsモジュールをsegとして使える
 import path
+# 標準ライブラリpathをインポート
 
 
 def input_from_stdin():
@@ -15,11 +17,12 @@ def input_from_stdin():
 
     tmp = input("")  # "4 2 0 0"
     tmp = tmp.split(" ")  # ["4", "2", "0", "0"]
+    # tmpに文字型の数字を格納。
     for i in range(len(tmp)):
         tmp[i] = int(tmp[i])
     # [4, 2, 0, 0]
     N, M, P, Q = tmp
-
+    # N = tmp[0] , M = tmp[1] , P = tmp[2] , Q = tmp[3]
     for i in range(N):  # for N回まわしてなかでinput
         tmp = input("")
         tmp = tmp.split(" ")  # "0 0" -> ["0", "0"]
