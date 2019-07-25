@@ -507,34 +507,26 @@ class Manager:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
-    # def ex8(self):
-    #     self.search_all_root()
-    #     for index in self.roots_index:
-    #         start = index[0]
-    #         fin = index[1]
-    #         roots = self.roots[start][fin]
-    #     n = len(roots)
-    #     for i in
-    #     keep = [x.index for x in roots[0].segments]
-    #     for root in roots:
-    #         for i in range(n):
-    #             if root.segments[0] == root.segment[i]:
-    #                 keep.append()
     def ex8(self):
         self.search_all_root()
         for index in self.roots_index:
             start = index[0]
             fin = index[1]
             roots = self.roots[start][fin]
+            # rootsに与えられた始点と終点から求めたroot情報をリスト型で格納する。
         n = len(roots)
-        for i in
-        keep = [x.index for x in roots[0].segments]
-        for root in roots:
-            for i in range(n):
+
+        # keep = [x.index for x in roots[0].segments]
+        keep = []
+        for i in range(n):
+            for root in roots:
                 if root.segments[i] == root.segment[i+1]:
                     keep.append()
-                    
 
+
+        m = len(keep)
+        for i in range(m):
+            print(f"{keep[i]:.6g}")
 
 
 
