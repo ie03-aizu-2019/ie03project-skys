@@ -21,7 +21,13 @@ class Root:
     - 経由点(Point型)リスト
     - 距離
     """
-
+    # 属性--------------------
+    # .points
+    # .segments
+    # .start
+    # .fin
+    # .distance
+    # -------------------------
     def __init__(self, points_and_segments):
         """
         points_and_segments = [P1, S1, P2, S2, ... , PN]
@@ -68,6 +74,12 @@ class Root:
 
 
 class segment:  # 線分クラス
+    # 属性---------------------
+    # .P
+    # .Q
+    # .contacted
+    # .added
+    # --------------------------
     def __init__(self, s):  # 線分はpointオブジェクトのリストで渡す
         self.P = s[0]
         self.Q = s[1]

@@ -42,9 +42,12 @@ class Manager:
             # キーボードから入力を得る
             self.N, self.M, self.P, self.Q, points, segments, added_points, roots_index = input.input_from_stdin()
         self.points = list2dict(points)
+        # リスト型を辞書に変換
         self.segments = list2dict(segments)
+        # リスト型を辞書に変換
         self.added_points = added_points
         self.roots_index = roots_index
+
 
     def run(self, ex):
         if type(ex) is not int:
@@ -53,7 +56,7 @@ class Manager:
             except Exception as e:
                 print(e)
                 return False
-
+        # exの値によってどの処理をするかを決める
         if ex == 1:
             self.ex1()
         elif ex == 2:
@@ -84,6 +87,7 @@ class Manager:
         print(f"Q(Number of Roots)\t\t: {self.Q}")
 
         print("-- Points --")
+        # Pointsの情報を出力
         count = 0
         for key in list(self.points):
             count += 1
@@ -94,6 +98,7 @@ class Manager:
                 print([x.index for x in self.points[key].contacted])
 
         print("-- Segments --")
+        # Segmentsの情報を出力
         count = 0
         for key in list(self.segments):
             count += 1
@@ -108,6 +113,7 @@ class Manager:
             print([x.index for x in self.segments[key].contacted])
 
         print("-- Added Points --")
+        # Added Pointsの情報を出力
         count = 0
         for key in list(self.points):
             count += 1
@@ -124,6 +130,7 @@ class Manager:
                 print(f"{key}: {self.points[key].to_str()}")
 
         print("-- Roots --")
+        # Rootsの情報を出力
         count = 0
         for index in self.roots_index:
             count += 1
@@ -409,6 +416,7 @@ class Manager:
     # ⇓各課題の出力メソッド⇓
     def ex1(self):
         ans = sg.find_intersection(self.segments['1'], self.segments['2'])
+        # 2つの線分から交点を求める
         if not ans[0]:  # 交点なし
             print("NA")
         else:  # 交点あり
@@ -471,38 +479,52 @@ class Manager:
 
     def ex5(self):
         self.search_all_root()
+        # 与えられた始点と終点に対しての経路を全て求める
         for index in self.roots_index:
             start = index[0]
+            # 始点
             fin = index[1]
+            # 終点
             roots = self.roots[start][fin]
+            # 始点と終点から求まる経路情報をrootsに格納
             K = int(index[2])
             if len(roots) < K:
                 K = len(roots)
             if roots[0] is None:
+                # 経路が見つからないときの処理
                 print("NA")
             else:
                 for i in range(K):
+                    # k番目までの短い経路を昇順に出力
                     print(f"{roots[i].distance:.5f}")
 
     def ex6(self):
         self.search_all_root()
+        # 与えられた始点と終点に対しての経路を全て求める
         for index in self.roots_index:
             start = index[0]
+            # 始点
             fin = index[1]
+            # 終点
             try:
                 roots = self.roots[start][fin]
             except Exception:
                 continue
             K = int(index[2])
+            # kの値を数値型で格納
             if len(roots) < K:
                 K = len(roots)
+                # 経路の数がk以上あっても出力する経路をkに合わせるための処理
             if roots[0] is None:
                 print("NA")
+                # 経路が見つからなかったときの処理
             else:
                 for i in range(K):
                     print(f"{roots[i].distance:.5f}")
+                    # 経路の距離を出力
                     for point in roots[i].points:
                         print(point.index, end=" ")
+                        # 経路の経由地点を出力
                     print()
 
     def ex7(self):
@@ -511,29 +533,29 @@ class Manager:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
-    def ex8(self):
-        self.search_all_root()
-        for index in self.roots_index:
-            start = index[0]
-            fin = index[1]
-            roots = self.roots[start][fin]
-            # rootsに与えられた始点と終点から求めたroot情報をリスト型で格納する。
-        n = len(roots)
-
-        # keep = [x.index for x in roots[0].segments]
-        keep = []
-        for i in range(n):
-            for root in roots:
-                if root.segments[i] == root.segment[i+1]:
-                    keep.append()
-
-
-        m = len(keep)
-        for i in range(m):
-            print(f"{keep[i]:.6g}")
-
-
-        while(True):
+    # def ex8(self):
+    #     self.search_all_root()
+    #     for index in self.roots_index:
+    #         start = index[0]
+    #         fin = index[1]
+    #         roots = self.roots[start][fin]
+    #         # rootsに与えられた始点と終点から求めたroot情報をリスト型で格納する。
+    #     n = len(roots)
+    #
+    #     # keep = [x.index for x in roots[0].segments]
+    #     keep = []
+    #     for i in range(n):
+    #         for root in roots:
+    #             if root.segments[i] == root.segment[i+1]:
+    #                 keep.append()
+    #
+    #
+    #     m = len(keep)
+    #     for i in range(m):
+    #         print(f"{keep[i]:.6g}")
+    #
+    #
+    #     while(True):
 
 
 
