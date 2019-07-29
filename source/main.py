@@ -6,8 +6,6 @@ import sys
 import Modules.path as path
 sys.path.append(path.module_path)
 import manager
-
-M = manager.Manager()
 import test
 
 args = sys.argv
@@ -24,7 +22,6 @@ if __name__ == "__main__":
             if args[1] == "-i":
                 file = False
             n = int(args[2])
-            M.input(file=file, path=path.input_path)
             M = manager.Manager()
             M.input(file=True, path=path.input_path)
             M.run(n)

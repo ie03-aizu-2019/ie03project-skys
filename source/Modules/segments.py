@@ -323,37 +323,6 @@ def find_all_intersections(M, segments):
     intersections = []
     for i in range(M):
         for j in range(i+1, M):
-            tmp = find_intersection(segments[i], segments[j])
-            if tmp[0]:  # 交点あり
-                if len(intersections) == 0:
-                    intersections.append(tmp[1])
-                else:
-                    min = 0
-                    max = len(intersections)-1
-                    mid = max // 2
-                    while(True):
-                        if min == max:
-                            if intersections[mid].x < tmp[1].x:
-                                mid += 1
-                            elif intersections[mid].x == tmp[1].x:
-                                if intersections[mid].y < tmp[1].y:
-                                    mid += 1
-                            intersections.insert(mid, tmp[1])
-                            break
-                        # 次ループ用
-                        if tmp[1].x > intersections[mid].x:
-                            min = mid + 1
-                            mid = min + (max-min) // 2
-                        elif tmp[1].x == intersections[mid].x:
-                            if tmp[1].y > intersections[mid].y:
-                                min = mid + 1
-                                mid = min + (max-min) // 2
-                            else:
-                                max = mid
-                                mid = min + (max-min) // 2
-                        else:  # tmp[1].x < intersections[mid].
-                            max = mid
-                            mid = min + (max-min) // 2
             result = find_intersection(segments[i], segments[j])
             if result[0]:
                 intersections.append(result[1])
