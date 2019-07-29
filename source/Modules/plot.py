@@ -7,7 +7,9 @@
 
 # import os
 import numpy as np
+# numpyモジュールをnpとして使える
 import matplotlib.pyplot as plt
+# matplotlib.pyplotモジュールをpltとして使える
 import path
 
 figsize = (8, 5.25)
@@ -43,6 +45,7 @@ def plot_all(points={}, segments={}, delta=0.01, save=False, path=path.figure_pa
 
     p_flag = False
     i_flag = False
+    # 以下のプロウラムで図のレイアウトを決定
     for index in points:
         color = "red"
         label = ""
