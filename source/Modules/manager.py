@@ -231,8 +231,6 @@ class Manager:
         return 経由点
         """
 
-        print(".", end="")
-
         success = False
         end = False
 
