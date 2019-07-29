@@ -3,7 +3,6 @@ import time
 import random
 import Modules.path as path
 sys.path.append(path.module_path)
-import manager
 
 conditions = {}
 
