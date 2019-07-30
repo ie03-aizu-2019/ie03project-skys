@@ -1,4 +1,5 @@
 import sys
+# 標準ライブラリsysをインポート
 
 args = sys.argv
 # args[0] = makereport.py

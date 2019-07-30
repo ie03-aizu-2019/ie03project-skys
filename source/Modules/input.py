@@ -13,12 +13,14 @@ import path
 def input_from_stdin():
     # 修正したinput_infoを移行する
     points = []
+    # pointsをリスト型で定義。
     segments = []
-
+    # segmentsをリスト型で定義。
     tmp = input("")  # "4 2 0 0"
     tmp = tmp.split(" ")  # ["4", "2", "0", "0"]
     # tmpに文字型の数字を格納。
     for i in range(len(tmp)):
+        # iをtmpの大きさ分ループさせる
         tmp[i] = int(tmp[i])
     # [4, 2, 0, 0]
     N, M, P, Q = tmp
@@ -27,6 +29,7 @@ def input_from_stdin():
         tmp = input("")
         tmp = tmp.split(" ")  # "0 0" -> ["0", "0"]
         tmp[0] = int(tmp[0])
+        # 数値型で格納。
         tmp[1] = int(tmp[1])
         # point([0, 0])
         points.append(sg.point(tmp))  # points.append(point(koshikawa))
@@ -36,6 +39,7 @@ def input_from_stdin():
         tmp = tmp.split(" ")
         # "0 0" ->  koshikawa = [0, 0]
         tmp[0] = int(tmp[0])
+        # 数値型で格納。
         tmp[1] = int(tmp[1])
         segments.append(
             sg.segment([points[tmp[0]-1], points[tmp[1]-1]]))
@@ -49,8 +53,10 @@ def input_from_stdin():
         """
 
     roots = []
+    # root情報
 
     add_points = []
+    # 追加で入力した座標の値
     for i in range(P):
         tmp = input("")
         tmp = tmp.split(" ")

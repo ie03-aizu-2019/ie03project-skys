@@ -10,9 +10,11 @@
 """
 
 import input
+# inputモジュールをインポート
 import segments as sg
 # segmentsモジュールをsegとして使える
 import plot
+# 標準ライブラリplotをインポート
 
 
 dis_const = 10000000000  # 無駄なルート探索を除去する
@@ -91,8 +93,10 @@ class Manager:
         count = 0
         for key in list(self.points):
             count += 1
+            #countをlengthと同じ値になるまでインクリメント
             if count > length:
                 break
+            # for分を抜ける。
             if not self.points[key].added:
                 print(f"{key}: {self.points[key].to_str()}", end=" ")
                 print([x.index for x in self.points[key].contacted])
@@ -154,6 +158,7 @@ class Manager:
         plot.plot_all(self.points, self.segments, save=save, path=path)
 
     def find_all_intersections(self):
+        # 与えられた線分から全ての交点を求める関数
         segments = list(self.segments.values())
         intersections = sg.find_all_intersections(self.M, segments)
         intersections = list2dict(intersections, intersections=True)
@@ -216,6 +221,7 @@ class Manager:
                     sg.Root(x[0]) for x in roots
                     ]
             except Exception:
+                # キーエラー
                 self.roots[start.index] = {
                     fin.index: [sg.Root(x[0]) for x in roots],
                     }
@@ -291,6 +297,7 @@ class Manager:
                     dis_K = dis_const
 
                 orders = []
+
                 if sg.distance(plus, fin) < sg.distance(minus, fin):
                     orders = [plus, minus]
                 else:
@@ -376,6 +383,7 @@ class Manager:
         # もっとも短い繋ぎ方で道路に繋ぐ
         # [交点, 距離]
         min_set = sg.calc_shortest_connection(self.segments['1'], p)
+        # 最短距離を計算
         connected_seg = self.segments['1']
 
         for key in list(self.segments)[1:]:
@@ -531,30 +539,45 @@ class Manager:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
-    # def ex8(self):
-    #     self.search_all_root()
-    #     for index in self.roots_index:
-    #         start = index[0]
-    #         fin = index[1]
-    #         roots = self.roots[start][fin]
-    #         # rootsに与えられた始点と終点から求めたroot情報をリスト型で格納する。
-    #     n = len(roots)
-    #
-    #     # keep = [x.index for x in roots[0].segments]
-    #     keep = []
-    #     for i in range(n):
-    #         for root in roots:
-    #             if root.segments[i] == root.segment[i+1]:
-    #                 keep.append()
-    #
-    #
-    #     m = len(keep)
-    #     for i in range(m):
-    #         print(f"{keep[i]:.6g}")
-    #
-    #
-    #     while(True):
+    def ex8(self):
+        segments = self.search_main_road()
+        for segment in segments:
+            print(f"{segment.P.index} {segment.Q.index}")
+        pass
 
+    def search_main_road(self, points=None, mainRoads=[]):
+        if points is None:
+            points = self.points
+        startPointIndex = list(points)[0]
+        startPoint = points[startPointIndex]
+        remainList = []
+        for p in points:
+            if p == startPointIndex:
+                continue
+            mySegments = list(self.segments.values())
+            self.search_root(startPoint, points[p], 2000, False)
+            try:
+                rootLength = len(self.roots['1'][p])
+                nowSegments = [
+                    self.roots['1'][p][x].segments for x in range(rootLength)
+                    ]
+            except Exception:
+                remainList.append(points[p])
+            for segments in nowSegments:
+                mySegments = list(
+                    set(mySegments) - (set(mySegments) - set(segments))
+                    )
+            if mySegments:
+                for seg in mySegments:
+                    if seg not in mainRoads:
+                        mainRoads.append(seg)
+        remainList = list(
+            set(points) - set(remainList)
+        )
+        # print(mainRoads)
+        if not remainList:
+            self.search_main_road(points=remainList, mainRoads=mainRoads)
+        return mainRoads
 
 
 

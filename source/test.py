@@ -254,10 +254,10 @@ class generetor:
 
     def makedata(self, type):
         """
-        None 通常ケース(資料のものをコピー)
-        min minケース(N, Mが制約での最小値)
-        max maxケース(N, Mが制約での最大値)
-        None 例外ケース(個別に手動で作る)
+        1. None 通常ケース(資料のものをコピー)
+        2. min minケース(N, Mが制約での最小値)
+        3. max maxケース(N, Mが制約での最大値)
+        4. None 例外ケース(個別に手動で作る)
         """
         condition = conditions[f"ex{self.ex}"]
         options = {}
