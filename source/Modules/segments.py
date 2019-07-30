@@ -14,6 +14,8 @@
 import math
 import random
 import manager
+from concurrent.futures import ProcessPoolExecutor
+
 
 INFTY = 10**20
 
@@ -261,6 +263,10 @@ class point:  # 座標クラス
         self.intersect = True
 
 
+def find_intersection_multi(args):
+    return find_intersection(args[0], args[1])
+
+
 def find_intersection(s1, s2):
     """
     線分1(s1)と線分2(s2)を渡して交点を求める関数
@@ -310,6 +316,10 @@ def find_intersection(s1, s2):
     if is_end:
         return [False]
 
+    if s1.index == '1':
+        for p in s1.contacted:
+            print(p.to_str())
+
     returnset[1].set_contacted(s1)
     s1.set_contacted(returnset[1])
     returnset[1].set_contacted(s2)
@@ -322,16 +332,17 @@ def find_intersection(s1, s2):
 
 def find_all_intersections(M, segments):
     intersections = []
+    args = []
     for i in range(M):
         for j in range(i+1, M):
-            if manager.debug:
-                manager.debugs['intersections'] = f"{i}/{M}"
-                debug_print(manager.debugs)
-            result = find_intersection(segments[i], segments[j])
+            args.append((segments[i], segments[j]))
+
+    with ProcessPoolExecutor() as executor:
+        results = executor.map(find_intersection_multi, args)
+        for result in results:
             if result[0]:
                 intersections.append(result[1])
 
-    # ソート
     intersections = sort_points(intersections)
     return intersections
 
