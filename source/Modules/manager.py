@@ -332,14 +332,15 @@ class Manager:
                 for point in orders:
                     if point is None:
                         continue
-                    dis = sg.distance(bef, point) + vias[1]
+                    vias[1] = sg.distance(bef, point) + vias[1]
+                    dis = vias[1] + sg.distance(point, fin)
                     if self.get_dis_K(roots=roots) < dis and limit:
                         debugs['point_skip'] += 1
                     else:
                         debugs['point_general'] += 1
                         self.searching(point,
                                        fin,
-                                       vias=[[x for x in vias[0]], dis],
+                                       vias=[[x for x in vias[0]], vias[1]],
                                        roots=roots,
                                        limit=limit)
             else:  # 点用再帰

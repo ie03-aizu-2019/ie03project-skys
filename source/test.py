@@ -289,4 +289,4 @@ class generetor:
 if __name__ == "__main__":
     gen = generetor()
     # gen.write_min_max_testdata()
-    gen.min_max_ex(10)
+    gen.min_max_ex(2)
