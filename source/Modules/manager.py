@@ -625,7 +625,6 @@ class Manager:
             self.search_main_road(points=remainDict, mainRoads=mainRoads)
         return mainRoads
 
-
     def ex9(self):
         """
         統合された実行
@@ -644,8 +643,8 @@ class Manager:
             print("-- intersections --")
             self.ex2()
             print("-- Main Road --")
-            print("Not Implemented Yet")  # 8が完成したら入れ替える
-            # self.ex8()
+            # print("Not Implemented Yet")  # 8が完成したら入れ替える
+            self.ex8()
             pass
         else:
             if self.P != 0:
