@@ -202,6 +202,15 @@ class Manager:
             # if (len1 + len2) > 3:
             #     print("check len=1 and isolate")
             skip_flag = False
+        if limit:
+            if len(fin.contacted) == 0:
+                skip_flag = True
+            elif len(fin.contacted) >= 1:
+                # len1 = len(fin.contacted[0])
+                # len2 = len(fin.contacted[1])
+                # if (len1 + len2) > 3:
+                #     print("check len=1 and isolate")
+                skip_flag = False
 
         if not skip_flag:
             roots = self.searching(start,
