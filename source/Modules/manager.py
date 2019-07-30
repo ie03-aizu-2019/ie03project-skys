@@ -161,7 +161,7 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
-    def search_all_root(self, limit=False):
+    def search_all_root(self, limit=True):
         # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
@@ -530,6 +530,10 @@ class Manager:
         for p in self.points:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
+
+
+    def ex8(self):
+        self.search_all_root(limit=False)
 
     # def ex8(self):
     #     self.search_all_root()
