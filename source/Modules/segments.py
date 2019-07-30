@@ -13,6 +13,7 @@
 
 import math
 import random
+import manager
 
 INFTY = 10**20
 
@@ -128,13 +129,15 @@ class segment:  # 線分クラス
         max = len(self.contacted)-1
         mid = max // 2
         dis1 = distance(self.P, point)  # 新しい点との距離
+
         while(True):
             dis2 = distance(self.P, self.contacted[mid])
             if min == max:
                 if dis2 < dis1:
                     mid += 1
                 elif dis1 == dis2:
-                    break  # 格納済みprint([x.index for x in self.points[key].contacted])
+                    break
+                    # 格納済み
                 self.contacted.insert(mid, point)
                 break
             # 次ループ用
@@ -146,6 +149,12 @@ class segment:  # 線分クラス
             else:  # tmp[1].x < intersections[mid].
                 max = mid
                 mid = min + (max-min) // 2
+
+        # for i in range(1, len(self.contacted)):
+        #     dis2 = distance(self.P, self.contacted[mid])
+        #     if dis2 < dis1:
+        #         self.contacted.insert(i, point)
+        #         break
 
         # ループを抜けても格納できていない -> self.Q = point
 
@@ -286,33 +295,25 @@ def find_intersection(s1, s2):
 
         else:
             # 交差なし
-            pass
+            return returnset
 
-    # 端点の除去
-    if returnset[0]:  # 交点あり(端点かは不明)
-        is_intersection = True
+    is_end = False
+    segs = [s1, s2]
+    for i in range(2):
+        for p in [segs[i].P, segs[i].Q]:
+            if returnset[1].equal(p):  # 端点である
+                is_end = True
+                p.set_contacted(segs[(i+1) % 2])
+                p.setIntersectTrue()
+                segs[(i+1) % 2].set_contacted(p)
 
-        segs = [s1, s2]
-        for seg in segs:
-            for p in [seg.P, seg.Q]:
-                if returnset[1].equal(p):
-                    is_intersection = False
-                    if seg is segs[0]:
-                        p.set_contacted(segs[1])
-                        p.setIntersectTrue()
-                        segs[1].set_contacted(p)
-                    else:
-                        p.set_contacted(segs[0])
-                        p.setIntersectTrue()
-                        segs[0].set_contacted(p)
+    if is_end:
+        return [False]
 
-        if is_intersection:  # 交点あり(端点ではない)
-            returnset[1].set_contacted(s1)
-            s1.set_contacted(returnset[1])
-            returnset[1].set_contacted(s2)
-            s2.set_contacted(returnset[1])
-        else:
-            returnset = [False]
+    returnset[1].set_contacted(s1)
+    s1.set_contacted(returnset[1])
+    returnset[1].set_contacted(s2)
+    s2.set_contacted(returnset[1])
 
     # [True, 交点]
     # [False]
@@ -323,6 +324,9 @@ def find_all_intersections(M, segments):
     intersections = []
     for i in range(M):
         for j in range(i+1, M):
+            if manager.debug:
+                manager.debugs['intersections'] = f"{i}/{M}"
+                debug_print(manager.debugs)
             result = find_intersection(segments[i], segments[j])
             if result[0]:
                 intersections.append(result[1])
@@ -373,6 +377,11 @@ def calc_shortest_connection(s, p):
             intersection = [point([s.Q.x, s.Q.y]), dis2]
 
     return intersection  # [交点, 距離]
+
+
+def debug_print(debugs):
+    message = f"find_intersects: {debugs['intersections']}"
+    print(f"\r{message}", end="")
 
 
 def isBigger(p1, p2):  # p1 >= p2ならTrue

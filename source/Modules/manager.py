@@ -1,3 +1,4 @@
+# search_root
 """
 クラス
 - Manager
@@ -13,11 +14,19 @@ import input
 # inputモジュールをインポート
 import segments as sg
 # segmentsモジュールをsegとして使える
+import sys
 import plot
 # 標準ライブラリplotをインポート
 
 
-dis_const = 10000000000  # 無駄なルート探索を除去する
+dis_infty = 10000000000  # 無駄なルート探索を除去する
+debug = False
+debugs = {
+    'searching_called': 0,
+    'point_skip': 0,
+    'point_general': 0,
+    'intersections': ''
+}
 
 
 class Manager:
@@ -166,7 +175,7 @@ class Manager:
         for index in list(intersections):
             self.points[index] = intersections[index]
 
-    def search_all_root(self, limit=False):
+    def search_all_root(self, limit=True):
         # limit = Falseにすれば全ルートを取得し, Trueなら不要な経路を除去する
         for root in self.roots_index:
             try:
@@ -230,12 +239,39 @@ class Manager:
             #     root2,
             # ]
 
+    def get_dis_K(self, roots):
+        found_num = len(roots)
+        if found_num > 0:
+            dis_K = roots[found_num-1][1]
+        else:
+            dis_K = dis_infty
+        return dis_K
+
+    def debug_print(self):
+        message = f"find_intersects: {debugs['intersections']}\n"
+        message = f"{message}searching: {debugs['searching_called']}, "
+        message = f"{message}p_general: {debugs['point_general']}, "
+        message = f"{message}p_skip: {debugs['point_skip']}, "
+        start = self.searching_index[0]
+        fin = self.searching_index[1]
+        try:
+            length = len(self.roots[start][fin])
+        except Exception:
+            length = 0
+        message = f"{message}found: {length}"
+        print(f"\r\r{message}", end="")
+
     def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
         """
         start, finはポイントクラスオブジェクト
         再帰的に呼び出す
         return 経由点
         """
+        global debugs, debug
+
+        if debug:
+            debugs['searching_called'] += 1
+            self.debug_print()
 
         success = False
         end = False
@@ -290,12 +326,6 @@ class Manager:
                     else:
                         flag = True
 
-                K = self.searching_index[2]
-                try:
-                    dis_K = roots[K-1][1]
-                except Exception:
-                    dis_K = dis_const
-
                 orders = []
 
                 if sg.distance(plus, fin) < sg.distance(minus, fin):
@@ -306,11 +336,15 @@ class Manager:
                     if point is None:
                         continue
                     dis = sg.distance(bef, point) + vias[1]
-                    if dis_K > dis and limit:
+                    if self.get_dis_K(roots=roots) < dis and limit:
+                        debugs['point_skip'] += 1
+                    else:
+                        debugs['point_general'] += 1
                         self.searching(point,
                                        fin,
                                        vias=[[x for x in vias[0]], dis],
-                                       roots=roots)
+                                       roots=roots,
+                                       limit=limit)
             else:  # 点用再帰
                 goal_vec = sg.to_vector(start, fin)
                 sorted = []
@@ -356,7 +390,8 @@ class Manager:
                     self.searching(t,
                                    fin,
                                    vias=[[x for x in vias[0]], vias[1]+0],
-                                   roots=roots)
+                                   roots=roots,
+                                   limit=limit)
         return roots
 
     def next_index(self):
@@ -442,7 +477,8 @@ class Manager:
                 self.search_root(
                     self.points[root[0]],
                     self.points[root[1]],
-                    root[2])
+                    root[2],
+                    limit=True)
             except Exception:
                 # KeyError
                 success_flag = False
@@ -464,7 +500,8 @@ class Manager:
             try:
                 self.search_root(self.points[root[0]],
                                  self.points[root[1]],
-                                 root[2])
+                                 root[2],
+                                 limit=True)
             except Exception:
                 # KeyError
                 success_flag = False
