@@ -11,12 +11,10 @@
 """
 
 import input
-# inputモジュールをインポート
 import segments as sg
 # segmentsモジュールをsegとして使える
 import sys
 import plot
-# 標準ライブラリplotをインポート
 
 
 dis_infty = 10000000000  # 無駄なルート探索を除去する
@@ -102,10 +100,8 @@ class Manager:
         count = 0
         for key in list(self.points):
             count += 1
-            #countをlengthと同じ値になるまでインクリメント
             if count > length:
                 break
-            # for分を抜ける。
             if not self.points[key].added:
                 print(f"{key}: {self.points[key].to_str()}", end=" ")
                 print([x.index for x in self.points[key].contacted])
@@ -167,7 +163,6 @@ class Manager:
         plot.plot_all(self.points, self.segments, save=save, path=path)
 
     def find_all_intersections(self):
-        # 与えられた線分から全ての交点を求める関数
         segments = list(self.segments.values())
         intersections = sg.find_all_intersections(self.M, segments)
         intersections = list2dict(intersections, intersections=True)
@@ -201,12 +196,12 @@ class Manager:
         skip_flag = False
         if len(fin.contacted) == 0:
             skip_flag = True
-        elif len(fin.contacted) == 1:
-            len1 = len(fin.contacted[0].contacted[0])
-            len2 = len(fin.contacted[0].contacted[1])
-            if (len1 + len2) > 3:
-                print("check len=1 and isolate")
-                skip_flag = True
+        elif len(fin.contacted) >= 1:
+            # len1 = len(fin.contacted[0])
+            # len2 = len(fin.contacted[1])
+            # if (len1 + len2) > 3:
+            #     print("check len=1 and isolate")
+            skip_flag = False
 
         if not skip_flag:
             roots = self.searching(start,
@@ -230,7 +225,6 @@ class Manager:
                     sg.Root(x[0]) for x in roots
                     ]
             except Exception:
-                # キーエラー
                 self.roots[start.index] = {
                     fin.index: [sg.Root(x[0]) for x in roots],
                     }
@@ -240,26 +234,21 @@ class Manager:
             # ]
 
     def get_dis_K(self, roots):
-        found_num = len(roots)
-        if found_num > 0:
-            dis_K = roots[found_num-1][1]
+        K = self.searching_index[2]
+        if len(roots) > K - 1:
+            dis_K = roots[K - 1][1]
         else:
             dis_K = dis_infty
         return dis_K
 
-    def debug_print(self):
-        message = f"find_intersects: {debugs['intersections']}\n"
-        message = f"{message}searching: {debugs['searching_called']}, "
+    def debug_print(self, roots):
+        # message = f"find_intersects: {debugs['intersections']}\n"
+        message = f"searching: {debugs['searching_called']}, "
         message = f"{message}p_general: {debugs['point_general']}, "
         message = f"{message}p_skip: {debugs['point_skip']}, "
-        start = self.searching_index[0]
-        fin = self.searching_index[1]
-        try:
-            length = len(self.roots[start][fin])
-        except Exception:
-            length = 0
+        length = len(roots)
         message = f"{message}found: {length}"
-        print(f"\r\r{message}", end="")
+        print(f"\r{message}", end="")
 
     def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
         """
@@ -271,7 +260,7 @@ class Manager:
 
         if debug:
             debugs['searching_called'] += 1
-            self.debug_print()
+            self.debug_print(roots)
 
         success = False
         end = False
@@ -327,7 +316,6 @@ class Manager:
                         flag = True
 
                 orders = []
-
                 if sg.distance(plus, fin) < sg.distance(minus, fin):
                     orders = [plus, minus]
                 else:
@@ -349,6 +337,7 @@ class Manager:
                 goal_vec = sg.to_vector(start, fin)
                 sorted = []
                 values = []
+                # if self.get_dis_K() == dis_infty:
                 for t in start.contacted:
                     cos = -1
                     if t.P.equal(start):
@@ -386,6 +375,8 @@ class Manager:
                         else:
                             max = mid
                             mid = min + (max-min) // 2
+                # else:
+                #     sorted = start.contacted
                 for t in sorted:
                     self.searching(t,
                                    fin,
@@ -418,7 +409,6 @@ class Manager:
         # もっとも短い繋ぎ方で道路に繋ぐ
         # [交点, 距離]
         min_set = sg.calc_shortest_connection(self.segments['1'], p)
-        # 最短距離を計算
         connected_seg = self.segments['1']
 
         for key in list(self.segments)[1:]:
@@ -528,7 +518,11 @@ class Manager:
             # 始点
             fin = index[1]
             # 終点
-            roots = self.roots[start][fin]
+            roots = [None]
+            try:
+                roots = self.roots[start][fin]
+            except Exception:
+                pass
             # 始点と終点から求まる経路情報をrootsに格納
             K = int(index[2])
             if len(roots) < K:
@@ -576,45 +570,30 @@ class Manager:
             if self.points[p].added and self.points[p].intersect:
                 print(f"{self.points[p].x:.6g} {self.points[p].y:.6g}")
 
-    def ex8(self):
-        segments = self.search_main_road()
-        for segment in segments:
-            print(f"{segment.P.index} {segment.Q.index}")
-        pass
+    # def ex8(self):
+    #     self.search_all_root()
+    #     for index in self.roots_index:
+    #         start = index[0]
+    #         fin = index[1]
+    #         roots = self.roots[start][fin]
+    #         # rootsに与えられた始点と終点から求めたroot情報をリスト型で格納する。
+    #     n = len(roots)
+    #
+    #     # keep = [x.index for x in roots[0].segments]
+    #     keep = []
+    #     for i in range(n):
+    #         for root in roots:
+    #             if root.segments[i] == root.segment[i+1]:
+    #                 keep.append()
+    #
+    #
+    #     m = len(keep)
+    #     for i in range(m):
+    #         print(f"{keep[i]:.6g}")
+    #
+    #
+    #     while(True):
 
-    def search_main_road(self, points=None, mainRoads=[]):
-        if points is None:
-            points = self.points
-        startPointIndex = list(points)[0]
-        startPoint = points[startPointIndex]
-        remainList = []
-        for p in points:
-            if p == startPointIndex:
-                continue
-            mySegments = list(self.segments.values())
-            self.search_root(startPoint, points[p], 2000, False)
-            try:
-                rootLength = len(self.roots['1'][p])
-                nowSegments = [
-                    self.roots['1'][p][x].segments for x in range(rootLength)
-                    ]
-            except Exception:
-                remainList.append(points[p])
-            for segments in nowSegments:
-                mySegments = list(
-                    set(mySegments) - (set(mySegments) - set(segments))
-                    )
-            if mySegments:
-                for seg in mySegments:
-                    if seg not in mainRoads:
-                        mainRoads.append(seg)
-        remainList = list(
-            set(points) - set(remainList)
-        )
-        # print(mainRoads)
-        if not remainList:
-            self.search_main_road(points=remainList, mainRoads=mainRoads)
-        return mainRoads
 
 
 

@@ -316,10 +316,6 @@ def find_intersection(s1, s2):
     if is_end:
         return [False]
 
-    if s1.index == '1':
-        for p in s1.contacted:
-            print(p.to_str())
-
     returnset[1].set_contacted(s1)
     s1.set_contacted(returnset[1])
     returnset[1].set_contacted(s2)
@@ -330,18 +326,29 @@ def find_intersection(s1, s2):
     return returnset
 
 
-def find_all_intersections(M, segments):
+def find_all_intersections(M, segments, multi=False):
     intersections = []
-    args = []
-    for i in range(M):
-        for j in range(i+1, M):
-            args.append((segments[i], segments[j]))
+    if multi:
+        args = []
+        for i in range(M):
+            for j in range(i+1, M):
+                args.append((segments[i], segments[j]))
 
-    with ProcessPoolExecutor() as executor:
-        results = executor.map(find_intersection_multi, args)
+        with ProcessPoolExecutor() as executor:
+            results = executor.map(find_intersection_multi, args)
+
         for result in results:
             if result[0]:
                 intersections.append(result[1])
+    else:
+        for i in range(M):
+            for j in range(i+1, M):
+                if manager.debug:
+                    manager.debugs['intersections'] = f"{i}/{M}"
+                    debug_print(manager.debugs)
+                result = find_intersection(segments[i], segments[j])
+                if result[0]:
+                    intersections.append(result[1])
 
     intersections = sort_points(intersections)
     return intersections
