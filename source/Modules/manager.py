@@ -235,7 +235,7 @@ class Manager:
 
     def get_dis_K(self, roots):
         found_num = len(roots)
-        if found_num == 0:
+        if found_num > 0:
             dis_K = roots[found_num-1][1]
         else:
             dis_K = dis_infty
