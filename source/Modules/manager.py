@@ -199,14 +199,15 @@ class Manager:
         # ルートが存在しない場合は, 探索をしない
 
         skip_flag = False
-        if len(fin.contacted) == 0:
-            skip_flag = True
-        elif len(fin.contacted) == 1:
-            len1 = len(fin.contacted[0].contacted[0])
-            len2 = len(fin.contacted[0].contacted[1])
-            if (len1 + len2) > 3:
-                print("check len=1 and isolate")
+        if limit:
+            if len(fin.contacted) == 0:
                 skip_flag = True
+            elif len(fin.contacted) == 1:
+                len1 = len(fin.contacted[0].contacted[0])
+                len2 = len(fin.contacted[0].contacted[1])
+                if (len1 + len2) > 3:
+                    print("check len=1 and isolate")
+                    skip_flag = True
 
         if not skip_flag:
             roots = self.searching(start,
@@ -594,9 +595,11 @@ class Manager:
             mySegments = list(self.segments.values())
             self.search_root(startPoint, points[p], 2000, False)
             try:
-                rootLength = len(self.roots['1'][p])
+                rootLength = len(self.roots[startPointIndex][p])
+                if self.roots[startPointIndex][p] == [None]:
+                    raise Exception
                 nowSegments = [
-                    self.roots['1'][p][x].segments for x in range(rootLength)
+                    self.roots[startPointIndex][p][x].segments for x in range(rootLength)
                     ]
             except Exception:
                 remainList.append(points[p])
@@ -608,12 +611,15 @@ class Manager:
                 for seg in mySegments:
                     if seg not in mainRoads:
                         mainRoads.append(seg)
-        remainList = list(
-            set(points) - set(remainList)
-        )
+        # remainList = list(
+        #     set(list(points.values())) - set(remainList)
+        # )
         # print(mainRoads)
-        if not remainList:
-            self.search_main_road(points=remainList, mainRoads=mainRoads)
+        remainDict = {}
+        for point in remainList:
+            remainDict[point.index] = point
+        if remainList != []:
+            self.search_main_road(points=remainDict, mainRoads=mainRoads)
         return mainRoads
 
 
