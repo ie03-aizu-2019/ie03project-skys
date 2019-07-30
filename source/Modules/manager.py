@@ -18,7 +18,7 @@ import plot
 
 
 dis_infty = 10000000000  # 無駄なルート探索を除去する
-debug = True
+debug = False
 debugs = {
     'searching_called': 0,
     'point_skip': 0,
@@ -235,7 +235,7 @@ class Manager:
 
     def get_dis_K(self, roots):
         found_num = len(roots)
-        if found_num == 0:
+        if found_num > 0:
             dis_K = roots[found_num-1][1]
         else:
             dis_K = dis_infty
@@ -248,7 +248,11 @@ class Manager:
         message = f"{message}p_skip: {debugs['point_skip']}, "
         start = self.searching_index[0]
         fin = self.searching_index[1]
-        message = f"{message}found: {len(self.roots[start][fin])}"
+        try:
+            length = len(self.roots[start][fin])
+        except Exception:
+            length = 0
+        message = f"{message}found: {length}"
         print(f"\r\r{message}", end="")
 
     def searching(self, start, fin, vias=[[], 0], roots=[], limit=True):
@@ -261,10 +265,6 @@ class Manager:
 
         if debug:
             debugs['searching_called'] += 1
-            if start.isPoint():
-                debugs['points'] += 1
-            else:
-                debugs['segments'] += 1
             self.debug_print()
 
         success = False
@@ -466,7 +466,7 @@ class Manager:
             # root = ["開始", "終了", "順位"]
             success_flag = True
             try:
-                self.search_root_root(
+                self.search_root(
                     self.points[root[0]],
                     self.points[root[1]],
                     root[2],
