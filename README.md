@@ -22,7 +22,6 @@
 - エディタ, デバッガ等: [Atom](https://atom.io/)
 
 
-
 ## ビルド方法
 
 ### 1. ソースコードの取得
@@ -76,7 +75,6 @@ $ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 - [週刊レポート6](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report06.md)
 - [週刊レポート7](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report07.md)
 - [中間レビュースライド](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/Midterm.pptx)
-- [期末レビュースライド](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/final.pptx)
 
 ### フェーズ3
 
@@ -85,3 +83,4 @@ $ python3 main2.py -f 2 1  # ファイル入力, 小課題2, テストケース1
 - [週刊レポート10](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)
 - [週刊レポート11](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)
 - [週刊レポート12](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/report10.md)
+- [期末レビュースライド](https://github.com/ie03-aizu-2019/ie03project-skys/tree/master/Reports/final2.pptx)
