@@ -4,18 +4,21 @@
 
 - [システムの概要](#chapter1)
 - [実行環境とビルド方法](#chapter2)
-- [基本的な利用方法](#chapter3)
-    - [main.pyからの利用](#chapter3-1)
-    - [main2.pyからの利用](#chapter3-2)
-- [optionについて](#about-option)
-
+- [入力について](#chapter3)
+- [基本的な利用方法](#chapter4)
+    - [入力ファイルの用意/入力](#chapter4-1)
+    - [システムの利用(統合版)](#chapter4-2)
+    - [出力の見方](#chapter4-3)
+    - [各小課題を解く](#chapter4-4)
+- [source/main.pyでの実行](#chapter5)
+- [テストデータ生成器について](#chapter6)
+- [ビジュアライザの不具合について](#chapter7)
 
 <a id="chapter1"></a>
 
 ## システムの概要
 
-本システムでは、機能として断片的な道の情報からの道路網復元と、道路網上の経路検索システム、新たな地点につなぐための最適な道の提案機能、重要性の高い道の検出機能を提供します。
-
+本システムでは入力から道路網を構築し, ある地点からある地点への経路探索や新たな地点を適切に追加して道路網の更新等を可能にします.
 
 プログラムのソースは, sourceディレクトリにあります.
 
@@ -27,11 +30,11 @@ source
 │   ├── path.py
 │   ├── plot.py
 │   ├── segments.py
-│   └── test.py
 ├── main.py
+├── main2.py
 ├── setup.py
+├── test.py
 └── static
-    ├── figure.png
     ├── input.txt
     ├── requirements.txt
     └── testdata
@@ -52,6 +55,7 @@ source
 その他必要なモジュールのインストールは, **setup.py** で行います.
 
 ``` sh
+$ git clone git@github.com:ie03-aizu-2019/ie03project-skys.git
 $ python3 setup.py
 ```
 
@@ -59,68 +63,90 @@ $ python3 setup.py
 
 <a id="chapter3"></a>
 
+## 入力について
+
+内容後でかく
+
+<a id="chapter4"></a>
+
 ## 基本的な利用方法
 
-システムの利用方法は2種類用意されています.
+システムの利用方法は,
 
-1. **source/main.py** から利用する
-2. **source/main2.py** から利用する
+1. **source/main.py**
+2. **source/main2.py**
 
-<a id="chapter3-1"></a>
+の2種類が用意されていますが, より分かりやすいmain2.pyを推奨します.
 
-### ① source/main.py から利用する
+<a id="chapter4-1"></a>
 
-main.py では, 入力から出力を得るだけのシンプルな機能を提供します.
+### ① 入力ファイルの用意/入力
 
-``` sh
-python source/main.py <input_option> <ex_num>
+``` markup
+- input.txtから入力を渡せるように修正
+- testdataについて説明
+- 手入力について説明
 ```
 
-入力ファイルは, **source/static/input.txt** に用意する必要があります.
+<a id="chapter4-2"></a>
 
-※ \<input_option\>と\<ex_num\>については, [optionについて](#about-option) を参照してください.
-
-<a id="chapter3-2"></a>
-
-### ② source/main2.py
-
-main2.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.
+### ② システムの利用(統合版)
 
 ``` sh
-python source/main2.py <input_option> <ex_num> <case_num>
+$ cd path/to/source
+$ python3 main2.py -f 9 1
 ```
 
-テストデータは予め用意されています.
+を実行することで, システムを利用できます.
 
-※ \<input_option\>と\<ex_num\> \<case_num\>については
-, [optionについて](#about-option) を参照してください.
 
-<a id="about-option"></a>
+``` markup
+- Ex9のP, Qの条件分岐等を説明する
+```
 
-## option について
+<a id="chapter4-3"></a>
 
-### ①input_option
+### ③ 出力の見方
 
-input_optionでは, データ入力の方法を指定します.
+``` markup
+- 出力例を提示して, 各部分がなにを表しているのか説明する
+```
 
-| input_option | 入力手段 |
-| :---: | :--- |
-| -i | ターミナル入力 |
-| -f | ファイル入力 |
+<a id="chapter4-4"></a>
 
-**-f** オプションでmain.pyを実行する場合は, 予め入力データを **source/static/input.txt** に入力しておく必要があります.
+### ④ source/main2.py から各小課題を解く
 
-### ② ex_num
+``` markup
+- 各小課題番号が解く課題を説明する
+- 小課題番号の指定方法等を説明する
+```
 
-output_optionでは, 入力されたデータに対して実行する処理を小課題番号で指定します.
+<a id="chapter5"></a>
 
-### ③ case_num
+## source/main.py の利用
 
-case_num では, テストケースの番号を入力します.
+``` markup
+- 一応一通りmain.pyの使い方も乗せる
+- ほぼmain2.pyと同じだからざっくりでおけ
+```
 
-| オプション | テストケース |
-|:---:|:---:|
-| 1 | 通常ケース |
-| 2 | 最小入力ケース |
-| 3 | 最大入力ケース |
-| 4以降 | 特殊ケース |
+<a id="chapter6"></a>
+
+## テストデータ生成器
+
+``` markup
+test.pyでテストデータ生成ができるからこれについて一通りまとめる
+```
+
+<a id="chapter7"></a>
+
+## プロット不具合
+
+``` markup
+- プロットに不具合が結構あって, 解決するにはmatplotlibrc?みたいいなやつをいじる
+- 適当に書いといて
+```
+
+``` markup
+あと必要そうなの思いついたら好きに項目つけて書いといて❢
+```
