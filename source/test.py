@@ -229,10 +229,10 @@ def write_data_to_file(data, path=path.input_path):
             f.write(line+"\n")
 
 
-def measure_run_time(ex, path=path.input_path):
+def measure_run_time(ex, file=True, path=path.input_path):
     M = manager.Manager()
     time1 = time.time()
-    M.input2(file=True, path=path)
+    M.input2(file=file, path=path)
     time2 = time.time()
     print(f"入力情報を受け取りました(時間: {time2-time1:.8f}秒)")
     M.find_all_intersections()
