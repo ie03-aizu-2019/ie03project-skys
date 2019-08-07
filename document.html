@@ -384,133 +384,276 @@ pre {
 <h2 id="目次">目次</h2>
 <ul>
 <li><a href="#chapter1">システムの概要</a></li>
-<li><a href="#chapter2">動作環境</a></li>
-<li><a href="#chapter3">基本的な利用方法</a>
+<li><a href="#chapter2">実行環境とビルド方法</a></li>
+<li><a href="#chapter3">データの入力について</a></li>
+<li><a href="#chapter4">基本的な利用方法</a>
 <ul>
-<li><a href="#chapter3-1">main.pyからの利用</a></li>
-<li><a href="#chapter3-2">test.pyからの利用</a></li>
+<li><a href="#chapter4-1">入力ファイルの用意/入力</a></li>
+<li><a href="#chapter4-2">システムが提供する機能</a></li>
+<li><a href="#chapter4-3">システムの利用(統合版)</a></li>
+<li><a href="#chapter4-4">出力の確認</a></li>
 </ul></li>
-<li><a href="#about-option">optionについて</a></li>
-<li><a href="#chapter4">提供される機能</a></li>
+<li><a href="#chapter5">main.pyでの実行</a></li>
+<li><a href="#chapter6">テストデータ生成器</a></li>
+<li><a href="#chapter7">図のプロットに失敗す場合</a></li>
 </ul>
 <p><a id="chapter1"></a></p>
 <h2 id="システムの概要">システムの概要</h2>
-<p>本システムでは、機能として断片的な道の情報からの道路網復元と、道路網上の経路検索システム、新たな地点につなぐための最適な道の提案機能、重要性の高い道の検出機能を提供します。</p>
-<p>システムのTree構造は以下の通りです(一部システムに無関係のファイル, ディレクトリは除いてあります).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&lt;</span><span class="ex">BASEDIR</span><span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-2" title="2">├── <span class="ex">README.md</span>               <span class="co"># README</span></a>
-<a class="sourceLine" id="cb1-3" title="3">├── <span class="ex">document.html</span>           <span class="co"># このドキュメント</span></a>
-<a class="sourceLine" id="cb1-4" title="4">├── <span class="ex">main.py</span>                 <span class="co"># システムの利用に使う①</span></a>
-<a class="sourceLine" id="cb1-5" title="5">├── <span class="ex">Modules</span></a>
-<a class="sourceLine" id="cb1-6" title="6">│   ├── <span class="ex">input.py</span></a>
-<a class="sourceLine" id="cb1-7" title="7">│   ├── <span class="ex">manager.py</span></a>
-<a class="sourceLine" id="cb1-8" title="8">│   ├── <span class="ex">path.py</span></a>
-<a class="sourceLine" id="cb1-9" title="9">│   ├── <span class="ex">plot.py</span></a>
-<a class="sourceLine" id="cb1-10" title="10">│   ├── <span class="ex">segments.py</span></a>
-<a class="sourceLine" id="cb1-11" title="11">│   └── <span class="ex">test.py</span>            <span class="co"># システムの利用に使う②</span></a>
-<a class="sourceLine" id="cb1-12" title="12">├── <span class="ex">Reports</span>                 <span class="co"># 週刊レポート</span></a>
-<a class="sourceLine" id="cb1-13" title="13">│   ├── <span class="ex">report0X.md</span></a>
-<a class="sourceLine" id="cb1-14" title="14">│   └── <span class="ex">template.md</span></a>
-<a class="sourceLine" id="cb1-15" title="15">└── <span class="ex">static</span></a>
-<a class="sourceLine" id="cb1-16" title="16">    ├── <span class="ex">figure.png</span>          <span class="co"># 情報の2次元グラフ</span></a>
-<a class="sourceLine" id="cb1-17" title="17">    ├── <span class="ex">input.txt</span>           <span class="co"># ①のデータ入力に使うテキストファイル</span></a>
-<a class="sourceLine" id="cb1-18" title="18">    └── <span class="ex">testdata</span>            <span class="co"># ②のデータ入力に使うフ複数ファイルのディレクトリ</span></a>
-<a class="sourceLine" id="cb1-19" title="19">        └── <span class="ex">testdata</span><span class="op">&lt;</span>小課題番号<span class="op">&gt;</span>-<span class="op">&lt;</span>N<span class="op">&gt;</span>.txt</a></code></pre></div>
-<p>このドキュメントでは, 基本的に &lt;BASEDIR&gt; をルートディレクトリとしてファイルパスを書いていきます.</p>
+<p>本システムでは入力から道路網を構築し, ある地点からある地点への経路探索や新たな地点を適切に追加して道路網の更新等を可能にします.</p>
+<p>プログラムのソースは, sourceディレクトリにあります.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">source</span></a>
+<a class="sourceLine" id="cb1-2" title="2">├── <span class="ex">Modules</span></a>
+<a class="sourceLine" id="cb1-3" title="3">│   ├── <span class="ex">input.py</span></a>
+<a class="sourceLine" id="cb1-4" title="4">│   ├── <span class="ex">manager.py</span></a>
+<a class="sourceLine" id="cb1-5" title="5">│   ├── <span class="ex">path.py</span></a>
+<a class="sourceLine" id="cb1-6" title="6">│   ├── <span class="ex">plot.py</span></a>
+<a class="sourceLine" id="cb1-7" title="7">│   ├── <span class="ex">segments.py</span></a>
+<a class="sourceLine" id="cb1-8" title="8">├── <span class="ex">main.py</span></a>
+<a class="sourceLine" id="cb1-9" title="9">├── <span class="ex">main2.py</span></a>
+<a class="sourceLine" id="cb1-10" title="10">├── <span class="ex">setup.py</span></a>
+<a class="sourceLine" id="cb1-11" title="11">├── <span class="ex">test.py</span></a>
+<a class="sourceLine" id="cb1-12" title="12">└── <span class="ex">static</span></a>
+<a class="sourceLine" id="cb1-13" title="13">    ├── <span class="ex">input.txt</span></a>
+<a class="sourceLine" id="cb1-14" title="14">    ├── <span class="ex">requirements.txt</span></a>
+<a class="sourceLine" id="cb1-15" title="15">    └── <span class="ex">testdata</span></a>
+<a class="sourceLine" id="cb1-16" title="16">        └── <span class="ex">testdata</span>α-β.txt</a></code></pre></div>
 <p><a id="chapter2"></a></p>
-<h2 id="動作環境">動作環境</h2>
-<p>動作環境として,</p>
+<h2 id="実行環境とビルド方法">実行環境とビルド方法</h2>
+<p>実行環境として,</p>
 <ul>
-<li>Python 3.7.2</li>
+<li><a href="https://www.python.org/downloads/release/python-372/">Python 3.7.2</a></li>
 <li>Mac OS</li>
 </ul>
-<p>を想定します.</p>
-<p>新しめのPython3系さえあれば動作すると思いますが, 一部グラフ化等の機能が制限されれる可能性があります.</p>
+<p>を想定します(WindowsやUnixだとプロット図の表示でエラーが発生する可能性が高いですが, それ以外の機能は問題なく使えます).</p>
+<p>その他必要なモジュールのインストールは, <strong>setup.py</strong> で行います.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1">$ <span class="fu">git</span> clone git@github.com:ie03-aizu-2019/ie03project-skys.git</a>
+<a class="sourceLine" id="cb2-2" title="2">$ <span class="ex">python3</span> setup.py</a></code></pre></div>
+<p>｢正常にセットアップが完了しました｣と表示されれば, 環境構築は終了です.</p>
 <p><a id="chapter3"></a></p>
-<h2 id="基本的な利用方法">基本的な利用方法</h2>
-<p>システムの利用方法は2種類用意されています.</p>
+<h2 id="データの入力について">データの入力について</h2>
+<p>システムの利用にあたり, 道路網を構築するための入力を与える必要があります.</p>
+<p>入力形式は以下のように定められています.</p>
+<pre class="markup"><code>N M P Q
+x1 y1
+x2 y2
+:
+xN yN
+b1 e1
+b2 e2
+:
+bM eM
+xN+1 yN+1
+xN+2 yN+2
+:
+xN+P yN+P
+s1 d1 k1
+s2 d2 k2
+:
+sQ dQ kQ</code></pre>
+<ul>
+<li>N: 座標の数</li>
+<li>M: 道の数</li>
+<li>P: 追加する地点の座標の数</li>
+<li>Q: 経路の問い合わせの数</li>
+</ul>
+<p>を1行目に与え, 続いて</p>
 <ol type="1">
-<li><strong>./main.py</strong> から利用する</li>
-<li><strong>./Modules/test.py</strong> から利用する</li>
+<li>地点の <strong>x, y座標</strong> の情報をN個 (1から順に添え字が振られます)</li>
+<li>道の情報を <strong>始点と終点の添字</strong> でM個 (1から順に添え字が振られます)</li>
+<li>新たに追加する地点の <strong>x, y座標</strong> をP個</li>
+<li>経路の問い合わせを <strong>始点, 終点, 探索数</strong> をQ個</li>
 </ol>
-<p><a id="chapter3-1"></a></p>
-<h3 id="main.py-から利用する">① ./main.py から利用する</h3>
-<p>main.py では, 入力から出力を得るだけのシンプルな機能を提供します.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">python</span> ./main.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
-<p>※ &lt;input_option&gt;と&lt;output_option&gt;については, <a href="#about-option">optionについて</a> を参照してください.</p>
-<p><a id="chapter3-2"></a></p>
-<h3 id="modulestest.py">② ./Modules/test.py</h3>
-<p>test.pyでは, main.pyで得られるシンプルな出力に加えて, 詳細な地点等の情報や2次元平面図を出力する.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">python</span> ./Modules/test.py <span class="op">&lt;</span>input_option<span class="op">&gt;</span> <span class="op">&lt;</span>output_option<span class="op">&gt;</span></a></code></pre></div>
-<p>※ &lt;input_option&gt;と&lt;output_option&gt;については , <a href="#about-option">optionについて</a> を参照してください.</p>
-<p><a id="about-option"></a></p>
-<h2 id="option-について">option について</h2>
-<h3 id="input_option">①input_option</h3>
-<p>input_optionでは, データ入力の方法を指定します.</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">input_option</th>
-<th style="text-align: left;">入力手段</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">-i</td>
-<td style="text-align: left;">ターミナルから</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">-f</td>
-<td style="text-align: left;">./static/input.txt から</td>
-</tr>
-</tbody>
-</table>
-<p><strong>-f</strong> オプションでファイルから入力する場合は, 予め入力データを <strong>./static/input.txt</strong> に入力しておく必要があります.</p>
-<h3 id="output_option">②output_option</h3>
-<p>output_optionでは, 入力されたデータに対して如何なる処理をした結果を出力するかを指定します.</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">output_option</th>
-<th style="text-align: left;">出力</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">2線分の交点座標</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">2</td>
-<td style="text-align: left;">全ての交差点座標</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: left;">最短経路の距離</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">4</td>
-<td style="text-align: left;">最短経路と距離</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">第K番目までの経路の距離</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">6</td>
-<td style="text-align: left;">第K番目までの経路と距離</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: left;">最適な交差点座標</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">8</td>
-<td style="text-align: left;">幹線道路</td>
-</tr>
-</tbody>
-</table>
+<p>を入力して下さい.</p>
 <p><a id="chapter4"></a></p>
-<h2 id="提供される機能">提供される機能</h2>
+<h2 id="基本的な利用方法">基本的な利用方法</h2>
+<p>システムの利用方法は,</p>
+<ol type="1">
+<li><strong>source/main.py</strong></li>
+<li><strong>source/main2.py</strong></li>
+</ol>
+<p>の2種類が用意されていますが, より詳細なmain2.pyを推奨します.</p>
+<p>システムの利用は, 以下のように行います.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1">$ <span class="bu">cd</span> path/to/source</a>
+<a class="sourceLine" id="cb4-2" title="2">$ <span class="ex">python3</span> main2.py <span class="op">&lt;</span>option<span class="op">&gt;</span> <span class="op">&lt;</span>機能番号<span class="op">&gt;</span> <span class="op">&lt;</span>データ番号<span class="op">&gt;</span></a></code></pre></div>
+<p>引数については,</p>
+<table>
+<thead>
+<tr class="header">
+<th>オプション</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>&lt;option&gt;</td>
+<td>-i / -td / -f</td>
+</tr>
+<tr class="even">
+<td><機能番号></td>
+<td>1 〜 8</td>
+</tr>
+<tr class="odd">
+<td><データ番号></td>
+<td>1 〜 4 + α</td>
+</tr>
+</tbody>
+</table>
+<p>図のようになっています.</p>
+<p>optionではデータ入力の方式( それぞれ 手入力, 用意されたテストデータから入力, ファイル入力 )を指定し,</p>
+<p>機能番号と, テストデータから入力する場合はデータ番号も引数として渡します.</p>
+<p>より詳しくは後述します.</p>
+<p><a id="chapter4-1"></a></p>
+<h3 id="入力ファイルの用意入力">① 入力ファイルの用意/入力</h3>
+<p>&lt;option&gt; では, 入力方式を指定します.</p>
+<ul>
+<li>-i: 手入力</li>
+<li>-td: 予め用意されたテストデータ</li>
+<li>-f: ファイル入力</li>
+</ul>
+<p><strong>1. 手入力</strong></p>
+<p>手入力で入力データを渡す場合は, -iオプションで課題番号を渡します.</p>
+<p>手入力で機能1を実行するサンプルは以下の通りです.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">python3</span> -i 1</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">4</span> 2 0 0</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">0</span> 0</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ex">5</span> 5</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="ex">2</span> 5</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="ex">7</span> 1</a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="ex">1</span> 2</a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="ex">3</span> 4</a></code></pre></div>
+<p><strong>2. 予め用意されたテストデータ</strong></p>
+<p>システムの動作確認のため, 予めいくつかのテストデータが用意されています.</p>
+<p>-td オプションを用いることで用意されたテストデータを用いてシステムを使うことができます.</p>
+<p>テストデータには通常ケース、最小ケース、最大ケースの3種類と任意個数の特殊ケースが用意されています.</p>
+<ol type="1">
+<li>通常</li>
+<li>最小</li>
+<li>最大</li>
+<li>特殊</li>
+</ol>
+<p>特殊ケースが複数ある場合は4から順に番号が振ってあります.</p>
+<p>-td オプションを用いて, 機能1の通常ケースを実行するサンプルは以下の通りです.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">$ <span class="ex">python3</span> -td 1 1</a></code></pre></div>
+<p><strong>3. ファイル入力</strong></p>
+<p><strong>source/static/input.txt</strong> に入力データを書き込んでおいて, -f オプションでシステムを起動することでファイルから入力を渡すことができます.</p>
+<p>-f オプションを用いてシステム1を実行するサンプルは以下の通りです.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1">$ <span class="ex">python3</span> main2.py -f 1</a></code></pre></div>
+<p><a id="chapter4-2"></a></p>
+<h3 id="システムが提供する機能">② システムが提供する機能</h3>
+<p>このシステムでは以下の8種類の機能と, その統合機能を利用することができます.</p>
+<ol type="1">
+<li>2本の線分情報から交差地点を検出する</li>
+<li>全ての交差地点を検出する</li>
+<li>ある地点からある地点の最短距離の距離を出力する</li>
+<li>最短経路の経由地点も検出する</li>
+<li>k番目までの短い経路の距離を検出する</li>
+<li>k番目までの短い経路の距離とその経由地点を検出する</li>
+<li>新たに与えられた地点を最適な線分で道路網に接続し、その交点を出力する</li>
+<li>幹線道路の検出と出力</li>
+</ol>
+<p>※幹線道路とは, 任意の地点から任意の地点へ向かうときに必ず通る道のことを指します.</p>
+<p><a id="chapter4-3"></a></p>
+<h3 id="システムの利用統合版">③ システムの利用(統合版)</h3>
+<p>システムでは, 入力に応じて適切な機能を実行する統合版の機能も利用できます.</p>
+<p>利用には, 機能番号として9を渡します.</p>
+<p>具体的には,</p>
+<ul>
+<li>P = 0 かつ Q = 0 → 機能2, 8</li>
+<li>P != 0 → 機能7</li>
+<li>Q != 0 → 機能6</li>
+<li>P != 0 かつ Q != 0 → 機能6, 7</li>
+</ul>
+<p>が実行されます.</p>
+<p>例)</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$ <span class="ex">python3</span> main2.py -f 9</a></code></pre></div>
+<p><a id="chapter4-4"></a></p>
+<h3 id="出力の確認">④ 出力の確認</h3>
+<p>main2.pyからシステムを利用すると以下のような出力とプロット図が表示されます.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1">$ <span class="ex">python3</span> main2.py -td 8 1</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">7</span> 8 0 0</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">1</span> 3</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ex">4</span> 4</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="ex">2</span> 0</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="ex">8</span> 3</a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="ex">10</span> 0</a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="ex">11</span> 5</a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="ex">13</span> 2</a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="ex">1</span> 2</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="ex">1</span> 3</a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="ex">2</span> 3</a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="ex">2</span> 4</a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="ex">4</span> 5</a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="ex">4</span> 6</a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="ex">5</span> 7</a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="ex">6</span> 7</a>
+<a class="sourceLine" id="cb9-18" title="18"></a>
+<a class="sourceLine" id="cb9-19" title="19"><span class="co">### 小課題8の実行</span></a>
+<a class="sourceLine" id="cb9-20" title="20">入力情報を受け取りました<span class="kw">(</span>時間: <span class="ex">0.00017095</span>秒<span class="kw">)</span></a>
+<a class="sourceLine" id="cb9-21" title="21">全交差点を算出しました<span class="kw">(</span>時間: <span class="ex">0.00025439</span>秒<span class="kw">)</span></a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="ex">2</span> 4</a>
+<a class="sourceLine" id="cb9-23" title="23">プログラムの実行が終了しました<span class="kw">(</span>時間: <span class="ex">0.00154376</span>秒<span class="kw">)</span></a>
+<a class="sourceLine" id="cb9-24" title="24">合計時間: <span class="ex">0.00196910</span>秒</a>
+<a class="sourceLine" id="cb9-25" title="25"></a>
+<a class="sourceLine" id="cb9-26" title="26"><span class="co">### 詳細データ</span></a>
+<a class="sourceLine" id="cb9-27" title="27"><span class="ex">N</span>(Number of Points)             <span class="bu">:</span> 7</a>
+<a class="sourceLine" id="cb9-28" title="28"><span class="ex">M</span>(Number of Segments)           <span class="bu">:</span> 8</a>
+<a class="sourceLine" id="cb9-29" title="29"><span class="ex">P</span>(Number of adding Points)      <span class="bu">:</span> 0</a>
+<a class="sourceLine" id="cb9-30" title="30"><span class="ex">Q</span>(Number of Roots)              <span class="bu">:</span> 0</a>
+<a class="sourceLine" id="cb9-31" title="31"><span class="ex">--</span> Points --</a>
+<a class="sourceLine" id="cb9-32" title="32"><span class="ex">1</span>: (1, 3) [<span class="st">&#39;1&#39;</span>, <span class="st">&#39;2&#39;</span>]</a>
+<a class="sourceLine" id="cb9-33" title="33"><span class="ex">2</span>: (4, 4) [<span class="st">&#39;1&#39;</span>, <span class="st">&#39;3&#39;</span>, <span class="st">&#39;4&#39;</span>]</a>
+<a class="sourceLine" id="cb9-34" title="34"><span class="ex">3</span>: (2, 0) [<span class="st">&#39;2&#39;</span>, <span class="st">&#39;3&#39;</span>]</a>
+<a class="sourceLine" id="cb9-35" title="35"><span class="ex">4</span>: (8, 3) [<span class="st">&#39;4&#39;</span>, <span class="st">&#39;5&#39;</span>, <span class="st">&#39;6&#39;</span>]</a>
+<a class="sourceLine" id="cb9-36" title="36"><span class="ex">5</span>: (10, 0) [<span class="st">&#39;5&#39;</span>, <span class="st">&#39;7&#39;</span>]</a>
+<a class="sourceLine" id="cb9-37" title="37"><span class="ex">6</span>: (11, 5) [<span class="st">&#39;6&#39;</span>, <span class="st">&#39;8&#39;</span>]</a>
+<a class="sourceLine" id="cb9-38" title="38"><span class="ex">7</span>: (13, 2) [<span class="st">&#39;7&#39;</span>, <span class="st">&#39;8&#39;</span>]</a>
+<a class="sourceLine" id="cb9-39" title="39"><span class="ex">--</span> Segments --</a>
+<a class="sourceLine" id="cb9-40" title="40"><span class="ex">1</span>: 1(1, 3) <span class="ex">-</span><span class="op">&gt;</span> 2(4, 4) [<span class="st">&#39;1&#39;</span>, <span class="st">&#39;2&#39;</span>]</a>
+<a class="sourceLine" id="cb9-41" title="41"><span class="ex">2</span>: 1(1, 3) <span class="ex">-</span><span class="op">&gt;</span> 3(2, 0) [<span class="st">&#39;1&#39;</span>, <span class="st">&#39;3&#39;</span>]</a>
+<a class="sourceLine" id="cb9-42" title="42"><span class="ex">3</span>: 2(4, 4) <span class="ex">-</span><span class="op">&gt;</span> 3(2, 0) [<span class="st">&#39;2&#39;</span>, <span class="st">&#39;3&#39;</span>]</a>
+<a class="sourceLine" id="cb9-43" title="43"><span class="ex">4</span>: 2(4, 4) <span class="ex">-</span><span class="op">&gt;</span> 4(8, 3) [<span class="st">&#39;2&#39;</span>, <span class="st">&#39;4&#39;</span>]</a>
+<a class="sourceLine" id="cb9-44" title="44"><span class="ex">5</span>: 4(8, 3) <span class="ex">-</span><span class="op">&gt;</span> 5(10, 0) [<span class="st">&#39;4&#39;</span>, <span class="st">&#39;5&#39;</span>]</a>
+<a class="sourceLine" id="cb9-45" title="45"><span class="ex">6</span>: 4(8, 3) <span class="ex">-</span><span class="op">&gt;</span> 6(11, 5) [<span class="st">&#39;4&#39;</span>, <span class="st">&#39;6&#39;</span>]</a>
+<a class="sourceLine" id="cb9-46" title="46"><span class="ex">7</span>: 5(10, 0) <span class="ex">-</span><span class="op">&gt;</span> 7(13, 2) [<span class="st">&#39;5&#39;</span>, <span class="st">&#39;7&#39;</span>]</a>
+<a class="sourceLine" id="cb9-47" title="47"><span class="ex">8</span>: 6(11, 5) <span class="ex">-</span><span class="op">&gt;</span> 7(13, 2) [<span class="st">&#39;6&#39;</span>, <span class="st">&#39;7&#39;</span>]</a>
+<a class="sourceLine" id="cb9-48" title="48"><span class="ex">--</span> Added Points --</a>
+<a class="sourceLine" id="cb9-49" title="49"><span class="ex">--</span> Roots --</a></code></pre></div>
+<p>出力は,</p>
+<ol type="1">
+<li>実行フェーズ(システムの出力と実行時間)</li>
+<li>詳細フェーズ</li>
+</ol>
+<p>に大別され, 詳細フェーズでは</p>
+<ul>
+<li>入力されたN, M, P, Qの値</li>
+<li>地点情報 -&gt; 添字: (x, y) [接線1, 接線2, …]</li>
+<li>道情報 -&gt; 始点 -&gt; 終点 [接点1, 接点2, …]</li>
+<li>追加点</li>
+<li>経路情報</li>
+</ul>
+<p>が出力されます.</p>
+<p><a id="chapter5"></a></p>
+<h2 id="sourcemain.py-の利用">source/main.py の利用</h2>
+<p>出力を簡易化した main.pyも利用できます.</p>
+<p>使い方は以下のとおりです.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="ex">python3</span> main.py <span class="op">&lt;</span>option<span class="op">&gt;</span> <span class="op">&lt;</span>システム番号<span class="op">&gt;</span></a></code></pre></div>
+<p>オプションは,</p>
+<ul>
+<li>-i : 手入力</li>
+<li>-f : ファイル入力</li>
+</ul>
+<p>で, 基本的な使い方は main2.pyと同様です.</p>
+<p>-f オプションを用いてシステム1を実行するサンプルは以下の通りです.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1">$ <span class="ex">python3</span> main.py -f 8</a></code></pre></div>
+<p><a id="chapter6"></a></p>
+<h2 id="テストデータ生成器">テストデータ生成器</h2>
+<p>テストデータジェネレータ(test.py)を使うことで, システムが受け取れる最大入力と最小入力のテストデータを生成することができます.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1">$ <span class="ex">python3</span> test.py</a></code></pre></div>
+<p>以上を実行することで, 自動的に全機能用のテストデータが作成されます.</p>
+<p><a id="chapter7"></a></p>
+<h2 id="図のプロットに失敗する場合">図のプロットに失敗する場合</h2>
+<p>GUIバックエンドの関係で, 図がプロットできない場合があります.</p>
+<p>その場合は、matplotlibrcを適切に修正することで対処できる可能性があります.</p>
+<p>参考: <a href="https://matplotlib.org/users/customizing.html">matplotlib</a></p>
 </body>
 </html>
